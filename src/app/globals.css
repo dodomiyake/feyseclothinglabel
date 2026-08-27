@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+:root {
+  --background: #faf6ee;
+  --foreground: #241710;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-serif: var(--font-fraunces);
+  --font-sans: var(--font-inter);
+
+  /* Feyse Clothing Labels brand palette */
+  --color-ink-950: #1a1108;
+  --color-ink-900: #241710;
+  --color-ink-800: #2f2015;
+  --color-ink-700: #402c1d;
+  --color-ink-600: #543a26;
+
+  --color-cream-50: #fffdf9;
+  --color-cream-100: #faf6ee;
+  --color-cream-200: #f3ecdb;
+  --color-cream-300: #ead9bd;
+
+  --color-gold-400: #d8be83;
+  --color-gold-500: #b9924f;
+  --color-gold-600: #9a7538;
+  --color-gold-700: #7c5c2c;
+
+  --color-terracotta-400: #cf7f5c;
+  --color-terracotta-500: #b5573a;
+  --color-terracotta-600: #97432a;
+  --color-terracotta-700: #7a3521;
+
+  --color-sage-500: #5e7360;
+  --color-sage-600: #48593f;
+
+  --color-neutral-50: #faf9f6;
+  --color-neutral-100: #f2efe8;
+  --color-neutral-200: #e6e1d6;
+  --color-neutral-300: #d3ccba;
+  --color-neutral-400: #ab9f89;
+  --color-neutral-500: #857a67;
+  --color-neutral-600: #665c4c;
+  --color-neutral-700: #4d4436;
+  --color-neutral-800: #362f25;
+  --color-neutral-900: #241f18;
+
+  --shadow-card: 0 1px 2px rgba(26, 17, 8, 0.06), 0 8px 24px -12px rgba(26, 17, 8, 0.18);
+}
+
+body {
+  background: var(--color-cream-100);
+  color: var(--color-ink-900);
+  font-family: var(--font-sans);
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+::selection {
+  background: var(--color-gold-400);
+  color: var(--color-ink-950);
+}
+
+.label-texture {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(26, 17, 8, 0.06) 1px, transparent 0);
+  background-size: 14px 14px;
+}
+
+@media print {
+  nav, footer, .no-print { display: none !important; }
+}
