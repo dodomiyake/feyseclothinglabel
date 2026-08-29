@@ -13,6 +13,19 @@ const NIGERIAN_STATES = [
   "Lagos", "Abuja (FCT)", "Rivers", "Oyo", "Kano", "Ogun", "Kaduna", "Delta", "Enugu", "Edo", "Anambra", "Other",
 ];
 
+// Which step each server-validated field lives on, so a validation error
+// can send the user back to the step where the problem actually is.
+const FIELD_STEP: Record<string, number> = {
+  full_name: 0,
+  email: 0,
+  whatsapp_number: 0,
+  delivery_phone: 0,
+  quantity: 1,
+  delivery_address: 2,
+  delivery_city: 2,
+  delivery_state: 2,
+};
+
 const initialState: EnquiryActionState = {};
 
 export function EnquiryForm({
@@ -55,9 +68,20 @@ export function EnquiryForm({
 
   const canGoNext = useMemo(() => {
     if (step === 0) return values.full_name.trim().length > 1 && values.whatsapp_number.trim().length > 5 && values.email.includes("@");
+    if (step === 1) return needsHelp || Number(values.quantity) > 0;
     if (step === 2) return values.delivery_address.trim().length > 4 && values.delivery_city.trim() && values.delivery_state.trim();
     return true;
-  }, [step, values]);
+  }, [step, values, needsHelp]);
+
+  // If the server rejects the submission, jump back to whichever step the
+  // invalid field actually lives on — otherwise the error can land on a
+  // step the user has already moved past and never becomes visible.
+  const [lastFieldErrors, setLastFieldErrors] = useState(state.fieldErrors);
+  if (state.fieldErrors !== lastFieldErrors) {
+    setLastFieldErrors(state.fieldErrors);
+    const steps = Object.keys(state.fieldErrors ?? {}).map((f) => FIELD_STEP[f] ?? 0);
+    if (steps.length) setStep(Math.min(...steps));
+  }
 
   return (
     <div>
@@ -239,8 +263,9 @@ export function EnquiryForm({
               quotation for your approval.
             </p>
           </div>
-          {state.error && <p className="rounded-lg bg-terracotta-600/10 px-3 py-2 text-sm text-terracotta-700">{state.error}</p>}
         </div>
+
+        {state.error && <p className="rounded-lg bg-terracotta-600/10 px-3 py-2 text-sm text-terracotta-700">{state.error}</p>}
 
         <div className="flex items-center justify-between border-t border-ink-900/8 pt-5">
           <Button type="button" variant="ghost" size="sm" onClick={() => setStep((s) => Math.max(0, s - 1))} className={step === 0 ? "invisible" : ""}>
