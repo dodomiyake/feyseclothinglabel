@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { reorderAction } from "@/lib/actions/orders";
 import { formatCurrency, formatDate } from "@/lib/currency";
 import { describeSpec } from "@/lib/spec";
+import { isTerminalStatus } from "@/lib/workflow";
 
 export const metadata: Metadata = { title: "Order history — Feyse Clothing Labels" };
 
@@ -43,7 +44,9 @@ export default async function OrderHistoryPage() {
                 </div>
               </div>
               <div className="mt-3 flex gap-2 border-t border-ink-900/8 pt-3">
-                <Button href={`/orders/${order.id}`} size="sm" variant="outline">Track order</Button>
+                {!isTerminalStatus(order.status) && (
+                  <Button href={`/orders/${order.id}`} size="sm" variant="outline">Track order</Button>
+                )}
                 <form action={reorderAction}>
                   <input type="hidden" name="enquiry_id" value={order.enquiry_id} />
                   <Button type="submit" size="sm" variant="ghost">
