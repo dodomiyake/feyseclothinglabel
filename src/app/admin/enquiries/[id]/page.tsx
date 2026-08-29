@@ -12,9 +12,35 @@ import { UploadedFilesCard } from "@/components/domain/uploaded-files-card";
 import { LABEL_TYPE_META, FOLD_TYPE_META } from "@/lib/workflow";
 import { formatDate, formatDateTime } from "@/lib/currency";
 import { businessWhatsAppLink, enquiryWhatsAppMessage } from "@/lib/whatsapp";
-import type { FoldType, LabelType } from "@/lib/types";
+import type { FoldType, LabelType, WorkflowStatus } from "@/lib/types";
 
 export const metadata: Metadata = { title: "Enquiry workspace — Feyse Clothing Labels" };
+
+// Once a quotation is accepted, the enquiry is a real order in progress —
+// cancelling, holding, or requesting changes through this generic panel
+// would leave the invoice/payment/production trail dangling. From that
+// point on, the quotation/invoice/payment/production panels are the
+// controls for moving things forward.
+const COMMITTED_STATUSES: WorkflowStatus[] = [
+  "quotation_accepted",
+  "invoice_issued",
+  "awaiting_payment",
+  "payment_evidence_submitted",
+  "payment_under_review",
+  "payment_confirmed",
+  "payment_rejected",
+  "production_authorised",
+  "in_production",
+  "quality_check",
+  "ready_for_dispatch",
+  "out_for_delivery",
+  "delivered",
+  "delivery_unsuccessful",
+  "completed",
+  "cancelled",
+  "refund_pending",
+  "refunded",
+];
 
 export default async function AdminEnquiryWorkspacePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -106,15 +132,17 @@ export default async function AdminEnquiryWorkspacePage({ params }: { params: Pr
             </CardBody>
           </Card>
 
-          <Card>
-            <CardHeader><CardTitle>Move this enquiry forward</CardTitle></CardHeader>
-            <CardBody className="space-y-3">
-              <EnquiryStatusControls enquiryId={id} currentStatus={enquiry.status} />
-              {!latestQuotation && (
-                <Button href={`/admin/enquiries/${id}/quotation`} className="w-full">Create quotation</Button>
-              )}
-            </CardBody>
-          </Card>
+          {!COMMITTED_STATUSES.includes(enquiry.status) && (
+            <Card>
+              <CardHeader><CardTitle>Move this enquiry forward</CardTitle></CardHeader>
+              <CardBody className="space-y-3">
+                <EnquiryStatusControls enquiryId={id} currentStatus={enquiry.status} />
+                {!latestQuotation && (
+                  <Button href={`/admin/enquiries/${id}/quotation`} className="w-full">Create quotation</Button>
+                )}
+              </CardBody>
+            </Card>
+          )}
 
           {!!quotations?.length && (
             <Card>
