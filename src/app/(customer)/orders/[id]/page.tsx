@@ -5,6 +5,7 @@ import { requireProfile } from "@/lib/auth";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatusBadge } from "@/components/domain/status-badge";
 import { OrderTimeline } from "@/components/domain/order-timeline";
+import { OrderRealtimeRefresh } from "@/components/domain/order-realtime-refresh";
 import { WhatsAppButton } from "@/components/domain/whatsapp-button";
 import { Button } from "@/components/ui/button";
 import { confirmDeliveryAction } from "@/lib/actions/orders";
@@ -36,6 +37,7 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
 
   return (
     <div className="max-w-3xl space-y-6">
+      <OrderRealtimeRefresh orderId={id} />
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Order</p>
