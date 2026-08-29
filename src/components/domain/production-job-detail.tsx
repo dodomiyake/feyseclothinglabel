@@ -1,4 +1,5 @@
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { StatusBadge } from "@/components/domain/status-badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -36,6 +37,13 @@ export function ProductionJobDetail({
 }) {
   return (
     <div className="max-w-4xl space-y-6">
+      <Breadcrumb
+        items={[
+          isAdmin ? { label: "Production", href: "/admin/production" } : { label: "My jobs", href: "/production" },
+          { label: order.order_number },
+        ]}
+      />
+
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Production job</p>

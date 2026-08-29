@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { createCustomerAction, type CustomerActionState } from "@/lib/actions/customers";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Field, Input, Textarea } from "@/components/ui/form-fields";
 import { Button } from "@/components/ui/button";
 
@@ -13,6 +14,8 @@ export default function NewCustomerPage() {
 
   return (
     <div className="max-w-lg space-y-6">
+      <Breadcrumb items={[{ label: "Customers", href: "/admin/customers" }, { label: "Add customer" }]} />
+
       <div>
         <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Customers</p>
         <h1 className="mt-1 font-serif text-3xl text-ink-950">Add a customer</h1>

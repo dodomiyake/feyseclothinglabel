@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { StatusBadge } from "@/components/domain/status-badge";
 import { WhatsAppButton } from "@/components/domain/whatsapp-button";
 import { updateCustomerNotesAction, toggleCustomerActiveAction } from "@/lib/actions/customers";
@@ -25,6 +26,8 @@ export default async function AdminCustomerDetailPage({ params }: { params: Prom
 
   return (
     <div className="max-w-3xl space-y-6">
+      <Breadcrumb items={[{ label: "Customers", href: "/admin/customers" }, { label: customer.business_name || customer.full_name }]} />
+
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Customer</p>

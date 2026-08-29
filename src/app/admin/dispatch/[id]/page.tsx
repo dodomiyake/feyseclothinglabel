@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getSignedFileUrl } from "@/lib/files";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { StatusBadge } from "@/components/domain/status-badge";
 import { DispatchForm } from "@/components/domain/dispatch-form";
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,8 @@ export default async function AdminDispatchDetailPage({ params }: { params: Prom
 
   return (
     <div className="max-w-2xl space-y-6">
+      <Breadcrumb items={[{ label: "Dispatch", href: "/admin/dispatch" }, { label: order.order_number }]} />
+
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Dispatch</p>
