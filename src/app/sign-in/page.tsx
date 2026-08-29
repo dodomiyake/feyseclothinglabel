@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Info } from "lucide-react";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SignInForm } from "@/components/domain/sign-in-form";
@@ -31,10 +31,12 @@ export default async function SignInPage({
               Email confirmed — please sign in.
             </div>
           )}
-          {error === "confirmation_failed" && (
-            <p className="mb-4 rounded-lg bg-terracotta-600/10 px-4 py-3 text-sm text-terracotta-700">
-              That confirmation link is invalid or has expired. Please sign up again or contact us on WhatsApp.
-            </p>
+          {error === "confirmation_link_used" && (
+            <div className="mb-4 flex items-center gap-2 rounded-lg bg-gold-400/15 px-4 py-3 text-sm text-gold-700">
+              <Info className="h-4 w-4 shrink-0" />
+              That confirmation link has already been used. If you&apos;ve already confirmed your email, just sign
+              in below — otherwise, sign up again to get a fresh link.
+            </div>
           )}
           <Card>
             <CardBody>

@@ -7,6 +7,13 @@ import { createClient } from "@/lib/supabase/server";
 // an emailed link is easy to trigger accidentally (mail clients and link
 // scanners often pre-fetch links), so we sign back out immediately and
 // send the user to sign in normally with their password instead.
+//
+// The code is single-use, so re-opening the same email and clicking the
+// link again always fails the exchange here — including when the address
+// was already confirmed the first time. We can't tell "already used
+// because it worked" apart from "genuinely broken" at this point, so on
+// any failure we still send the user to sign in rather than telling them
+// something is wrong: if they're already confirmed, signing in just works.
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
@@ -21,5 +28,5 @@ export async function GET(request: Request) {
     }
   }
 
-  return NextResponse.redirect(`${origin}/sign-in?error=confirmation_failed`);
+  return NextResponse.redirect(`${origin}/sign-in?error=confirmation_link_used`);
 }
