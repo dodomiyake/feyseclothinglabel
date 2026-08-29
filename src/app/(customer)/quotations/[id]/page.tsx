@@ -4,6 +4,7 @@ import { Download } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { requireProfile } from "@/lib/auth";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { StatusBadge } from "@/components/domain/status-badge";
 import { QuotationResponse } from "@/components/domain/quotation-response";
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,8 @@ export default async function QuotationDetailPage({ params }: { params: Promise<
 
   return (
     <div className="max-w-2xl space-y-6">
+      <Breadcrumb items={[{ label: "Dashboard", href: "/dashboard" }, { label: quotation.quotation_number }]} />
+
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Quotation</p>

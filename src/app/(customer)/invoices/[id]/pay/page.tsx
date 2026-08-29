@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { requireProfile } from "@/lib/auth";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { PaymentEvidenceForm } from "@/components/domain/payment-evidence-form";
 
 export const metadata: Metadata = { title: "Submit payment — Feyse Clothing Labels" };
@@ -17,6 +18,14 @@ export default async function SubmitPaymentPage({ params }: { params: Promise<{ 
 
   return (
     <div className="max-w-lg space-y-6">
+      <Breadcrumb
+        items={[
+          { label: "Dashboard", href: "/dashboard" },
+          { label: invoice.invoice_number, href: `/invoices/${id}` },
+          { label: "Submit payment" },
+        ]}
+      />
+
       <div>
         <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Payment evidence</p>
         <h1 className="mt-1 font-serif text-3xl text-ink-950">Submit proof of payment</h1>

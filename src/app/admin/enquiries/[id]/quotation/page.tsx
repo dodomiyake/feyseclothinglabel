@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { QuotationBuilderForm } from "@/components/domain/quotation-builder-form";
 import { describeSpec } from "@/lib/spec";
 
@@ -26,6 +27,14 @@ export default async function QuotationBuilderPage({ params }: { params: Promise
 
   return (
     <div className="max-w-2xl space-y-6">
+      <Breadcrumb
+        items={[
+          { label: "Inbox", href: "/admin/inbox" },
+          { label: enquiry.enquiry_number, href: `/admin/enquiries/${id}` },
+          { label: "Quotation" },
+        ]}
+      />
+
       <div>
         <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Quotation builder</p>
         <h1 className="mt-1 font-serif text-3xl text-ink-950">{enquiry.enquiry_number}</h1>

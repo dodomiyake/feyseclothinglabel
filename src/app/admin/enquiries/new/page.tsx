@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { WalkInEnquiryForm } from "@/components/domain/walk-in-enquiry-form";
 
 export const metadata: Metadata = { title: "Log a WhatsApp enquiry — Feyse Clothing Labels" };
@@ -7,6 +8,8 @@ export const metadata: Metadata = { title: "Log a WhatsApp enquiry — Feyse Clo
 export default function NewWalkInEnquiryPage() {
   return (
     <div className="max-w-3xl space-y-6">
+      <Breadcrumb items={[{ label: "Inbox", href: "/admin/inbox" }, { label: "New enquiry" }]} />
+
       <div>
         <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">New enquiry</p>
         <h1 className="mt-1 font-serif text-3xl text-ink-950">Log a WhatsApp enquiry</h1>

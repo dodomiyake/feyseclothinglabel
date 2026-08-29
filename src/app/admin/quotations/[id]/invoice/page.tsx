@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { InvoiceBuilderForm } from "@/components/domain/invoice-builder-form";
 import { formatCurrency } from "@/lib/currency";
 
@@ -27,6 +28,14 @@ export default async function InvoiceBuilderPage({ params }: { params: Promise<{
 
   return (
     <div className="max-w-2xl space-y-6">
+      <Breadcrumb
+        items={[
+          { label: "Inbox", href: "/admin/inbox" },
+          { label: quotation.enquiry.enquiry_number, href: `/admin/enquiries/${quotation.enquiry_id}` },
+          { label: "Invoice" },
+        ]}
+      />
+
       <div>
         <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Invoice builder</p>
         <h1 className="mt-1 font-serif text-3xl text-ink-950">{quotation.quotation_number}</h1>

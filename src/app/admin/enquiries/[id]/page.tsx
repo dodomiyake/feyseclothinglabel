@@ -6,6 +6,7 @@ import { FileText } from "lucide-react";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatusBadge } from "@/components/domain/status-badge";
 import { Button } from "@/components/ui/button";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { WhatsAppButton } from "@/components/domain/whatsapp-button";
 import { EnquiryStatusControls } from "@/components/domain/enquiry-status-controls";
 import { autoMarkUnderReview } from "@/lib/actions/admin-enquiries";
@@ -93,6 +94,8 @@ export default async function AdminEnquiryWorkspacePage({ params }: { params: Pr
 
   return (
     <div className="max-w-4xl space-y-6">
+      <Breadcrumb items={[{ label: "Inbox", href: "/admin/inbox" }, { label: enquiry.enquiry_number }]} />
+
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Enquiry workspace</p>
