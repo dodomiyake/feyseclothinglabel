@@ -3,9 +3,11 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { requireProfile } from "@/lib/auth";
+import { getSignedFileUrl } from "@/lib/files";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatusBadge } from "@/components/domain/status-badge";
 import { WhatsAppButton } from "@/components/domain/whatsapp-button";
+import { UploadedFilesCard } from "@/components/domain/uploaded-files-card";
 import { Button } from "@/components/ui/button";
 import { LABEL_TYPE_META, FOLD_TYPE_META } from "@/lib/workflow";
 import { formatDate, formatDateTime } from "@/lib/currency";
@@ -27,6 +29,15 @@ export default async function EnquiryDetailPage({ params }: { params: Promise<{ 
     supabase.from("status_events").select("*").eq("entity_type", "enquiry").eq("entity_id", id).order("created_at", { ascending: false }),
     supabase.from("quotations").select("id, status").eq("enquiry_id", id).neq("status", "draft").order("created_at", { ascending: false }).limit(1).maybeSingle(),
   ]);
+
+  const fileEntries = await Promise.all(
+    (files ?? []).map(async (f) => ({
+      id: f.id,
+      name: f.original_name || f.file_path.split("/").pop() || "file",
+      kind: f.file_kind,
+      url: await getSignedFileUrl("artwork", f.file_path),
+    }))
+  );
 
   const specRows: [string, string | null][] = [
     ["Label type", enquiry.label_type ? LABEL_TYPE_META[enquiry.label_type as LabelType].label : "To be discussed"],
@@ -79,21 +90,7 @@ export default async function EnquiryDetailPage({ params }: { params: Promise<{ 
         </CardBody>
       </Card>
 
-      {!!files?.length && (
-        <Card>
-          <CardHeader><CardTitle>Uploaded files</CardTitle></CardHeader>
-          <CardBody>
-            <ul className="space-y-2 text-sm">
-              {files.map((f) => (
-                <li key={f.id} className="flex items-center justify-between rounded-lg bg-cream-200/50 px-3 py-2">
-                  <span className="truncate text-ink-800">{f.original_name || f.file_path.split("/").pop()}</span>
-                  <span className="text-xs text-neutral-500">{f.file_kind}</span>
-                </li>
-              ))}
-            </ul>
-          </CardBody>
-        </Card>
-      )}
+      <UploadedFilesCard title="Uploaded files" files={fileEntries} />
 
       <Card>
         <CardHeader><CardTitle>Status history</CardTitle></CardHeader>

@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getSignedFileUrl } from "@/lib/files";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatusBadge } from "@/components/domain/status-badge";
 import { Button } from "@/components/ui/button";
 import { WhatsAppButton } from "@/components/domain/whatsapp-button";
 import { EnquiryStatusControls } from "@/components/domain/enquiry-status-controls";
 import { WhatsappNotesPanel } from "@/components/domain/whatsapp-notes-panel";
+import { UploadedFilesCard } from "@/components/domain/uploaded-files-card";
 import { LABEL_TYPE_META, FOLD_TYPE_META } from "@/lib/workflow";
 import { formatDate, formatDateTime } from "@/lib/currency";
 import { businessWhatsAppLink, enquiryWhatsAppMessage } from "@/lib/whatsapp";
@@ -27,6 +29,15 @@ export default async function AdminEnquiryWorkspacePage({ params }: { params: Pr
     supabase.from("quotations").select("*").eq("enquiry_id", id).order("created_at", { ascending: false }),
     supabase.from("orders").select("id, order_number").eq("enquiry_id", id).maybeSingle(),
   ]);
+
+  const fileEntries = await Promise.all(
+    (files ?? []).map(async (f) => ({
+      id: f.id,
+      name: f.original_name || f.file_path.split("/").pop() || "file",
+      kind: f.file_kind,
+      url: await getSignedFileUrl("artwork", f.file_path),
+    }))
+  );
 
   const latestQuotation = quotations?.[0];
   const specRows: [string, string | null][] = [
@@ -74,21 +85,7 @@ export default async function AdminEnquiryWorkspacePage({ params }: { params: Pr
             </CardBody>
           </Card>
 
-          {!!files?.length && (
-            <Card>
-              <CardHeader><CardTitle>Artwork &amp; reference files</CardTitle></CardHeader>
-              <CardBody>
-                <ul className="space-y-2 text-sm">
-                  {files.map((f) => (
-                    <li key={f.id} className="flex items-center justify-between rounded-lg bg-cream-200/50 px-3 py-2">
-                      <span className="truncate text-ink-800">{f.original_name || f.file_path.split("/").pop()}</span>
-                      <span className="text-xs text-neutral-500">{f.file_kind}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardBody>
-            </Card>
-          )}
+          <UploadedFilesCard title="Artwork & reference files" files={fileEntries} />
 
           <WhatsappNotesPanel enquiryId={id} notes={notes ?? []} />
         </div>
