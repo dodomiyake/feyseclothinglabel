@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getSignedFileUrl } from "@/lib/files";
+import { FileText } from "lucide-react";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatusBadge } from "@/components/domain/status-badge";
 import { Button } from "@/components/ui/button";
@@ -49,10 +50,11 @@ export default async function AdminEnquiryWorkspacePage({ params }: { params: Pr
   const { data: enquiry } = await supabase.from("enquiries").select("*, customer:customers(*)").eq("id", id).maybeSingle();
   if (!enquiry) notFound();
 
-  const [{ data: files }, { data: notes }, { data: quotations }, { data: order }] = await Promise.all([
+  const [{ data: files }, { data: notes }, { data: quotations }, { data: invoices }, { data: order }] = await Promise.all([
     supabase.from("enquiry_files").select("*").eq("enquiry_id", id),
     supabase.from("whatsapp_notes").select("*").eq("enquiry_id", id).order("created_at", { ascending: false }),
     supabase.from("quotations").select("*").eq("enquiry_id", id).order("created_at", { ascending: false }),
+    supabase.from("invoices").select("*").eq("enquiry_id", id).order("created_at", { ascending: false }),
     supabase.from("orders").select("id, order_number").eq("enquiry_id", id).maybeSingle(),
   ]);
 
@@ -149,19 +151,54 @@ export default async function AdminEnquiryWorkspacePage({ params }: { params: Pr
               <CardHeader><CardTitle>Quotations</CardTitle></CardHeader>
               <CardBody className="space-y-2">
                 {quotations.map((q) => (
-                  <div key={q.id} className="flex items-center justify-between rounded-lg bg-cream-200/50 px-3 py-2 text-sm">
-                    <div>
-                      <p className="text-ink-900">{q.quotation_number}</p>
-                      <p className="text-xs text-neutral-500">{formatDateTime(q.created_at)}</p>
+                  <a
+                    key={q.id}
+                    href={`/api/pdf/quotation/${q.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between gap-3 rounded-lg bg-cream-200/50 px-3 py-2 text-sm hover:bg-cream-200"
+                  >
+                    <div className="flex items-center gap-2">
+                      <FileText className="h-4 w-4 shrink-0 text-neutral-400" />
+                      <div>
+                        <p className="text-ink-900">{q.quotation_number}</p>
+                        <p className="text-xs text-neutral-500">{formatDateTime(q.created_at)}</p>
+                      </div>
                     </div>
                     <StatusBadge status={q.status === "accepted" ? "quotation_accepted" : q.status === "declined" ? "quotation_declined" : "quotation_sent"} />
-                  </div>
+                  </a>
                 ))}
-                {latestQuotation?.status === "accepted" && (
+                {latestQuotation?.status === "accepted" && !invoices?.length && (
                   <Button href={`/admin/quotations/${latestQuotation.id}/invoice`} className="w-full" variant="gold">
                     Create invoice
                   </Button>
                 )}
+              </CardBody>
+            </Card>
+          )}
+
+          {!!invoices?.length && (
+            <Card>
+              <CardHeader><CardTitle>Invoices</CardTitle></CardHeader>
+              <CardBody className="space-y-2">
+                {invoices.map((inv) => (
+                  <a
+                    key={inv.id}
+                    href={`/api/pdf/invoice/${inv.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between gap-3 rounded-lg bg-cream-200/50 px-3 py-2 text-sm hover:bg-cream-200"
+                  >
+                    <div className="flex items-center gap-2">
+                      <FileText className="h-4 w-4 shrink-0 text-neutral-400" />
+                      <div>
+                        <p className="text-ink-900">{inv.invoice_number}</p>
+                        <p className="text-xs text-neutral-500">{formatDateTime(inv.created_at)}</p>
+                      </div>
+                    </div>
+                    <StatusBadge status={inv.status === "issued" ? "invoice_issued" : (inv.status as WorkflowStatus)} />
+                  </a>
+                ))}
               </CardBody>
             </Card>
           )}
