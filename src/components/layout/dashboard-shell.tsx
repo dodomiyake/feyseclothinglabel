@@ -32,8 +32,8 @@ export function DashboardShell({
       <aside className="hidden w-64 shrink-0 flex-col border-r border-ink-900/8 bg-cream-50 lg:flex">
         <div className="px-5 py-5">
           <Link href="/" className="flex items-baseline gap-1.5">
-            <span className="font-serif text-lg italic text-ink-950">Feyse</span>
-            <span className="font-serif text-lg italic text-ink-950/55">Labels</span>
+            <span className="text-sm font-semibold tracking-[0.15em] text-ink-950 uppercase">Feyse</span>
+            <span className="text-[10px] tracking-[0.2em] text-gold-700 uppercase">Labels</span>
           </Link>
           <p className="mt-0.5 text-xs text-neutral-500">{roleLabel}</p>
         </div>
@@ -67,7 +67,7 @@ export function DashboardShell({
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex items-center justify-between border-b border-ink-900/8 bg-cream-50 px-4 py-3 lg:px-8">
           <div className="lg:hidden">
-            <Link href="/" className="font-serif text-lg italic text-ink-950">Feyse</Link>
+            <Link href="/" className="text-sm font-semibold tracking-[0.15em] text-ink-950 uppercase">Feyse</Link>
           </div>
           <div className="hidden lg:block">
             <p className="text-sm text-neutral-500">Welcome back,</p>

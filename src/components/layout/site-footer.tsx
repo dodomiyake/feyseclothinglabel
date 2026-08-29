@@ -8,7 +8,10 @@ export function SiteFooter({ supportWhatsApp = "2348012345678" }: { supportWhats
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
         <div className="grid gap-10 sm:grid-cols-3">
           <div>
-            <p className="font-serif text-lg italic text-cream-50">Feyse Clothing Labels</p>
+            <p className="flex flex-wrap items-baseline gap-2">
+              <span className="text-base font-semibold tracking-[0.15em] text-cream-50 uppercase">Feyse</span>
+              <span className="text-xs tracking-[0.2em] text-gold-400 uppercase">Clothing Labels</span>
+            </p>
             <p className="mt-2 text-sm text-cream-300">
               Custom woven, printed and leather labels for fashion designers, tailors and clothing brands —
               produced in Lagos, dispatched nationwide.

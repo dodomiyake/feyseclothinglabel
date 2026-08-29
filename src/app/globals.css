@@ -53,15 +53,11 @@
 body {
   background: var(--color-cream-100);
   color: var(--color-ink-900);
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
 }
 
 .font-serif {
   font-family: var(--font-serif);
-}
-
-.font-sans {
-  font-family: var(--font-sans);
 }
 
 ::selection {

@@ -17,8 +17,8 @@ export async function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-ink-900/8 bg-cream-50/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
         <Link href="/" className="flex items-baseline gap-2">
-          <span className="font-serif text-xl italic text-ink-950">Feyse</span>
-          <span className="font-serif text-xl italic text-ink-950/55">Clothing Labels</span>
+          <span className="text-base font-semibold tracking-[0.15em] text-ink-950 uppercase">Feyse</span>
+          <span className="text-xs tracking-[0.2em] text-gold-700 uppercase">Clothing Labels</span>
         </Link>
 
         <nav className="hidden items-center gap-7 md:flex">
