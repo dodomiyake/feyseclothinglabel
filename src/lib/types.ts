@@ -95,6 +95,7 @@ export interface Customer {
   delivery_phone: string | null;
   source: string;
   notes: string | null;
+  is_active: boolean;
   created_by: string | null;
   created_at: string;
   updated_at: string;

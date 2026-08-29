@@ -48,3 +48,36 @@ export async function updateCustomerNotesAction(formData: FormData) {
   await adminDb.from("customers").update({ notes }).eq("id", customerId);
   revalidatePath(`/admin/customers/${customerId}`);
 }
+
+/**
+ * Deactivating blocks sign-in for registered accounts (via the Auth admin
+ * API, so it takes effect immediately, not just on next token refresh) and
+ * flags the record so admin screens can surface it. Guest/WhatsApp-only
+ * customers have no account to block — only the flag applies to them.
+ */
+export async function toggleCustomerActiveAction(formData: FormData) {
+  await requireProfile("admin");
+  const customerId = String(formData.get("customer_id") || "");
+  const currentlyActive = formData.get("active") === "true";
+  if (!customerId) return;
+
+  const adminDb = createAdminClient();
+  const { data: customer } = await adminDb.from("customers").select("user_id").eq("id", customerId).single();
+  if (!customer) return;
+
+  const { error } = await adminDb.from("customers").update({ is_active: !currentlyActive }).eq("id", customerId);
+  if (error) {
+    console.error("[toggleCustomerActiveAction] failed to update customer:", error);
+    return;
+  }
+
+  if (customer.user_id) {
+    const { error: authError } = await adminDb.auth.admin.updateUserById(customer.user_id, {
+      ban_duration: currentlyActive ? "876000h" : "none",
+    });
+    if (authError) console.error("[toggleCustomerActiveAction] failed to update auth ban status:", authError);
+  }
+
+  revalidatePath(`/admin/customers/${customerId}`);
+  revalidatePath("/admin/customers");
+}

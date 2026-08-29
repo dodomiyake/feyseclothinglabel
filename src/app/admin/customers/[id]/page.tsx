@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatusBadge } from "@/components/domain/status-badge";
 import { WhatsAppButton } from "@/components/domain/whatsapp-button";
-import { updateCustomerNotesAction } from "@/lib/actions/customers";
+import { updateCustomerNotesAction, toggleCustomerActiveAction } from "@/lib/actions/customers";
 import { Textarea } from "@/components/ui/form-fields";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/currency";
@@ -25,10 +25,24 @@ export default async function AdminCustomerDetailPage({ params }: { params: Prom
 
   return (
     <div className="max-w-3xl space-y-6">
-      <div>
-        <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Customer</p>
-        <h1 className="mt-1 font-serif text-3xl text-ink-950">{customer.business_name || customer.full_name}</h1>
-        {customer.business_name && <p className="text-sm text-neutral-500">{customer.full_name}</p>}
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Customer</p>
+          <h1 className="mt-1 font-serif text-3xl text-ink-950">{customer.business_name || customer.full_name}</h1>
+          {customer.business_name && <p className="text-sm text-neutral-500">{customer.full_name}</p>}
+          {!customer.is_active && (
+            <span className="mt-2 inline-block rounded-full bg-terracotta-600/10 px-2.5 py-0.5 text-xs font-medium text-terracotta-700">
+              Deactivated
+            </span>
+          )}
+        </div>
+        <form action={toggleCustomerActiveAction}>
+          <input type="hidden" name="customer_id" value={customer.id} />
+          <input type="hidden" name="active" value={String(customer.is_active)} />
+          <Button type="submit" variant="outline" size="sm">
+            {customer.is_active ? "Deactivate customer" : "Reactivate customer"}
+          </Button>
+        </form>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_1.3fr]">
@@ -40,6 +54,9 @@ export default async function AdminCustomerDetailPage({ params }: { params: Prom
               {customer.email && <p className="text-neutral-600">{customer.email}</p>}
               {customer.delivery_phone && <p className="text-neutral-600">Delivery: {customer.delivery_phone}</p>}
               <p className="text-xs text-neutral-400">Source: {customer.source} · {customer.user_id ? "Registered account" : "Guest / WhatsApp"}</p>
+              {!customer.user_id && (
+                <p className="text-xs text-neutral-400">This customer has no login — deactivating only hides them from active flows.</p>
+              )}
               <WhatsAppButton href={businessWhatsAppLink(customer.whatsapp_number, generalEnquiryWhatsAppMessage())} className="mt-2 w-full" variant="outline" />
             </CardBody>
           </Card>

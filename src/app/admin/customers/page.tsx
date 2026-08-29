@@ -31,6 +31,7 @@ export default async function AdminCustomersPage() {
                 <th className="px-4 py-3 font-medium">Source</th>
                 <th className="px-4 py-3 font-medium">Enquiries</th>
                 <th className="px-4 py-3 font-medium">Account</th>
+                <th className="px-4 py-3 font-medium">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -46,6 +47,13 @@ export default async function AdminCustomersPage() {
                   <td className="px-4 py-3 text-neutral-600 capitalize">{c.source}</td>
                   <td className="px-4 py-3 text-neutral-600">{c.enquiries?.[0]?.count ?? 0}</td>
                   <td className="px-4 py-3 text-neutral-600">{c.user_id ? "Registered" : "Guest"}</td>
+                  <td className="px-4 py-3">
+                    {c.is_active ? (
+                      <span className="text-neutral-500">Active</span>
+                    ) : (
+                      <span className="rounded-full bg-terracotta-600/10 px-2 py-0.5 text-xs font-medium text-terracotta-700">Deactivated</span>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
