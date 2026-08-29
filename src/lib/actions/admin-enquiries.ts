@@ -120,6 +120,27 @@ export async function updateEnquiryStatusAction(formData: FormData) {
   revalidatePath("/dashboard");
 }
 
+/**
+ * Called from the enquiry workspace page itself: the first time an admin
+ * opens a freshly-submitted enquiry, it silently becomes "under review" —
+ * no separate manual click needed. The `.eq("status", "submitted")` guard
+ * makes this idempotent (a prefetch or a second render can't double-fire
+ * it, since only the first write still matches that WHERE clause).
+ */
+export async function autoMarkUnderReview(enquiryId: string, adminId: string) {
+  const adminDb = createAdminClient();
+  const { data, error } = await adminDb
+    .from("enquiries")
+    .update({ status: "under_review", reviewed_at: new Date().toISOString() })
+    .eq("id", enquiryId)
+    .eq("status", "submitted")
+    .select("id")
+    .maybeSingle();
+  if (!error && data) {
+    await recordStatusEvent({ entityType: "enquiry", entityId: enquiryId, fromStatus: "submitted", toStatus: "under_review", actorId: adminId, note: "Opened by admin." });
+  }
+}
+
 export async function addWhatsappNoteAction(formData: FormData) {
   const admin = await requireProfile("admin");
   const enquiryId = String(formData.get("enquiry_id") || "");

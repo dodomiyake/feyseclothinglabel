@@ -6,9 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/form-fields";
 import type { WorkflowStatus } from "@/lib/types";
 
+// An enquiry is marked "under review" automatically the moment an admin
+// opens it (see autoMarkUnderReview) — "under review" already means
+// "we're on it, not moving forward yet," which is what a separate "on
+// hold" state was for. "Mark under review" only still shows up as a
+// manual action for the rare enquiry that was put on hold before this
+// changed, so it can be resumed.
 const QUICK_ACTIONS: { status: WorkflowStatus; label: string; variant: "outline" | "gold" | "danger" }[] = [
   { status: "under_review", label: "Mark under review", variant: "outline" },
-  { status: "on_hold", label: "Put on hold", variant: "outline" },
   { status: "cancelled", label: "Cancel enquiry", variant: "danger" },
 ];
 

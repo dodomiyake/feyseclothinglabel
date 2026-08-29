@@ -8,6 +8,7 @@ import { StatusBadge } from "@/components/domain/status-badge";
 import { Button } from "@/components/ui/button";
 import { WhatsAppButton } from "@/components/domain/whatsapp-button";
 import { EnquiryStatusControls } from "@/components/domain/enquiry-status-controls";
+import { autoMarkUnderReview } from "@/lib/actions/admin-enquiries";
 import { WhatsappNotesPanel } from "@/components/domain/whatsapp-notes-panel";
 import { UploadedFilesCard } from "@/components/domain/uploaded-files-card";
 import { LABEL_TYPE_META, FOLD_TYPE_META } from "@/lib/workflow";
@@ -49,6 +50,16 @@ export default async function AdminEnquiryWorkspacePage({ params }: { params: Pr
 
   const { data: enquiry } = await supabase.from("enquiries").select("*, customer:customers(*)").eq("id", id).maybeSingle();
   if (!enquiry) notFound();
+
+  if (enquiry.status === "submitted") {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (user) {
+      await autoMarkUnderReview(id, user.id);
+      enquiry.status = "under_review";
+    }
+  }
 
   const [{ data: files }, { data: notes }, { data: quotations }, { data: invoices }, { data: order }] = await Promise.all([
     supabase.from("enquiry_files").select("*").eq("enquiry_id", id),
