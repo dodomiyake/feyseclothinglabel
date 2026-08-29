@@ -34,13 +34,19 @@ export function EnquiryStatusControls({ enquiryId, currentStatus }: { enquiryId:
       <Button type="button" size="sm" variant="outline" onClick={() => setRequestingChanges(true)}>
         Request changes / more info
       </Button>
-      {QUICK_ACTIONS.filter((a) => a.status !== currentStatus).map((action) => (
-        <form key={action.status} action={updateEnquiryStatusAction}>
-          <input type="hidden" name="enquiry_id" value={enquiryId} />
-          <input type="hidden" name="status" value={action.status} />
-          <Button type="submit" size="sm" variant={action.variant} className="w-full">{action.label}</Button>
-        </form>
-      ))}
+      {QUICK_ACTIONS.filter((a) => a.status !== currentStatus).map((action) => {
+        // "Mark under review" is really "take this off hold" once an
+        // enquiry is on hold — label it as such so it's not mistaken for a
+        // dead end.
+        const label = action.status === "under_review" && currentStatus === "on_hold" ? "Resume enquiry" : action.label;
+        return (
+          <form key={action.status} action={updateEnquiryStatusAction}>
+            <input type="hidden" name="enquiry_id" value={enquiryId} />
+            <input type="hidden" name="status" value={action.status} />
+            <Button type="submit" size="sm" variant={action.variant} className="w-full">{label}</Button>
+          </form>
+        );
+      })}
     </div>
   );
 }
