@@ -116,6 +116,8 @@ export async function updateEnquiryStatusAction(formData: FormData) {
   }
 
   revalidatePath(`/admin/enquiries/${enquiryId}`);
+  revalidatePath(`/enquiries/${enquiryId}`);
+  revalidatePath("/dashboard");
 }
 
 export async function addWhatsappNoteAction(formData: FormData) {

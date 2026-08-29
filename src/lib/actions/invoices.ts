@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireProfile } from "@/lib/auth";
@@ -60,5 +61,8 @@ export async function createInvoiceAction(_prev: InvoiceActionState, formData: F
     entityId: invoice.id,
   });
 
+  revalidatePath(`/admin/enquiries/${quotation.enquiry_id}`);
+  revalidatePath(`/enquiries/${quotation.enquiry_id}`);
+  revalidatePath("/dashboard");
   redirect(`/admin/enquiries/${quotation.enquiry_id}`);
 }

@@ -77,6 +77,8 @@ export async function createQuotationAction(_prev: QuotationActionState, formDat
   });
 
   revalidatePath(`/admin/enquiries/${enquiryId}`);
+  revalidatePath(`/enquiries/${enquiryId}`);
+  revalidatePath("/dashboard");
   redirect(`/admin/enquiries/${enquiryId}`);
 }
 
@@ -110,6 +112,9 @@ async function respondToQuotation(quotationId: string, outcome: "accepted" | "de
   });
 
   revalidatePath(`/quotations/${quotationId}`);
+  revalidatePath(`/enquiries/${quotation.enquiry_id}`);
+  revalidatePath(`/admin/enquiries/${quotation.enquiry_id}`);
+  revalidatePath("/dashboard");
   return {};
 }
 

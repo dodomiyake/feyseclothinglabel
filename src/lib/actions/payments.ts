@@ -144,5 +144,9 @@ export async function reviewPaymentAction(_prev: PaymentActionState, formData: F
   }
 
   revalidatePath("/admin/payments");
+  revalidatePath(`/invoices/${invoice.id}`);
+  revalidatePath(`/enquiries/${enquiry.id}`);
+  revalidatePath("/orders");
+  revalidatePath("/dashboard");
   return {};
 }

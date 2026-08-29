@@ -58,6 +58,9 @@ export async function upsertDispatchAction(_prev: DispatchActionState, formData:
 
   revalidatePath(`/admin/dispatch/${orderId}`);
   revalidatePath("/admin/dispatch");
+  revalidatePath(`/orders/${orderId}`);
+  revalidatePath("/orders");
+  revalidatePath("/dashboard");
   return {};
 }
 
@@ -87,6 +90,9 @@ export async function markDeliveredAction(formData: FormData) {
 
   revalidatePath(`/admin/dispatch/${orderId}`);
   revalidatePath("/admin/dispatch");
+  revalidatePath(`/orders/${orderId}`);
+  revalidatePath("/orders");
+  revalidatePath("/dashboard");
 }
 
 export async function markDeliveryUnsuccessfulAction(formData: FormData) {
@@ -107,6 +113,9 @@ export async function markDeliveryUnsuccessfulAction(formData: FormData) {
 
   revalidatePath(`/admin/dispatch/${orderId}`);
   revalidatePath("/admin/dispatch");
+  revalidatePath(`/orders/${orderId}`);
+  revalidatePath("/orders");
+  revalidatePath("/dashboard");
 }
 
 export async function uploadProofOfDeliveryAction(formData: FormData) {

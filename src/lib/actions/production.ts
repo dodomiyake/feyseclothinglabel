@@ -44,6 +44,9 @@ export async function startProductionAction(formData: FormData) {
 
   revalidatePath(`/admin/production/${job.order_id}`);
   revalidatePath(`/production/${job.order_id}`);
+  revalidatePath(`/orders/${job.order_id}`);
+  revalidatePath("/orders");
+  revalidatePath("/dashboard");
 }
 
 export async function addProductionNoteAction(formData: FormData) {
@@ -81,6 +84,7 @@ export async function uploadProductionPhotoAction(formData: FormData) {
   if (job) {
     revalidatePath(`/admin/production/${job.order_id}`);
     revalidatePath(`/production/${job.order_id}`);
+    revalidatePath(`/orders/${job.order_id}`);
   }
 }
 
@@ -99,6 +103,9 @@ export async function completeProductionAction(formData: FormData) {
 
   revalidatePath(`/admin/production/${job.order_id}`);
   revalidatePath(`/production/${job.order_id}`);
+  revalidatePath(`/orders/${job.order_id}`);
+  revalidatePath("/orders");
+  revalidatePath("/dashboard");
 }
 
 const QC_FIELDS = [
@@ -157,4 +164,7 @@ export async function markReadyForDispatchAction(formData: FormData) {
   revalidatePath(`/admin/production/${job.order_id}`);
   revalidatePath(`/production/${job.order_id}`);
   revalidatePath("/admin/dispatch");
+  revalidatePath(`/orders/${job.order_id}`);
+  revalidatePath("/orders");
+  revalidatePath("/dashboard");
 }
