@@ -13,9 +13,6 @@ export interface QuotationActionState {
   error?: string;
 }
 
-const initial: QuotationActionState = {};
-export { initial as initialQuotationActionState };
-
 // ---------------------------------------------------------------------
 // Admin: create + send a quotation for an enquiry
 // ---------------------------------------------------------------------
