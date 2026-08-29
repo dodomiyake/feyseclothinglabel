@@ -67,7 +67,7 @@ export function EnquiryForm({
   }
 
   const canGoNext = useMemo(() => {
-    if (step === 0) return values.full_name.trim().length > 1 && values.whatsapp_number.trim().length > 5 && values.email.includes("@");
+    if (step === 0) return values.full_name.trim().length > 1 && values.whatsapp_number.trim().length > 5 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email);
     if (step === 1) return needsHelp || Number(values.quantity) > 0;
     if (step === 2) return values.delivery_address.trim().length > 4 && values.delivery_city.trim() && values.delivery_state.trim();
     return true;
@@ -100,7 +100,7 @@ export function EnquiryForm({
         ))}
       </ol>
 
-      <form action={formAction} className="space-y-6">
+      <form action={formAction} noValidate className="space-y-6">
         <input type="hidden" name="needs_help_choosing" value={needsHelp ? "on" : ""} />
         {draftId && <input type="hidden" name="draft_id" value={draftId} />}
 
