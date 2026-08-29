@@ -11,7 +11,10 @@ const VARIANTS = {
 };
 
 const SIZES = {
-  sm: "px-3 py-1.5 text-sm",
+  // min-h-11 (44px) keeps the tappable area at the iOS/Material minimum
+  // even though the visible padding stays compact for dense table rows —
+  // the flex centering (see below) absorbs the extra height as padding.
+  sm: "min-h-11 px-3 py-1.5 text-sm",
   md: "px-4 py-2.5 text-sm",
   lg: "px-6 py-3 text-base",
 };

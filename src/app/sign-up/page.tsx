@@ -26,6 +26,10 @@ export default function SignUpPage() {
           <p className="mt-5 text-center text-sm text-neutral-600">
             Already have an account? <Link href="/sign-in" className="font-medium text-terracotta-600 hover:text-terracotta-700">Sign in</Link>
           </p>
+          <p className="mt-3 text-center text-xs text-neutral-500">
+            By creating an account, you agree to our{" "}
+            <Link href="/privacy" className="font-medium text-terracotta-600 hover:text-terracotta-700">Privacy policy</Link>.
+          </p>
         </div>
       </main>
       <SiteFooter />
