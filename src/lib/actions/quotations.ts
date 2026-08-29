@@ -63,7 +63,10 @@ export async function createQuotationAction(_prev: QuotationActionState, formDat
     .select("id")
     .single();
 
-  if (error || !quotation) return { error: "Could not create the quotation. Please try again." };
+  if (error || !quotation) {
+    console.error("[createQuotationAction] failed to create quotation:", error);
+    return { error: "Could not create the quotation. Please try again." };
+  }
 
   await supabase.from("enquiries").update({ status: "quotation_sent" }).eq("id", enquiryId);
   await recordStatusEvent({ entityType: "enquiry", entityId: enquiryId, fromStatus: enquiry.status as WorkflowStatus, toStatus: "quotation_sent", actorId: admin.id, note: "Quotation sent to customer." });

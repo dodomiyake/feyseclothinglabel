@@ -86,7 +86,10 @@ export async function submitEnquiryAction(_prev: EnquiryActionState, formData: F
         })
         .select("id")
         .single();
-      if (error || !created) return { error: "Something went wrong. Please try again." };
+      if (error || !created) {
+        console.error("[submitEnquiryAction] failed to create customer (signed in):", error);
+        return { error: "Something went wrong. Please try again." };
+      }
       customerId = created.id;
     }
   } else {
@@ -111,7 +114,10 @@ export async function submitEnquiryAction(_prev: EnquiryActionState, formData: F
         })
         .select("id")
         .single();
-      if (error || !created) return { error: "Something went wrong. Please try again." };
+      if (error || !created) {
+        console.error("[submitEnquiryAction] failed to create customer (anonymous):", error);
+        return { error: "Something went wrong. Please try again." };
+      }
       customerId = created.id;
     }
   }
@@ -151,12 +157,18 @@ export async function submitEnquiryAction(_prev: EnquiryActionState, formData: F
       .eq("id", draftId)
       .select("id, enquiry_number")
       .single();
-    if (error || !updated) return { error: "Something went wrong. Please try again." };
+    if (error || !updated) {
+      console.error("[submitEnquiryAction] failed to update draft enquiry:", error);
+      return { error: "Something went wrong. Please try again." };
+    }
     enquiryId = updated.id;
     enquiryNumber = updated.enquiry_number;
   } else {
     const { data: created, error } = await admin.from("enquiries").insert(enquiryPayload).select("id, enquiry_number").single();
-    if (error || !created) return { error: "Something went wrong. Please try again." };
+    if (error || !created) {
+      console.error("[submitEnquiryAction] failed to create enquiry:", error);
+      return { error: "Something went wrong. Please try again." };
+    }
     enquiryId = created.id;
     enquiryNumber = created.enquiry_number;
   }

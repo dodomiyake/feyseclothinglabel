@@ -30,7 +30,10 @@ export async function updateBusinessSettingsAction(_prev: SettingsActionState, f
     })
     .eq("id", true);
 
-  if (error) return { error: "Could not save settings. Please try again." };
+  if (error) {
+    console.error("[updateBusinessSettingsAction] failed to save business settings:", error);
+    return { error: "Could not save settings. Please try again." };
+  }
   revalidatePath("/admin/settings/business");
   return { success: true };
 }

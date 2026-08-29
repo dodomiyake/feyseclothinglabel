@@ -44,7 +44,10 @@ export async function createInvoiceAction(_prev: InvoiceActionState, formData: F
     .select("id")
     .single();
 
-  if (error || !invoice) return { error: "Could not create the invoice. Please try again." };
+  if (error || !invoice) {
+    console.error("[createInvoiceAction] failed to create invoice:", error);
+    return { error: "Could not create the invoice. Please try again." };
+  }
 
   await adminDb.from("enquiries").update({ status: "awaiting_payment" }).eq("id", quotation.enquiry_id);
   await recordStatusEvent({ entityType: "enquiry", entityId: quotation.enquiry_id, fromStatus: "quotation_accepted", toStatus: "awaiting_payment", actorId: admin.id, note: "Invoice issued." });

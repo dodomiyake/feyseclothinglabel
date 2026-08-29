@@ -41,7 +41,10 @@ export async function createWalkInEnquiryAction(_prev: AdminActionState, formDat
         })
         .select("id")
         .single();
-      if (error || !created) return { error: "Could not create the customer record." };
+      if (error || !created) {
+        console.error("[createWalkInEnquiryAction] failed to create customer:", error);
+        return { error: "Could not create the customer record." };
+      }
       customerId = created.id;
     }
   }
@@ -72,7 +75,10 @@ export async function createWalkInEnquiryAction(_prev: AdminActionState, formDat
     .select("id")
     .single();
 
-  if (error || !enquiry) return { error: "Could not create the enquiry. Please try again." };
+  if (error || !enquiry) {
+    console.error("[createWalkInEnquiryAction] failed to create enquiry:", error);
+    return { error: "Could not create the enquiry. Please try again." };
+  }
 
   if (raw.whatsapp_note) {
     await adminDb.from("whatsapp_notes").insert({ enquiry_id: enquiry.id, direction: "inbound", note: String(raw.whatsapp_note), created_by: admin.id });

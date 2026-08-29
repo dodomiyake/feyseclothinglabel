@@ -38,7 +38,10 @@ export async function submitPaymentEvidenceAction(_prev: PaymentActionState, for
   const ext = file.name.split(".").pop() || "jpg";
   const path = `${invoiceId}/${randomUUID()}.${ext}`;
   const { error: uploadError } = await admin.storage.from("payment-evidence").upload(path, file, { contentType: file.type });
-  if (uploadError) return { error: "Could not upload your file. Please try again." };
+  if (uploadError) {
+    console.error("[submitPaymentEvidenceAction] failed to upload evidence file:", uploadError);
+    return { error: "Could not upload your file. Please try again." };
+  }
 
   const { amount_paid, payment_date, sender_account_name, sender_bank } = parsed.data;
   await admin.from("payments").insert({

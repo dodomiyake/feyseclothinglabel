@@ -265,3 +265,19 @@ insert into enquiries (
 
 insert into whatsapp_notes (enquiry_id, direction, note, created_at) values
   ('b2222222-2222-4222-8222-222222222206', 'outbound', 'Requested exact label dimensions and fibre composition percentages before quoting.', now() - interval '2 days');
+
+-- ---------------------------------------------------------------------
+-- Sync document_sequences with the hand-picked numbers used above, so
+-- the next REAL enquiry/quotation/invoice/order created through the app
+-- (which relies on next_document_number()'s default) doesn't collide
+-- with one of these seeded document numbers.
+-- ---------------------------------------------------------------------
+insert into document_sequences (prefix, year, next_value)
+select 'ENQ', extract(year from now())::int, coalesce(max(substring(enquiry_number from 10)::int), 0) + 1 from enquiries
+union all
+select 'QUO', extract(year from now())::int, coalesce(max(substring(quotation_number from 10)::int), 0) + 1 from quotations
+union all
+select 'INV', extract(year from now())::int, coalesce(max(substring(invoice_number from 10)::int), 0) + 1 from invoices
+union all
+select 'ORD', extract(year from now())::int, coalesce(max(substring(order_number from 10)::int), 0) + 1 from orders
+on conflict (prefix) do update set year = excluded.year, next_value = excluded.next_value;

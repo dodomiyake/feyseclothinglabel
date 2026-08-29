@@ -31,7 +31,10 @@ export async function createCustomerAction(_prev: CustomerActionState, formData:
     .select("id")
     .single();
 
-  if (error || !customer) return { error: "Could not create this customer. They may already exist." };
+  if (error || !customer) {
+    console.error("[createCustomerAction] failed to create customer:", error);
+    return { error: "Could not create this customer. They may already exist." };
+  }
   redirect(`/admin/customers/${customer.id}`);
 }
 
