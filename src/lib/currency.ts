@@ -13,6 +13,22 @@ export function formatCurrency(amount: number, currency: string = "NGN") {
   }).format(amount);
 }
 
+/**
+ * Same formatting, but with the currency code ("NGN") instead of its
+ * symbol ("₦"). The PDF documents render with the base-14 Helvetica font,
+ * which has no glyph for ₦ (or most non-Latin currency symbols) — it
+ * renders as a broken/placeholder character instead of failing loudly, so
+ * use this wherever an amount is rendered inside a PDF.
+ */
+export function formatCurrencyForPdf(amount: number, currency: string = "NGN") {
+  return new Intl.NumberFormat(CURRENCY_LOCALE[currency] ?? "en-NG", {
+    style: "currency",
+    currency,
+    currencyDisplay: "code",
+    maximumFractionDigits: 2,
+  }).format(amount);
+}
+
 export function formatDate(value: string | Date | null | undefined) {
   if (!value) return "—";
   const d = typeof value === "string" ? new Date(value) : value;

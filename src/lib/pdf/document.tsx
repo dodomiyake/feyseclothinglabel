@@ -1,5 +1,5 @@
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
-import { formatCurrency, formatDate } from "@/lib/currency";
+import { formatCurrencyForPdf, formatDate } from "@/lib/currency";
 import type { BankAccount, BusinessSettings, Enquiry } from "@/lib/types";
 
 const styles = StyleSheet.create({
@@ -124,29 +124,29 @@ export function LabelDocumentPdf({
             <View style={styles.tableRow}>
               <Text style={styles.cellSpec}>{lineItem.description}</Text>
               <Text style={styles.cellQty}>{lineItem.quantity}</Text>
-              <Text style={styles.cellPrice}>{formatCurrency(lineItem.unitPrice, currency)}</Text>
-              <Text style={styles.cellTotal}>{formatCurrency(lineItem.total, currency)}</Text>
+              <Text style={styles.cellPrice}>{formatCurrencyForPdf(lineItem.unitPrice, currency)}</Text>
+              <Text style={styles.cellTotal}>{formatCurrencyForPdf(lineItem.total, currency)}</Text>
             </View>
           </View>
 
           <View style={styles.totalsBox}>
             <View style={styles.totalsRow}>
               <Text>Subtotal</Text>
-              <Text>{formatCurrency(subtotal, currency)}</Text>
+              <Text>{formatCurrencyForPdf(subtotal, currency)}</Text>
             </View>
             <View style={styles.totalsRow}>
               <Text>Delivery fee</Text>
-              <Text>{formatCurrency(deliveryFee, currency)}</Text>
+              <Text>{formatCurrencyForPdf(deliveryFee, currency)}</Text>
             </View>
             {discount > 0 && (
               <View style={styles.totalsRow}>
                 <Text>Discount</Text>
-                <Text>-{formatCurrency(discount, currency)}</Text>
+                <Text>-{formatCurrencyForPdf(discount, currency)}</Text>
               </View>
             )}
             <View style={styles.grandTotalRow}>
               <Text style={styles.bold}>Total ({currency})</Text>
-              <Text style={styles.bold}>{formatCurrency(total, currency)}</Text>
+              <Text style={styles.bold}>{formatCurrencyForPdf(total, currency)}</Text>
             </View>
           </View>
         </View>
