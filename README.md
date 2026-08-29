@@ -132,6 +132,21 @@ context respectively. `audit_log` records administrative actions.
   (`/admin/enquiries/new`), attaching a summary note, without the customer
   ever touching the web app.
 
+## Notifications
+
+Every important event writes an in-app row to `notifications` (bell icon in
+the dashboard header shows the unread count). Admin-facing events — new
+enquiry, payment evidence submitted, quotation accepted/declined/changes
+requested, order ready for dispatch — also send an email via
+[Resend](https://resend.com) to whatever address is set in
+`business_settings.support_email` (editable at
+`/admin/settings/business`), as long as `RESEND_API_KEY` is configured (see
+`.env.example`). Without it, email sending no-ops with a console warning —
+the in-app notification and the rest of the app work fine either way.
+Customer-facing emails (quotation sent, invoice issued, payment
+confirmed/rejected, dispatch/delivery) aren't wired up yet; `sendEmail` in
+`src/lib/email.ts` is ready to extend to `notifyUser` for that.
+
 ## What's intentionally out of scope for v1
 
 - Automated WhatsApp messaging (manual "chat" links and copyable templates
@@ -143,6 +158,7 @@ context respectively. `audit_log` records administrative actions.
 - Multi-currency checkout (amounts are NGN-denominated today; `currency`
   columns exist throughout so more currencies can be added without a schema
   change).
+- Customer-facing email notifications (see Notifications above).
 
 ## Project structure
 

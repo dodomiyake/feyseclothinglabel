@@ -8,7 +8,7 @@
 update business_settings set
   tagline = 'Woven, printed and leather labels for fashion brands — made in Lagos.',
   support_whatsapp_number = '2348012345678',
-  support_email = 'hello@feyseclothinglabels.com';
+  support_email = 'feyseclothinglabels@gmail.com';
 
 insert into bank_accounts (bank_name, account_name, account_number, currency, is_default, active) values
   ('Guaranty Trust Bank', 'Feyse Clothing Labels Ltd', '0123456789', 'NGN', true, true),

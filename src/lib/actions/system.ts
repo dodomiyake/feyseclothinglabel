@@ -1,5 +1,6 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { sendEmail, SITE_URL } from "@/lib/email";
 import type { UserRole, WorkflowStatus } from "@/lib/types";
 
 /** Writes a notification for a specific user, bypassing RLS via the service role. */
@@ -23,21 +24,41 @@ export async function notifyUser(params: {
   });
 }
 
+const ADMIN_ENTITY_LINK: Record<string, (id: string) => string> = {
+  enquiry: (id) => `/admin/enquiries/${id}`,
+  quotation: () => `/admin/inbox`,
+  invoice: () => `/admin/payments`,
+  order: (id) => `/admin/production/${id}`,
+};
+
 /** Notifies every admin user of an event (e.g. a new enquiry or payment evidence). */
 export async function notifyAdmins(params: { type: string; title: string; body: string; entityType?: string; entityId?: string }) {
   const admin = createAdminClient();
   const { data: admins } = await admin.from("profiles").select("id").eq("role", "admin");
-  if (!admins?.length) return;
-  await admin.from("notifications").insert(
-    admins.map((a) => ({
-      user_id: a.id,
-      type: params.type,
-      title: params.title,
+  if (admins?.length) {
+    await admin.from("notifications").insert(
+      admins.map((a) => ({
+        user_id: a.id,
+        type: params.type,
+        title: params.title,
+        body: params.body,
+        entity_type: params.entityType ?? null,
+        entity_id: params.entityId ?? null,
+      }))
+    );
+  }
+
+  const { data: business } = await admin.from("business_settings").select("support_email").single();
+  if (business?.support_email) {
+    const path = params.entityType && params.entityId ? ADMIN_ENTITY_LINK[params.entityType]?.(params.entityId) : undefined;
+    await sendEmail({
+      to: business.support_email,
+      subject: params.title,
       body: params.body,
-      entity_type: params.entityType ?? null,
-      entity_id: params.entityId ?? null,
-    }))
-  );
+      ctaLabel: "Open in admin dashboard",
+      ctaHref: `${SITE_URL}${path ?? "/admin/dashboard"}`,
+    });
+  }
 }
 
 export async function logAudit(params: {
