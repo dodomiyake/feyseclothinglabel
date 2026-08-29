@@ -3,7 +3,7 @@ import { requireProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { DashboardShell, type NavLink } from "@/components/layout/dashboard-shell";
 
-const NAV_LINKS: NavLink[] = [{ href: "/production", label: "My jobs", icon: Factory }];
+const NAV_LINKS: NavLink[] = [{ href: "/production", label: "My jobs", icon: <Factory className="h-4 w-4" /> }];
 
 export default async function ProductionLayout({ children }: { children: React.ReactNode }) {
   const profile = await requireProfile("production", "admin");

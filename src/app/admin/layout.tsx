@@ -3,14 +3,15 @@ import { requireProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { DashboardShell, type NavLink } from "@/components/layout/dashboard-shell";
 
+const ICON_CLASS = "h-4 w-4";
 const NAV_LINKS: NavLink[] = [
-  { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/admin/inbox", label: "Enquiries", icon: Inbox },
-  { href: "/admin/payments", label: "Payments", icon: Wallet },
-  { href: "/admin/production", label: "Production", icon: Factory },
-  { href: "/admin/dispatch", label: "Dispatch", icon: Truck },
-  { href: "/admin/customers", label: "Customers", icon: Users },
-  { href: "/admin/settings/business", label: "Settings", icon: Settings },
+  { href: "/admin/dashboard", label: "Dashboard", icon: <LayoutDashboard className={ICON_CLASS} /> },
+  { href: "/admin/inbox", label: "Enquiries", icon: <Inbox className={ICON_CLASS} /> },
+  { href: "/admin/payments", label: "Payments", icon: <Wallet className={ICON_CLASS} /> },
+  { href: "/admin/production", label: "Production", icon: <Factory className={ICON_CLASS} /> },
+  { href: "/admin/dispatch", label: "Dispatch", icon: <Truck className={ICON_CLASS} /> },
+  { href: "/admin/customers", label: "Customers", icon: <Users className={ICON_CLASS} /> },
+  { href: "/admin/settings/business", label: "Settings", icon: <Settings className={ICON_CLASS} /> },
 ];
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {

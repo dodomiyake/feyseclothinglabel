@@ -10,7 +10,11 @@ import { businessWhatsAppLink, generalEnquiryWhatsAppMessage } from "@/lib/whats
 export interface NavLink {
   href: string;
   label: string;
-  icon: React.ComponentType<{ className?: string }>;
+  // A rendered icon element (e.g. <LayoutDashboard className="h-4 w-4" />),
+  // not the bare component reference — this crosses the server/client
+  // boundary as regular children, whereas a component *type* can't be
+  // passed as a plain prop into a Client Component.
+  icon: React.ReactNode;
 }
 
 export function DashboardShell({
@@ -58,7 +62,7 @@ export function DashboardShell({
                   active ? "bg-ink-900 text-cream-50" : "text-ink-700 hover:bg-ink-900/5"
                 }`}
               >
-                <link.icon className="h-4 w-4" />
+                {link.icon}
                 {link.label}
               </Link>
             );
@@ -107,7 +111,7 @@ export function DashboardShell({
                   active ? "bg-ink-900 text-cream-50" : "bg-ink-900/5 text-ink-700"
                 }`}
               >
-                <link.icon className="h-3.5 w-3.5" />
+                {link.icon}
                 {link.label}
               </Link>
             );

@@ -16,8 +16,8 @@ import { businessWhatsAppLink, enquiryWhatsAppMessage } from "@/lib/whatsapp";
 export const metadata: Metadata = { title: "Enquiry received — Feyse Clothing Labels" };
 
 const CUSTOMER_NAV_LINKS: NavLink[] = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/orders", label: "My orders", icon: Package },
+  { href: "/dashboard", label: "Dashboard", icon: <LayoutDashboard className="h-4 w-4" /> },
+  { href: "/orders", label: "My orders", icon: <Package className="h-4 w-4" /> },
 ];
 
 export default async function EnquiryConfirmationPage({
