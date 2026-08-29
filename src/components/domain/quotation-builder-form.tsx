@@ -25,9 +25,10 @@ export function QuotationBuilderForm({
   const [unitPrice, setUnitPrice] = useState(suggestedUnitPrice);
   const [quantity, setQuantity] = useState(suggestedQuantity);
   const [deliveryFee, setDeliveryFee] = useState(3000);
-  const [discount, setDiscount] = useState(0);
+  const [discountPercent, setDiscountPercent] = useState(0);
 
   const subtotal = useMemo(() => unitPrice * quantity, [unitPrice, quantity]);
+  const discount = useMemo(() => Math.round(subtotal * (discountPercent / 100) * 100) / 100, [subtotal, discountPercent]);
   const total = subtotal + deliveryFee - discount;
 
   return (
@@ -43,9 +44,17 @@ export function QuotationBuilderForm({
         <Field label="Delivery fee (NGN)">
           <Input type="number" step="0.01" name="delivery_fee" value={deliveryFee} onChange={(e) => setDeliveryFee(Number(e.target.value) || 0)} />
         </Field>
-        <Field label="Discount (NGN)">
-          <Input type="number" step="0.01" name="discount" value={discount} onChange={(e) => setDiscount(Number(e.target.value) || 0)} />
+        <Field label="Discount (%)" hint={discount > 0 ? `${formatCurrency(discount)} off` : undefined}>
+          <Input
+            type="number"
+            step="0.1"
+            min={0}
+            max={100}
+            value={discountPercent}
+            onChange={(e) => setDiscountPercent(Math.min(100, Math.max(0, Number(e.target.value) || 0)))}
+          />
         </Field>
+        <input type="hidden" name="discount" value={discount} />
         <Field label="Valid until" required>
           <Input type="date" name="valid_until" required defaultValue={defaultValidUntil} />
         </Field>
