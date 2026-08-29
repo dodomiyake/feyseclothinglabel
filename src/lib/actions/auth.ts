@@ -1,8 +1,15 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+
+async function siteOrigin() {
+  const host = (await headers()).get("host");
+  const protocol = host?.startsWith("localhost") || host?.startsWith("127.0.0.1") ? "http" : "https";
+  return `${protocol}://${host}`;
+}
 
 export interface AuthActionState {
   error?: string;
@@ -39,7 +46,10 @@ export async function signUpAction(_prev: AuthActionState, formData: FormData): 
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { full_name: fullName, role: "customer", whatsapp_number: whatsapp } },
+    options: {
+      data: { full_name: fullName, role: "customer", whatsapp_number: whatsapp },
+      emailRedirectTo: `${await siteOrigin()}/auth/confirm`,
+    },
   });
 
   if (error) return { error: error.message.includes("already registered") ? "An account with this email already exists." : "We couldn't create your account. Please try again." };
