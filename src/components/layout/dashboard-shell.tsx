@@ -91,8 +91,8 @@ export function DashboardShell({
             <Link href={notificationsHref} className="relative rounded-full p-2 text-ink-700 hover:bg-ink-900/5" aria-label="Notifications">
               <Bell className="h-5 w-5" />
               {unreadCount > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-terracotta-600 text-[10px] text-cream-50">
-                  {unreadCount > 9 ? "9+" : unreadCount}
+                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-terracotta-600 px-1 text-[10px] text-cream-50">
+                  {unreadCount}
                 </span>
               )}
             </Link>
