@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Bell } from "lucide-react";
 import { signOutAction } from "@/lib/actions/auth";
 import { WhatsAppButton } from "@/components/domain/whatsapp-button";
@@ -12,7 +15,6 @@ export interface NavLink {
 
 export function DashboardShell({
   navLinks,
-  activeHref,
   roleLabel,
   userName,
   unreadCount = 0,
@@ -21,7 +23,6 @@ export function DashboardShell({
   supportWhatsApp = "2348012345678",
 }: {
   navLinks: NavLink[];
-  activeHref: string;
   roleLabel: string;
   userName: string;
   unreadCount?: number;
@@ -29,6 +30,13 @@ export function DashboardShell({
   children: React.ReactNode;
   supportWhatsApp?: string;
 }) {
+  // usePathname (not a server-computed prop) so this stays correct across
+  // client-side navigations between sibling pages under the same layout —
+  // layouts don't re-render on those, only the page content does, so a
+  // value baked in at layout-render time would freeze on whichever page
+  // the section was first entered from.
+  const activeHref = usePathname();
+
   return (
     <div className="flex min-h-screen bg-cream-100">
       <aside className="hidden w-64 shrink-0 flex-col border-r border-ink-900/8 bg-cream-50 lg:flex">

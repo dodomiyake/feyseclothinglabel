@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 import { LayoutDashboard, Package } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -126,7 +125,6 @@ export default async function EnquiryPage({
   // this is where "Reorder" and "start another enquiry" land them.
   const profile = await getCurrentProfile();
   if (profile?.role === "customer") {
-    const pathname = (await headers()).get("x-pathname") ?? "/enquiry";
     const { count } = await supabase
       .from("notifications")
       .select("id", { count: "exact", head: true })
@@ -134,7 +132,7 @@ export default async function EnquiryPage({
       .is("read_at", null);
 
     return (
-      <DashboardShell navLinks={CUSTOMER_NAV_LINKS} activeHref={pathname} roleLabel="Customer portal" userName={profile.full_name} unreadCount={count ?? 0}>
+      <DashboardShell navLinks={CUSTOMER_NAV_LINKS} roleLabel="Customer portal" userName={profile.full_name} unreadCount={count ?? 0}>
         <div className="mx-auto max-w-3xl">{formContent}</div>
       </DashboardShell>
     );

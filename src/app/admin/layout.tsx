@@ -1,5 +1,4 @@
 import { LayoutDashboard, Inbox, Users, Factory, Truck, Settings, Wallet } from "lucide-react";
-import { headers } from "next/headers";
 import { requireProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { DashboardShell, type NavLink } from "@/components/layout/dashboard-shell";
@@ -16,7 +15,6 @@ const NAV_LINKS: NavLink[] = [
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const profile = await requireProfile("admin");
-  const pathname = (await headers()).get("x-pathname") ?? "/admin/dashboard";
   const supabase = await createClient();
   const { count } = await supabase
     .from("notifications")
@@ -27,7 +25,6 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <DashboardShell
       navLinks={NAV_LINKS}
-      activeHref={pathname}
       roleLabel="Business administrator"
       userName={profile.full_name}
       unreadCount={count ?? 0}

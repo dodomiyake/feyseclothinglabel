@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { headers } from "next/headers";
 import { CheckCircle2, LayoutDashboard, Package } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -110,7 +109,6 @@ export default async function EnquiryConfirmationPage({
   // dropped onto the public marketing page after submitting.
   const profile = hasAccount ? await getCurrentProfile() : null;
   if (profile?.role === "customer") {
-    const pathname = (await headers()).get("x-pathname") ?? "/enquiry/confirmation";
     const { count } = await supabase
       .from("notifications")
       .select("id", { count: "exact", head: true })
@@ -118,7 +116,7 @@ export default async function EnquiryConfirmationPage({
       .is("read_at", null);
 
     return (
-      <DashboardShell navLinks={CUSTOMER_NAV_LINKS} activeHref={pathname} roleLabel="Customer portal" userName={profile.full_name} unreadCount={count ?? 0}>
+      <DashboardShell navLinks={CUSTOMER_NAV_LINKS} roleLabel="Customer portal" userName={profile.full_name} unreadCount={count ?? 0}>
         <div className="flex flex-1 items-center justify-center py-8">{confirmationContent}</div>
       </DashboardShell>
     );
