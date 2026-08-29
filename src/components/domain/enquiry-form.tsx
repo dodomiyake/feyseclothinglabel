@@ -220,7 +220,7 @@ export function EnquiryForm({
                     >
                       {f.type.startsWith("image/") ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={previewUrls[i]} alt={f.name} className="h-full w-full object-cover" />
+                        <img src={previewUrls[i]} alt={f.name} className="h-full w-full object-contain p-1.5" />
                       ) : (
                         <>
                           <FileText className="h-6 w-6 text-neutral-400" />

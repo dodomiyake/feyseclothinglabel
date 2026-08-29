@@ -37,7 +37,7 @@ export function UploadedFilesCard({ title, files }: { title: string; files: Uplo
               >
                 {f.url && isImage(f.name) ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={f.url} alt={f.name} className="h-full w-full object-cover" />
+                  <img src={f.url} alt={f.name} className="h-full w-full object-contain p-1.5" />
                 ) : (
                   <>
                     <FileText className="h-6 w-6 text-neutral-400" />
