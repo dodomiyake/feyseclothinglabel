@@ -24,7 +24,9 @@ export default async function EnquiryConfirmationPage({
   const { t } = await searchParams;
 
   const supabase = await createClient();
-  let enquiry = (await supabase.from("enquiries").select("*, customer:customers(*)").eq("id", id).maybeSingle()).data;
+  const { data: userScoped, error: userScopedError } = await supabase.from("enquiries").select("*, customer:customers(*)").eq("id", id).maybeSingle();
+  if (userScopedError) console.error("[EnquiryConfirmationPage] failed to load enquiry:", userScopedError);
+  let enquiry = userScoped;
 
   let hasAccount = !!enquiry;
   if (!enquiry && t) {
@@ -36,7 +38,18 @@ export default async function EnquiryConfirmationPage({
     }
   }
 
-  if (!enquiry) redirect("/sign-in");
+  // A signed-in customer whose own enquiry failed to load (e.g. a transient
+  // DB error) should never be bounced to /sign-in — that looks identical to
+  // being signed out. Only redirect when we know they're actually signed out.
+  if (!enquiry) {
+    if (userScopedError) {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) throw userScopedError;
+    }
+    redirect("/sign-in");
+  }
 
   const spec = describeSpec(enquiry);
   const whatsappLink = businessWhatsAppLink("2348012345678", enquiryWhatsAppMessage(enquiry.enquiry_number, spec));
