@@ -61,6 +61,19 @@ export default async function EnquiryDetailPage({ params }: { params: Promise<{ 
         <StatusBadge status={enquiry.status} className="text-sm" />
       </div>
 
+      {enquiry.status === "changes_requested" && (
+        <Card className="border-terracotta-400/40 bg-terracotta-400/5">
+          <CardBody className="space-y-3 py-4">
+            <p className="text-sm font-medium text-ink-900">We need a bit more information</p>
+            {(() => {
+              const note = (events as StatusEvent[] | null)?.find((e) => e.to_status === "changes_requested")?.note;
+              return note ? <p className="text-sm text-neutral-600">{note}</p> : null;
+            })()}
+            <Button href={`/enquiry?draft=${enquiry.id}`} size="sm" variant="gold">Update enquiry</Button>
+          </CardBody>
+        </Card>
+      )}
+
       {quotation && (
         <Card className="border-gold-500/40 bg-gold-400/10">
           <CardBody className="flex items-center justify-between py-4">

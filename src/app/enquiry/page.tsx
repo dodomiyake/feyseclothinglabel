@@ -43,22 +43,29 @@ export default async function EnquiryPage({
     }
   }
 
+  // Editable states: a genuine draft, or an enquiry the admin sent back for
+  // changes — both are cases where the customer needs to get back into this
+  // form with their previous answers intact.
+  const EDITABLE_STATUSES = ["draft", "changes_requested"];
+
   let draftId: string | undefined;
+  let isChangesRequested = false;
   if (draft) {
     const admin = createAdminClient();
     let draftEnquiry = null;
     if (user) {
-      const { data, error } = await supabase.from("enquiries").select("*, customer:customers(*)").eq("id", draft).eq("status", "draft").maybeSingle();
+      const { data, error } = await supabase.from("enquiries").select("*, customer:customers(*)").eq("id", draft).in("status", EDITABLE_STATUSES).maybeSingle();
       if (error) console.error("[EnquiryPage] failed to load draft enquiry:", error);
       draftEnquiry = data;
     } else if (t) {
       const { data: link } = await admin.from("secure_links").select("*").eq("token", t).eq("enquiry_id", draft).gt("expires_at", new Date().toISOString()).maybeSingle();
       if (link) {
-        const { data } = await admin.from("enquiries").select("*, customer:customers(*)").eq("id", draft).eq("status", "draft").maybeSingle();
+        const { data } = await admin.from("enquiries").select("*, customer:customers(*)").eq("id", draft).in("status", EDITABLE_STATUSES).maybeSingle();
         draftEnquiry = data;
       }
     }
     if (draftEnquiry) {
+      isChangesRequested = draftEnquiry.status === "changes_requested";
       draftId = draftEnquiry.id;
       Object.assign(defaultValues, {
         full_name: draftEnquiry.customer?.full_name ?? defaultValues.full_name ?? "",
@@ -86,10 +93,15 @@ export default async function EnquiryPage({
   const formContent = (
     <>
       <div className="mb-8">
-        <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">New enquiry</p>
-        <h1 className="mt-2 font-serif text-3xl text-ink-950">Tell us about the labels you need</h1>
+        <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">{isChangesRequested ? "Update your enquiry" : "New enquiry"}</p>
+        <h1 className="mt-2 font-serif text-3xl text-ink-950">
+          {isChangesRequested ? "Let's fix up the details" : "Tell us about the labels you need"}
+        </h1>
         <p className="mt-2 text-sm text-neutral-600">
-          Takes about 3 minutes. Prefer to talk it through? <span className="whitespace-nowrap">Chat with us directly.</span>
+          {isChangesRequested
+            ? "Update whatever our team flagged, then resubmit — we'll take another look."
+            : "Takes about 3 minutes. Prefer to talk it through? "}
+          {!isChangesRequested && <span className="whitespace-nowrap">Chat with us directly.</span>}
         </p>
         <WhatsAppButton
           href={businessWhatsAppLink("2348012345678", generalEnquiryWhatsAppMessage())}

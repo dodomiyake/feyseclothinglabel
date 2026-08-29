@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { enquirySchema } from "@/lib/validation";
-import { notifyAdmins } from "@/lib/actions/system";
+import { notifyAdmins, recordStatusEvent } from "@/lib/actions/system";
 
 export interface EnquiryActionState {
   error?: string;
@@ -150,8 +150,12 @@ export async function submitEnquiryAction(_prev: EnquiryActionState, formData: F
   const draftId = String(raw.draft_id || "");
   let enquiryId: string;
   let enquiryNumber: string;
+  let wasChangesRequested = false;
 
   if (draftId) {
+    const { data: existing } = await admin.from("enquiries").select("status").eq("id", draftId).maybeSingle();
+    wasChangesRequested = existing?.status === "changes_requested";
+
     const { data: updated, error } = await admin
       .from("enquiries")
       .update(enquiryPayload)
@@ -210,10 +214,22 @@ export async function submitEnquiryAction(_prev: EnquiryActionState, formData: F
   }
 
   if (intent === "submit") {
+    if (wasChangesRequested) {
+      await recordStatusEvent({
+        entityType: "enquiry",
+        entityId: enquiryId,
+        fromStatus: "changes_requested",
+        toStatus: "submitted",
+        actorId: user?.id ?? null,
+        note: "Customer updated and resubmitted the enquiry.",
+      });
+    }
     await notifyAdmins({
-      type: "new_enquiry",
-      title: "New enquiry received",
-      body: `${String(raw.full_name || "A customer")} submitted enquiry ${enquiryNumber}.`,
+      type: wasChangesRequested ? "enquiry_resubmitted" : "new_enquiry",
+      title: wasChangesRequested ? "Customer resubmitted enquiry" : "New enquiry received",
+      body: wasChangesRequested
+        ? `${String(raw.full_name || "A customer")} updated enquiry ${enquiryNumber} after requested changes — please review.`
+        : `${String(raw.full_name || "A customer")} submitted enquiry ${enquiryNumber}.`,
       entityType: "enquiry",
       entityId: enquiryId,
     });
