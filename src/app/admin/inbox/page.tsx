@@ -60,7 +60,8 @@ export default async function AdminInboxPage({ searchParams }: { searchParams: P
 
       {enquiries?.length ? (
         <div className="overflow-hidden rounded-2xl border border-ink-900/8 bg-cream-50">
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full min-w-[640px] text-sm">
             <thead className="border-b border-ink-900/8 bg-cream-200/50 text-left text-xs text-neutral-500">
               <tr>
                 <th className="px-4 py-3 font-medium">Customer</th>
@@ -87,6 +88,7 @@ export default async function AdminInboxPage({ searchParams }: { searchParams: P
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       ) : (
         <EmptyState icon={InboxIcon} title="Nothing here" description={`No enquiries with status "${STATUS_META[status as WorkflowStatus]?.label ?? status}".`} />

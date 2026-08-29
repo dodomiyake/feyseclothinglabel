@@ -78,7 +78,8 @@ export default async function PaymentVerificationPage() {
         <section>
           <h2 className="mb-3 font-serif text-lg text-ink-950">Recently reviewed</h2>
           <div className="overflow-hidden rounded-2xl border border-ink-900/8 bg-cream-50">
-            <table className="w-full text-sm">
+            <div className="overflow-x-auto">
+            <table className="w-full min-w-[560px] text-sm">
               <thead className="border-b border-ink-900/8 bg-cream-200/50 text-left text-xs text-neutral-500">
                 <tr><th className="px-4 py-3 font-medium">Invoice</th><th className="px-4 py-3 font-medium">Amount</th><th className="px-4 py-3 font-medium">Decision</th><th className="px-4 py-3 font-medium">Date</th></tr>
               </thead>
@@ -93,6 +94,7 @@ export default async function PaymentVerificationPage() {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         </section>
       )}

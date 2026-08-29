@@ -26,7 +26,8 @@ export default async function AdminDispatchPage() {
 
       {orders?.length ? (
         <div className="overflow-hidden rounded-2xl border border-ink-900/8 bg-cream-50">
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full min-w-[640px] text-sm">
             <thead className="border-b border-ink-900/8 bg-cream-200/50 text-left text-xs text-neutral-500">
               <tr>
                 <th className="px-4 py-3 font-medium">Order</th>
@@ -51,6 +52,7 @@ export default async function AdminDispatchPage() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       ) : (
         <EmptyState icon={Truck} title="Nothing to dispatch" description="Orders that pass quality control will appear here, ready to be handed to a rider." />
