@@ -22,6 +22,7 @@ export default async function AdminDispatchDetailPage({ params }: { params: Prom
 
   const { data: dispatch } = await supabase.from("dispatches").select("*").eq("order_id", id).maybeSingle();
   const proofUrl = await getSignedFileUrl("dispatch-proof", dispatch?.proof_of_delivery_path);
+  const isFinal = order.status === "completed";
 
   return (
     <div className="max-w-2xl space-y-6">
@@ -46,7 +47,17 @@ export default async function AdminDispatchDetailPage({ params }: { params: Prom
       <Card>
         <CardHeader><CardTitle>Rider &amp; dispatch details</CardTitle></CardHeader>
         <CardBody>
-          <DispatchForm orderId={order.id} dispatch={dispatch ?? null} />
+          {isFinal && dispatch ? (
+            <dl className="space-y-2 text-sm">
+              <div className="flex justify-between"><dt className="text-neutral-500">Rider</dt><dd className="text-ink-900">{dispatch.rider_name}</dd></div>
+              <div className="flex justify-between"><dt className="text-neutral-500">Rider phone</dt><dd className="text-ink-900">{dispatch.rider_phone}</dd></div>
+              {dispatch.dispatch_company && <div className="flex justify-between"><dt className="text-neutral-500">Courier</dt><dd className="text-ink-900">{dispatch.dispatch_company}</dd></div>}
+              {dispatch.tracking_reference && <div className="flex justify-between"><dt className="text-neutral-500">Tracking ref</dt><dd className="text-ink-900">{dispatch.tracking_reference}</dd></div>}
+              {dispatch.collection_at && <div className="flex justify-between"><dt className="text-neutral-500">Collected</dt><dd className="text-ink-900">{formatDateTime(dispatch.collection_at)}</dd></div>}
+            </dl>
+          ) : (
+            <DispatchForm orderId={order.id} dispatch={dispatch ?? null} />
+          )}
         </CardBody>
       </Card>
 
@@ -57,11 +68,13 @@ export default async function AdminDispatchDetailPage({ params }: { params: Prom
             <p className="text-sm text-neutral-600">Status: <span className="font-medium text-ink-900 capitalize">{dispatch.status.replace(/_/g, " ")}</span></p>
             {dispatch.collection_at && <p className="text-xs text-neutral-500">Collected {formatDateTime(dispatch.collection_at)}</p>}
 
-            <form action={uploadProofOfDeliveryAction} encType="multipart/form-data" className="flex flex-col gap-2 sm:flex-row sm:items-end">
-              <input type="hidden" name="order_id" value={order.id} />
-              <Input type="file" name="proof" accept="image/png,image/jpeg,image/webp" className="sm:flex-1" />
-              <Button type="submit" size="sm" variant="outline">Upload proof of delivery</Button>
-            </form>
+            {!isFinal && (
+              <form action={uploadProofOfDeliveryAction} encType="multipart/form-data" className="flex flex-col gap-2 sm:flex-row sm:items-end">
+                <input type="hidden" name="order_id" value={order.id} />
+                <Input type="file" name="proof" accept="image/png,image/jpeg,image/webp" className="sm:flex-1" />
+                <Button type="submit" size="sm" variant="outline">Upload proof of delivery</Button>
+              </form>
+            )}
             {proofUrl && (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={proofUrl} alt="Proof of delivery" className="max-h-64 rounded-lg object-cover" />
