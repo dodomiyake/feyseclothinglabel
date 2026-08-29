@@ -177,7 +177,7 @@ export default async function LandingPage() {
                 order from production to your doorstep.
               </p>
             </div>
-            <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
+            <div className="flex flex-wrap gap-3 lg:justify-end">
               <Button href="/sign-in" variant="gold" size="lg">Sign in to your account</Button>
               <Button href="/enquiry" variant="outline" size="lg" className="border-cream-50/30 text-cream-50 hover:bg-cream-50/10">
                 New here? Start an enquiry

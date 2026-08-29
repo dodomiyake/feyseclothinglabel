@@ -18,7 +18,7 @@ export function WhatsAppButton({
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium transition-colors",
+        "inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-medium transition-colors",
         variant === "solid"
           ? "bg-sage-600 text-cream-50 hover:bg-sage-500"
           : "border border-sage-600 text-sage-600 hover:bg-sage-600/10",

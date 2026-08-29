@@ -70,7 +70,7 @@ export default async function EnquiryConfirmationPage({
             </CardBody>
           </Card>
 
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
             <WhatsAppButton href={whatsappLink} label="Follow up on WhatsApp" />
             {hasAccount ? (
               <Button href="/dashboard" variant="outline">Go to my dashboard</Button>
