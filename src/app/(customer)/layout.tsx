@@ -21,7 +21,7 @@ export default async function CustomerLayout({ children }: { children: React.Rea
   const pathname = (await headers()).get("x-pathname") ?? "/dashboard";
 
   return (
-    <DashboardShell navLinks={NAV_LINKS} activeHref={pathname} roleLabel="Customer portal" userName={profile.full_name} unreadCount={count ?? 0}>
+    <DashboardShell navLinks={NAV_LINKS} activeHref={pathname} roleLabel="Customer portal" userName={profile.full_name} unreadCount={count ?? 0} notificationsHref="/notifications">
       {children}
     </DashboardShell>
   );

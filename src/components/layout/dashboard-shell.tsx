@@ -16,6 +16,7 @@ export function DashboardShell({
   roleLabel,
   userName,
   unreadCount = 0,
+  notificationsHref = "/notifications",
   children,
   supportWhatsApp = "2348012345678",
 }: {
@@ -24,6 +25,7 @@ export function DashboardShell({
   roleLabel: string;
   userName: string;
   unreadCount?: number;
+  notificationsHref?: string;
   children: React.ReactNode;
   supportWhatsApp?: string;
 }) {
@@ -74,14 +76,14 @@ export function DashboardShell({
             <p className="font-serif text-lg text-ink-950">{userName}</p>
           </div>
           <div className="flex items-center gap-3">
-            <button className="relative rounded-full p-2 text-ink-700 hover:bg-ink-900/5" aria-label="Notifications">
+            <Link href={notificationsHref} className="relative rounded-full p-2 text-ink-700 hover:bg-ink-900/5" aria-label="Notifications">
               <Bell className="h-5 w-5" />
               {unreadCount > 0 && (
                 <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-terracotta-600 text-[10px] text-cream-50">
                   {unreadCount > 9 ? "9+" : unreadCount}
                 </span>
               )}
-            </button>
+            </Link>
           </div>
         </header>
 
