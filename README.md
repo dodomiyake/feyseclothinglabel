@@ -54,16 +54,23 @@ another user's behalf. It is never sent to the browser.
 ## 3. Create your first admin and production accounts
 
 Every new sign-up gets the `customer` role by default (see the
-`handle_new_user` trigger). To create staff accounts:
+`handle_new_user` trigger), and there's no admin yet on a fresh project to
+grant that role through the app — so the very first admin has to be
+bootstrapped once, directly against the database:
 
-1. Sign up normally through `/sign-up`, **or** create the user directly in
-   Supabase Auth (dashboard → Authentication → Users → Add user).
-2. Promote them by updating their profile role:
+```sql
+-- 1. Create the user in Supabase Auth (dashboard → Authentication → Users
+--    → Add user), or sign up through /sign-up, then:
+update profiles set role = 'admin' where email = 'you@feyseclothinglabels.com';
+```
 
-   ```sql
-   update profiles set role = 'admin' where email = 'you@feyseclothinglabels.com';
-   -- or role = 'production' for a Nigeria production team member
-   ```
+From then on, that admin can add every other admin and production account
+through the app itself — no SQL needed: sign in and go to **Settings → Team**
+(`/admin/settings/team`). It creates the account with a temporary password
+via the Supabase Auth admin API (server-side only, using the service-role
+key — never exposed to the browser) and assigns the role directly, so the
+account is usable to sign in immediately. The same page can also
+deactivate/reactivate a staff account later.
 
 Admins land on `/admin/dashboard`, production staff on `/production`,
 customers on `/dashboard` — sign-in redirects by role automatically.

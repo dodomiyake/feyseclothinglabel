@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
+import { SettingsTabs } from "@/components/domain/settings-tabs";
 import { BusinessSettingsForm } from "@/components/domain/business-settings-form";
 import { Field, Input, Checkbox } from "@/components/ui/form-fields";
 import { Button } from "@/components/ui/button";
@@ -21,6 +22,8 @@ export default async function AdminBusinessSettingsPage() {
         <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Settings</p>
         <h1 className="mt-1 font-serif text-3xl text-ink-950">Business &amp; bank details</h1>
       </div>
+
+      <SettingsTabs active="business" />
 
       <Card>
         <CardHeader><CardTitle>Business information</CardTitle></CardHeader>

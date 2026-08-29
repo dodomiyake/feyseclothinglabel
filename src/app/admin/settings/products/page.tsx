@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
+import { SettingsTabs } from "@/components/domain/settings-tabs";
 import { Field, Input, Select, Textarea } from "@/components/ui/form-fields";
 import { Button } from "@/components/ui/button";
 import { upsertProductAction, toggleProductActiveAction } from "@/lib/actions/settings";
@@ -20,6 +21,8 @@ export default async function AdminProductSettingsPage() {
         <h1 className="mt-1 font-serif text-3xl text-ink-950">Product &amp; pricing</h1>
         <p className="mt-1 text-sm text-neutral-600">Starting prices shown to customers. Every enquiry still gets a tailored quotation.</p>
       </div>
+
+      <SettingsTabs active="products" />
 
       <div className="space-y-4">
         {products?.map((p) => (
