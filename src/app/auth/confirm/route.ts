@@ -1,21 +1,23 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
-// Where Supabase redirects the browser back to after verifying a
-// signup/magic-link/recovery email (PKCE flow: ?code=...). Exchanges the
-// code for a real session, then sends the user to the right dashboard.
+// Where Supabase redirects the browser back to after verifying a signup
+// email (PKCE flow: ?code=...). Exchanging the code confirms the address,
+// but we deliberately don't keep the resulting session — signing in from
+// an emailed link is easy to trigger accidentally (mail clients and link
+// scanners often pre-fetch links), so we sign back out immediately and
+// send the user to sign in normally with their password instead.
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
 
   if (code) {
     const supabase = await createClient();
-    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
 
-    if (!error && data.user) {
-      const { data: profile } = await supabase.from("profiles").select("role").eq("id", data.user.id).single();
-      const destination = profile?.role === "admin" ? "/admin/dashboard" : profile?.role === "production" ? "/production" : "/dashboard";
-      return NextResponse.redirect(`${origin}${destination}`);
+    if (!error) {
+      await supabase.auth.signOut();
+      return NextResponse.redirect(`${origin}/sign-in?confirmed=1`);
     }
   }
 

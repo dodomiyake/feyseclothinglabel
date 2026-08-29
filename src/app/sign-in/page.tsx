@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CheckCircle2 } from "lucide-react";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SignInForm } from "@/components/domain/sign-in-form";
@@ -10,9 +11,9 @@ export const metadata: Metadata = { title: "Sign in — Feyse Clothing Labels" }
 export default async function SignInPage({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string }>;
+  searchParams: Promise<{ next?: string; confirmed?: string; error?: string }>;
 }) {
-  const { next } = await searchParams;
+  const { next, confirmed, error } = await searchParams;
 
   return (
     <>
@@ -24,6 +25,17 @@ export default async function SignInPage({
             <h1 className="mt-2 font-serif text-3xl text-ink-950">Welcome back</h1>
             <p className="mt-1 text-sm text-neutral-600">Sign in to track your enquiries, quotations and orders.</p>
           </div>
+          {confirmed === "1" && (
+            <div className="mb-4 flex items-center gap-2 rounded-lg bg-sage-500/10 px-4 py-3 text-sm text-sage-600">
+              <CheckCircle2 className="h-4 w-4 shrink-0" />
+              Email confirmed — please sign in.
+            </div>
+          )}
+          {error === "confirmation_failed" && (
+            <p className="mb-4 rounded-lg bg-terracotta-600/10 px-4 py-3 text-sm text-terracotta-700">
+              That confirmation link is invalid or has expired. Please sign up again or contact us on WhatsApp.
+            </p>
+          )}
           <Card>
             <CardBody>
               <SignInForm next={next} />
