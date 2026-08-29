@@ -33,7 +33,7 @@ export function DashboardShell({
         <div className="px-5 py-5">
           <Link href="/" className="flex items-baseline gap-1.5">
             <span className="font-serif text-lg italic text-ink-950">Feyse</span>
-            <span className="text-[10px] tracking-[0.2em] text-gold-700 uppercase">Labels</span>
+            <span className="font-serif text-lg italic text-ink-950/55">Labels</span>
           </Link>
           <p className="mt-0.5 text-xs text-neutral-500">{roleLabel}</p>
         </div>
