@@ -8,9 +8,11 @@ export function OrderTimeline({ status }: { status: WorkflowStatus }) {
   return (
     <ol className="space-y-0">
       {CUSTOMER_TIMELINE.map((step, i) => {
-        const done = currentIndex >= 0 && i < currentIndex;
         const active = i === currentIndex;
         const isLast = i === CUSTOMER_TIMELINE.length - 1;
+        // The final step, once reached, means the order is fully done —
+        // show it as complete (green check) rather than "in progress" (gold).
+        const done = (currentIndex >= 0 && i < currentIndex) || (active && isLast);
         return (
           <li key={step} className="flex gap-3">
             <div className="flex flex-col items-center">
