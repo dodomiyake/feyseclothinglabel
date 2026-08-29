@@ -1,7 +1,7 @@
 "use client";
 
-import { useActionState, useMemo, useState } from "react";
-import { Check, ChevronLeft, ChevronRight, Upload, X } from "lucide-react";
+import { useActionState, useEffect, useMemo, useState } from "react";
+import { Check, ChevronLeft, ChevronRight, FileText, Upload, X } from "lucide-react";
 import { submitEnquiryAction, type EnquiryActionState } from "@/lib/actions/enquiries";
 import { Field, Input, Select, Textarea, Checkbox } from "@/components/ui/form-fields";
 import { Button } from "@/components/ui/button";
@@ -42,6 +42,10 @@ export function EnquiryForm({
   const [needsHelp, setNeedsHelp] = useState(prefill?.help ?? false);
   const [labelType, setLabelType] = useState(prefill?.label_type ?? defaultValues?.label_type ?? "");
   const [files, setFiles] = useState<File[]>([]);
+  const previewUrls = useMemo(() => files.map((f) => URL.createObjectURL(f)), [files]);
+  useEffect(() => {
+    return () => previewUrls.forEach((u) => URL.revokeObjectURL(u));
+  }, [previewUrls]);
   const [values, setValues] = useState({
     full_name: defaultValues?.full_name ?? "",
     business_name: defaultValues?.business_name ?? "",
@@ -204,13 +208,35 @@ export function EnquiryForm({
               />
             </label>
             {files.length > 0 && (
-              <ul className="mt-3 space-y-1.5">
+              <ul className="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-4">
                 {files.map((f, i) => (
-                  <li key={i} className="flex items-center justify-between rounded-lg bg-neutral-100 px-3 py-1.5 text-xs text-neutral-700">
-                    <span className="truncate">{f.name}</span>
-                    <button type="button" onClick={() => setFiles((prev) => prev.filter((_, idx) => idx !== i))}>
-                      <X className="h-3.5 w-3.5" />
+                  <li key={i} className="group relative">
+                    <a
+                      href={previewUrls[i]}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={`View ${f.name}`}
+                      className="flex aspect-square flex-col items-center justify-center gap-1 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100 hover:border-gold-500"
+                    >
+                      {f.type.startsWith("image/") ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={previewUrls[i]} alt={f.name} className="h-full w-full object-cover" />
+                      ) : (
+                        <>
+                          <FileText className="h-6 w-6 text-neutral-400" />
+                          <span className="px-1 text-center text-[10px] text-neutral-500">PDF</span>
+                        </>
+                      )}
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => setFiles((prev) => prev.filter((_, idx) => idx !== i))}
+                      title={`Remove ${f.name}`}
+                      className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-ink-950 text-cream-50 shadow-sm"
+                    >
+                      <X className="h-3 w-3" />
                     </button>
+                    <p className="mt-1 truncate text-[11px] text-neutral-500">{f.name}</p>
                   </li>
                 ))}
               </ul>

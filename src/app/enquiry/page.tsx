@@ -39,7 +39,8 @@ export default async function EnquiryPage({
     const admin = createAdminClient();
     let draftEnquiry = null;
     if (user) {
-      const { data } = await supabase.from("enquiries").select("*, customer:customers(*)").eq("id", draft).eq("status", "draft").maybeSingle();
+      const { data, error } = await supabase.from("enquiries").select("*, customer:customers(*)").eq("id", draft).eq("status", "draft").maybeSingle();
+      if (error) console.error("[EnquiryPage] failed to load draft enquiry:", error);
       draftEnquiry = data;
     } else if (t) {
       const { data: link } = await admin.from("secure_links").select("*").eq("token", t).eq("enquiry_id", draft).gt("expires_at", new Date().toISOString()).maybeSingle();
