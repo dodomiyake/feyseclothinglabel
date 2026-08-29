@@ -6,12 +6,10 @@ import { requireProfile } from "@/lib/auth";
 import { getSignedFileUrl } from "@/lib/files";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatusBadge } from "@/components/domain/status-badge";
-import { WhatsAppButton } from "@/components/domain/whatsapp-button";
 import { UploadedFilesCard } from "@/components/domain/uploaded-files-card";
 import { Button } from "@/components/ui/button";
 import { LABEL_TYPE_META, FOLD_TYPE_META } from "@/lib/workflow";
 import { formatDate, formatDateTime } from "@/lib/currency";
-import { businessWhatsAppLink, enquiryWhatsAppMessage } from "@/lib/whatsapp";
 import type { FoldType, LabelType, StatusEvent } from "@/lib/types";
 
 export const metadata: Metadata = { title: "Enquiry details — Feyse Clothing Labels" };
@@ -127,12 +125,9 @@ export default async function EnquiryDetailPage({ params }: { params: Promise<{ 
         </CardBody>
       </Card>
 
-      <div className="flex flex-wrap gap-3">
-        <WhatsAppButton href={businessWhatsAppLink("2348012345678", enquiryWhatsAppMessage(enquiry.enquiry_number))} />
-        <Link href="/dashboard" className="inline-flex items-center text-sm font-medium text-neutral-600 hover:text-ink-900">
-          ← Back to dashboard
-        </Link>
-      </div>
+      <Link href="/dashboard" className="inline-flex items-center text-sm font-medium text-neutral-600 hover:text-ink-900">
+        ← Back to dashboard
+      </Link>
     </div>
   );
 }

@@ -61,6 +61,11 @@ export default async function EnquiryConfirmationPage({
   const spec = describeSpec(enquiry);
   const whatsappLink = businessWhatsAppLink("2348012345678", enquiryWhatsAppMessage(enquiry.enquiry_number, spec));
 
+  // A signed-in customer stays inside their portal shell instead of being
+  // dropped onto the public marketing page after submitting.
+  const profile = hasAccount ? await getCurrentProfile() : null;
+  const insidePortal = profile?.role === "customer";
+
   const confirmationContent = (
     <div className="w-full max-w-lg text-center">
       <CheckCircle2 className="mx-auto h-12 w-12 text-sage-600" strokeWidth={1.5} />
@@ -88,7 +93,9 @@ export default async function EnquiryConfirmationPage({
       </Card>
 
       <div className="mt-6 flex flex-wrap justify-center gap-3">
-        <WhatsAppButton href={whatsappLink} label="Follow up on WhatsApp" />
+        {/* Signed-in customers already have a persistent WhatsApp button in
+            the portal sidebar — skip the duplicate here. */}
+        {!insidePortal && <WhatsAppButton href={whatsappLink} label="Follow up on WhatsApp" />}
         {hasAccount ? (
           <Button href="/dashboard" variant="outline">Go to my dashboard</Button>
         ) : (
@@ -105,9 +112,6 @@ export default async function EnquiryConfirmationPage({
     </div>
   );
 
-  // A signed-in customer stays inside their portal shell instead of being
-  // dropped onto the public marketing page after submitting.
-  const profile = hasAccount ? await getCurrentProfile() : null;
   if (profile?.role === "customer") {
     const { count } = await supabase
       .from("notifications")

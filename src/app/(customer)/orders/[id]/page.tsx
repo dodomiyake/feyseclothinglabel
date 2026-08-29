@@ -6,12 +6,10 @@ import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatusBadge } from "@/components/domain/status-badge";
 import { OrderTimeline } from "@/components/domain/order-timeline";
 import { OrderRealtimeRefresh } from "@/components/domain/order-realtime-refresh";
-import { WhatsAppButton } from "@/components/domain/whatsapp-button";
 import { Button } from "@/components/ui/button";
 import { confirmDeliveryAction } from "@/lib/actions/orders";
 import { formatCurrency, formatDate, formatDateTime } from "@/lib/currency";
 import { describeSpec } from "@/lib/spec";
-import { businessWhatsAppLink, orderWhatsAppMessage } from "@/lib/whatsapp";
 import { isTerminalStatus, STATUS_META } from "@/lib/workflow";
 import type { WorkflowStatus } from "@/lib/types";
 
@@ -104,10 +102,11 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
         </Card>
       )}
 
-      <div className="flex flex-wrap gap-3">
-        <WhatsAppButton href={businessWhatsAppLink("2348012345678", orderWhatsAppMessage(order.order_number))} />
-        {isTerminalStatus(order.status) && <Button href="/orders" variant="outline">Back to order history</Button>}
-      </div>
+      {isTerminalStatus(order.status) && (
+        <div className="flex flex-wrap gap-3">
+          <Button href="/orders" variant="outline">Back to order history</Button>
+        </div>
+      )}
     </div>
   );
 }

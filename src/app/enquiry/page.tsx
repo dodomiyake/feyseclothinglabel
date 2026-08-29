@@ -89,6 +89,12 @@ export default async function EnquiryPage({
     }
   }
 
+  // A signed-in customer stays inside their portal shell (nav, notifications,
+  // sign out) instead of being dropped onto the public marketing page —
+  // this is where "Reorder" and "start another enquiry" land them.
+  const profile = await getCurrentProfile();
+  const insidePortal = profile?.role === "customer";
+
   const formContent = (
     <>
       <div className="mb-8">
@@ -102,11 +108,15 @@ export default async function EnquiryPage({
             : "Takes about 3 minutes. Prefer to talk it through? "}
           {!isChangesRequested && <span className="whitespace-nowrap">Chat with us directly.</span>}
         </p>
-        <WhatsAppButton
-          href={businessWhatsAppLink("2348012345678", generalEnquiryWhatsAppMessage())}
-          variant="outline"
-          className="mt-3"
-        />
+        {/* Signed-in customers already have a persistent WhatsApp button in
+            the portal sidebar — skip the duplicate here. */}
+        {!insidePortal && (
+          <WhatsAppButton
+            href={businessWhatsAppLink("2348012345678", generalEnquiryWhatsAppMessage())}
+            variant="outline"
+            className="mt-3"
+          />
+        )}
       </div>
       <Card>
         <CardBody>
@@ -120,10 +130,6 @@ export default async function EnquiryPage({
     </>
   );
 
-  // A signed-in customer stays inside their portal shell (nav, notifications,
-  // sign out) instead of being dropped onto the public marketing page —
-  // this is where "Reorder" and "start another enquiry" land them.
-  const profile = await getCurrentProfile();
   if (profile?.role === "customer") {
     const { count } = await supabase
       .from("notifications")
