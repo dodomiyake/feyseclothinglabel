@@ -3,7 +3,18 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail, SITE_URL } from "@/lib/email";
 import type { UserRole, WorkflowStatus } from "@/lib/types";
 
-/** Writes a notification for a specific user, bypassing RLS via the service role. */
+const CUSTOMER_ENTITY_LINK: Record<string, (id: string) => string> = {
+  enquiry: (id) => `/enquiries/${id}`,
+  quotation: (id) => `/quotations/${id}`,
+  invoice: (id) => `/invoices/${id}`,
+  order: (id) => `/orders/${id}`,
+};
+
+/**
+ * Writes a notification for a specific user, bypassing RLS via the service
+ * role, and emails them too — the in-app notification alone is easy to
+ * miss since nothing prompts the user to go check it.
+ */
 export async function notifyUser(params: {
   userId: string | null;
   type: string;
@@ -22,6 +33,18 @@ export async function notifyUser(params: {
     entity_type: params.entityType ?? null,
     entity_id: params.entityId ?? null,
   });
+
+  const { data: profile } = await admin.from("profiles").select("email").eq("id", params.userId).maybeSingle();
+  if (profile?.email) {
+    const path = params.entityType && params.entityId ? CUSTOMER_ENTITY_LINK[params.entityType]?.(params.entityId) : undefined;
+    await sendEmail({
+      to: profile.email,
+      subject: params.title,
+      body: params.body,
+      ctaLabel: "View in your account",
+      ctaHref: `${SITE_URL}${path ?? "/dashboard"}`,
+    });
+  }
 }
 
 const ADMIN_ENTITY_LINK: Record<string, (id: string) => string> = {
