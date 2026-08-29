@@ -49,7 +49,8 @@ export async function submitEnquiryAction(_prev: EnquiryActionState, formData: F
         .from("enquiries")
         .select("id", { count: "exact", head: true })
         .in("customer_id", ids)
-        .gte("created_at", new Date(Date.now() - 60 * 60 * 1000).toISOString());
+        .eq("status", "submitted")
+        .gte("submitted_at", new Date(Date.now() - 60 * 60 * 1000).toISOString());
       if ((count ?? 0) >= 5) {
         return { error: "You've submitted several enquiries recently. Please contact us on WhatsApp to continue." };
       }
