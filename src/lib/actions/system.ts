@@ -2,6 +2,7 @@ import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail, SITE_URL } from "@/lib/email";
 import type { UserRole, WorkflowStatus } from "@/lib/types";
+import { enqueueCrmSync } from "@/lib/crm-sync";
 
 const CUSTOMER_ENTITY_LINK: Record<string, (id: string) => string> = {
   enquiry: (id) => `/enquiries/${id}`,
@@ -122,4 +123,15 @@ export async function recordStatusEvent(params: {
     note: params.note ?? null,
     actor_id: params.actorId,
   });
+
+  if (params.entityType === "enquiry") {
+    const { data: enquiry } = await admin.from("enquiries").select("customer_id").eq("id", params.entityId).maybeSingle();
+    if (enquiry?.customer_id) {
+      await enqueueCrmSync({
+        eventType: "enquiry_stage_update",
+        customerId: enquiry.customer_id,
+        enquiryId: params.entityId,
+      });
+    }
+  }
 }

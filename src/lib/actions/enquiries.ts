@@ -8,6 +8,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { enquirySchema } from "@/lib/validation";
 import { notifyAdmins, recordStatusEvent } from "@/lib/actions/system";
 import { checkRateLimit, clientIp } from "@/lib/rate-limit";
+import { enqueueCrmSync } from "@/lib/crm-sync";
 
 export interface EnquiryActionState {
   error?: string;
@@ -247,6 +248,14 @@ export async function submitEnquiryAction(_prev: EnquiryActionState, formData: F
       entityType: "enquiry",
       entityId: enquiryId,
     });
+    // A resubmission already queued a stage update through recordStatusEvent.
+    if (!wasChangesRequested) {
+      await enqueueCrmSync({
+        eventType: "enquiry_upsert",
+        customerId,
+        enquiryId,
+      });
+    }
     redirect(`/enquiry/confirmation/${enquiryId}${portalToken ? `?t=${portalToken}` : ""}`);
   }
 
