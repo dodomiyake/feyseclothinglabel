@@ -30,6 +30,8 @@ export default function SignUpPage() {
           </p>
           <p className="mt-3 text-center text-xs text-neutral-600">
             By creating an account, you agree to our{" "}
+            <Link href="/terms" className="font-medium text-terracotta-600 hover:text-terracotta-700">Terms of service</Link>{" "}
+            and{" "}
             <Link href="/privacy" className="font-medium text-terracotta-600 hover:text-terracotta-700">Privacy policy</Link>.
           </p>
         </div>

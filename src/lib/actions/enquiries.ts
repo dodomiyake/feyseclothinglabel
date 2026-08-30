@@ -2,10 +2,12 @@
 
 import { randomUUID } from "crypto";
 import { redirect } from "next/navigation";
+import { checkBotId } from "botid/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { enquirySchema } from "@/lib/validation";
 import { notifyAdmins, recordStatusEvent } from "@/lib/actions/system";
+import { checkRateLimit, clientIp } from "@/lib/rate-limit";
 
 export interface EnquiryActionState {
   error?: string;
@@ -17,6 +19,19 @@ const ALLOWED_TYPES = new Set(["image/png", "image/jpeg", "image/webp", "image/s
 const MAX_FILE_BYTES = 15 * 1024 * 1024;
 
 export async function submitEnquiryAction(_prev: EnquiryActionState, formData: FormData): Promise<EnquiryActionState> {
+  const verification = await checkBotId();
+  if (verification.isBot) {
+    return { error: "We couldn't process that submission. Please try again or contact us on WhatsApp." };
+  }
+
+  const admin = createAdminClient();
+
+  const ip = await clientIp();
+  const withinIpLimit = await checkRateLimit(admin, `enquiry:ip:${ip}`, { limit: 20, windowMs: 60 * 60 * 1000 });
+  if (!withinIpLimit) {
+    return { error: "Too many attempts from this connection. Please try again in a bit, or contact us on WhatsApp." };
+  }
+
   const intent = String(formData.get("intent") || "submit"); // "draft" | "submit"
   const raw = Object.fromEntries(formData.entries());
 
@@ -31,7 +46,6 @@ export async function submitEnquiryAction(_prev: EnquiryActionState, formData: F
     return { error: "Add at least your name and WhatsApp number before saving a draft." };
   }
 
-  const admin = createAdminClient();
   const supabase = await createClient();
   const {
     data: { user },

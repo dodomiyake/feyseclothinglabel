@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withBotId } from "botid/next/config";
 
 // No nonces: this app has no third-party scripts/tracking and no reason to
 // force every page into dynamic rendering just to satisfy a stricter CSP.
@@ -49,4 +50,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withBotId(nextConfig);

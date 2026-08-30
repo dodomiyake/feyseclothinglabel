@@ -2,8 +2,10 @@
 
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
+import { checkBotId } from "botid/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { checkRateLimit, clientIp } from "@/lib/rate-limit";
 
 async function siteOrigin() {
   const host = (await headers()).get("host");
@@ -33,6 +35,14 @@ export async function signInAction(_prev: AuthActionState, formData: FormData): 
 }
 
 export async function signUpAction(_prev: AuthActionState, formData: FormData): Promise<AuthActionState> {
+  const verification = await checkBotId();
+  if (verification.isBot) return { error: "We couldn't create your account. Please try again." };
+
+  const admin = createAdminClient();
+  const ip = await clientIp();
+  const withinIpLimit = await checkRateLimit(admin, `signup:ip:${ip}`, { limit: 8, windowMs: 60 * 60 * 1000 });
+  if (!withinIpLimit) return { error: "Too many sign-up attempts from this connection. Please try again in a bit." };
+
   const fullName = String(formData.get("full_name") || "").trim();
   const businessName = String(formData.get("business_name") || "").trim();
   const whatsapp = String(formData.get("whatsapp_number") || "").trim();
@@ -56,7 +66,6 @@ export async function signUpAction(_prev: AuthActionState, formData: FormData): 
   if (!data.user) return { error: "We couldn't create your account. Please try again." };
 
   // Link (or create) the canonical customer record for this user.
-  const admin = createAdminClient();
   const { data: existingCustomer } = await admin
     .from("customers")
     .select("id")

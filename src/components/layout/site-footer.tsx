@@ -27,6 +27,7 @@ export function SiteFooter({ supportWhatsApp = "2348012345678" }: { supportWhats
               <li><Link href="/products" className="hover:text-cream-50">Labels &amp; pricing</Link></li>
               <li><Link href="/enquiry" className="hover:text-cream-50">Start an enquiry</Link></li>
               <li><Link href="/sign-in" className="hover:text-cream-50">Customer sign in</Link></li>
+              <li><Link href="/terms" className="hover:text-cream-50">Terms of service</Link></li>
               <li><Link href="/privacy" className="hover:text-cream-50">Privacy policy</Link></li>
             </ul>
           </div>
