@@ -188,8 +188,16 @@ async function associateContactAndDeal(contactId: string, dealId: string) {
   if (!association) throw new Error("HubSpot contact-to-deal association type not found");
 
   await hubspotRequest<void>(
-    `/crm/objects/${API_VERSION}/contacts/${contactId}/associations/deals/${dealId}/${association.typeId}`,
-    { method: "PUT" }
+    `/crm/objects/${API_VERSION}/contact/${contactId}/associations/deal/${dealId}`,
+    {
+      method: "PUT",
+      body: JSON.stringify([
+        {
+          associationCategory: association.category,
+          associationTypeId: association.typeId,
+        },
+      ]),
+    }
   );
 }
 
