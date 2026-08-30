@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireProfile } from "@/lib/auth";
 import { notifyUser, recordStatusEvent } from "@/lib/actions/system";
+import { enqueueCrmSync } from "@/lib/crm-sync";
 import type { WorkflowStatus } from "@/lib/types";
 
 export interface AdminActionState {
@@ -118,6 +119,28 @@ export async function updateEnquiryStatusAction(formData: FormData) {
   revalidatePath(`/admin/enquiries/${enquiryId}`);
   revalidatePath(`/enquiries/${enquiryId}`);
   revalidatePath("/dashboard");
+}
+
+export async function retryEnquiryCrmSyncAction(formData: FormData) {
+  await requireProfile("admin");
+  const enquiryId = String(formData.get("enquiry_id") || "");
+  if (!enquiryId) return;
+
+  const adminDb = createAdminClient();
+  const { data: enquiry } = await adminDb
+    .from("enquiries")
+    .select("customer_id")
+    .eq("id", enquiryId)
+    .maybeSingle();
+  if (!enquiry?.customer_id) return;
+
+  await enqueueCrmSync({
+    eventType: "enquiry_stage_update",
+    customerId: enquiry.customer_id,
+    enquiryId,
+  });
+
+  revalidatePath(`/admin/enquiries/${enquiryId}`);
 }
 
 /**
