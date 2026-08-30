@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { Button } from "@/components/ui/button";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { LABEL_TYPE_META } from "@/lib/workflow";
 import { formatCurrency } from "@/lib/currency";
 import type { Product } from "@/lib/types";
@@ -22,6 +23,7 @@ export default async function ProductsPage() {
       <main className="flex-1">
         <section className="border-b border-ink-900/8 bg-cream-200/60">
           <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+            <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Labels & pricing" }]} className="mb-6" />
             <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Labels &amp; pricing</p>
             <h1 className="mt-2 max-w-2xl font-serif text-4xl text-ink-950">
               Every label type we produce, with a starting price per piece

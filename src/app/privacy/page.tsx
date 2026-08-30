@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 
 export const metadata: Metadata = { title: "Privacy policy — Feyse Clothing Labels" };
 
@@ -12,6 +13,7 @@ export default function PrivacyPolicyPage() {
       <SiteHeader />
       <main className="flex-1 bg-cream-200/40">
         <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
+          <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Privacy policy" }]} className="mb-6" />
           <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Legal</p>
           <h1 className="mt-2 font-serif text-4xl text-ink-950">Privacy policy</h1>
           <p className="mt-2 text-sm text-neutral-600">Last updated {LAST_UPDATED}</p>

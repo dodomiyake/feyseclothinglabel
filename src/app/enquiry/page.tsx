@@ -8,6 +8,7 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { DashboardShell, type NavLink } from "@/components/layout/dashboard-shell";
 import { EnquiryForm } from "@/components/domain/enquiry-form";
 import { Card, CardBody } from "@/components/ui/card";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { WhatsAppButton } from "@/components/domain/whatsapp-button";
 import { businessWhatsAppLink, generalEnquiryWhatsAppMessage } from "@/lib/whatsapp";
 
@@ -148,7 +149,10 @@ export default async function EnquiryPage({
     <>
       <SiteHeader />
       <main className="flex-1 bg-cream-200/40">
-        <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">{formContent}</div>
+        <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
+          <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Enquiry" }]} className="mb-6" />
+          {formContent}
+        </div>
       </main>
       <SiteFooter />
     </>

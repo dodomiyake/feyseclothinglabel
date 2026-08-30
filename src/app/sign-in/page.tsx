@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SignInForm } from "@/components/domain/sign-in-form";
 import { Card, CardBody } from "@/components/ui/card";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 
 export const metadata: Metadata = { title: "Sign in — Feyse Clothing Labels" };
 
@@ -20,6 +21,7 @@ export default async function SignInPage({
       <SiteHeader />
       <main className="flex flex-1 items-center justify-center bg-cream-200/60 px-4 py-16">
         <div className="w-full max-w-md">
+          <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Sign in" }]} className="mb-6" />
           <div className="mb-6 text-center">
             <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Customer portal</p>
             <h1 className="mt-2 font-serif text-3xl text-ink-950">Welcome back</h1>
