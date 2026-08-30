@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { updateEnquiryStatusAction } from "@/lib/actions/admin-enquiries";
+import { retryEnquiryCrmSyncAction, updateEnquiryStatusAction } from "@/lib/actions/admin-enquiries";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/form-fields";
 import type { WorkflowStatus } from "@/lib/types";
@@ -36,6 +36,10 @@ export function EnquiryStatusControls({ enquiryId, currentStatus }: { enquiryId:
 
   return (
     <div className="flex flex-col gap-2">
+      <form action={retryEnquiryCrmSyncAction}>
+        <input type="hidden" name="enquiry_id" value={enquiryId} />
+        <Button type="submit" size="sm" variant="gold" className="w-full">Sync with HubSpot</Button>
+      </form>
       <Button type="button" size="sm" variant="outline" onClick={() => setRequestingChanges(true)}>
         Request changes / more info
       </Button>
