@@ -32,6 +32,12 @@ create index idx_crm_sync_jobs_ready
   on crm_sync_jobs (status, available_at, created_at)
   where status in ('pending', 'failed');
 
+create index idx_crm_sync_jobs_customer_id
+  on crm_sync_jobs (customer_id);
+
+create index idx_crm_sync_jobs_enquiry_id
+  on crm_sync_jobs (enquiry_id);
+
 create trigger trg_crm_sync_jobs_updated_at before update on crm_sync_jobs
   for each row execute function set_updated_at();
 
