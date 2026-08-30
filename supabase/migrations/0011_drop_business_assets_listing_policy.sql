@@ -1,0 +1,12 @@
+-- business-assets is a public bucket (bucket.public = true), so direct
+-- object fetches by known path (e.g. a future logo/product-image display
+-- via getPublicUrl) already work without any RLS policy at all — Supabase
+-- serves public-bucket objects through a path that bypasses RLS entirely.
+--
+-- business_assets_public_select's only actual effect was granting anyone
+-- the ability to list/enumerate every file in the bucket via the storage
+-- API. Nothing in the app calls storage.from("business-assets") today —
+-- no upload or list call site exists (product/logo image fields are
+-- defined but not yet wired to any upload UI) — so this policy was pure
+-- unused exposure. Flagged by Supabase's security advisor.
+drop policy if exists "business_assets_public_select" on storage.objects;
