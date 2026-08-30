@@ -14,7 +14,7 @@ export function SettingsTabs({ active }: { active: (typeof TABS)[number]["key"] 
           key={tab.key}
           href={tab.href}
           className={`border-b-2 px-3 py-2 text-sm font-medium transition-colors ${
-            tab.key === active ? "border-ink-900 text-ink-900" : "border-transparent text-neutral-500 hover:text-ink-700"
+            tab.key === active ? "border-ink-900 text-ink-900" : "border-transparent text-neutral-600 hover:text-ink-700"
           }`}
         >
           {tab.label}

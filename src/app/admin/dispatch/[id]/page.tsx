@@ -31,7 +31,7 @@ export default async function AdminDispatchDetailPage({ params }: { params: Prom
 
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Dispatch</p>
+          <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Dispatch</p>
           <h1 className="mt-1 font-serif text-3xl text-ink-950">{order.order_number}</h1>
           <p className="mt-1 text-sm text-neutral-600">{order.enquiry.customer?.business_name || order.enquiry.customer?.full_name} — {describeSpec(order.enquiry)}</p>
         </div>
@@ -42,8 +42,8 @@ export default async function AdminDispatchDetailPage({ params }: { params: Prom
         <CardHeader><CardTitle>Delivery address</CardTitle></CardHeader>
         <CardBody className="text-sm text-ink-800">
           {[order.enquiry.delivery_address, order.enquiry.delivery_city, order.enquiry.delivery_state].filter(Boolean).join(", ")}
-          <p className="mt-1 text-neutral-500">Phone: {order.enquiry.delivery_phone}</p>
-          <p className="mt-1 text-neutral-500">Deadline: {formatDate(order.production_deadline)}</p>
+          <p className="mt-1 text-neutral-600">Phone: {order.enquiry.delivery_phone}</p>
+          <p className="mt-1 text-neutral-600">Deadline: {formatDate(order.production_deadline)}</p>
         </CardBody>
       </Card>
 
@@ -52,11 +52,11 @@ export default async function AdminDispatchDetailPage({ params }: { params: Prom
         <CardBody>
           {isFinal && dispatch ? (
             <dl className="space-y-2 text-sm">
-              <div className="flex justify-between"><dt className="text-neutral-500">Rider</dt><dd className="text-ink-900">{dispatch.rider_name}</dd></div>
-              <div className="flex justify-between"><dt className="text-neutral-500">Rider phone</dt><dd className="text-ink-900">{dispatch.rider_phone}</dd></div>
-              {dispatch.dispatch_company && <div className="flex justify-between"><dt className="text-neutral-500">Courier</dt><dd className="text-ink-900">{dispatch.dispatch_company}</dd></div>}
-              {dispatch.tracking_reference && <div className="flex justify-between"><dt className="text-neutral-500">Tracking ref</dt><dd className="text-ink-900">{dispatch.tracking_reference}</dd></div>}
-              {dispatch.collection_at && <div className="flex justify-between"><dt className="text-neutral-500">Collected</dt><dd className="text-ink-900">{formatDateTime(dispatch.collection_at)}</dd></div>}
+              <div className="flex justify-between"><dt className="text-neutral-600">Rider</dt><dd className="text-ink-900">{dispatch.rider_name}</dd></div>
+              <div className="flex justify-between"><dt className="text-neutral-600">Rider phone</dt><dd className="text-ink-900">{dispatch.rider_phone}</dd></div>
+              {dispatch.dispatch_company && <div className="flex justify-between"><dt className="text-neutral-600">Courier</dt><dd className="text-ink-900">{dispatch.dispatch_company}</dd></div>}
+              {dispatch.tracking_reference && <div className="flex justify-between"><dt className="text-neutral-600">Tracking ref</dt><dd className="text-ink-900">{dispatch.tracking_reference}</dd></div>}
+              {dispatch.collection_at && <div className="flex justify-between"><dt className="text-neutral-600">Collected</dt><dd className="text-ink-900">{formatDateTime(dispatch.collection_at)}</dd></div>}
             </dl>
           ) : (
             <DispatchForm orderId={order.id} dispatch={dispatch ?? null} />
@@ -69,7 +69,7 @@ export default async function AdminDispatchDetailPage({ params }: { params: Prom
           <CardHeader><CardTitle>Delivery outcome</CardTitle></CardHeader>
           <CardBody className="space-y-4">
             <p className="text-sm text-neutral-600">Status: <span className="font-medium text-ink-900 capitalize">{dispatch.status.replace(/_/g, " ")}</span></p>
-            {dispatch.collection_at && <p className="text-xs text-neutral-500">Collected {formatDateTime(dispatch.collection_at)}</p>}
+            {dispatch.collection_at && <p className="text-xs text-neutral-600">Collected {formatDateTime(dispatch.collection_at)}</p>}
 
             {!isFinal && (
               <form action={uploadProofOfDeliveryAction} encType="multipart/form-data" className="flex flex-col gap-2 sm:flex-row sm:items-end">

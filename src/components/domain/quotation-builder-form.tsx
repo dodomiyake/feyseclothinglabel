@@ -64,9 +64,9 @@ export function QuotationBuilderForm({
       </Field>
 
       <div className="rounded-xl bg-cream-200/50 p-4 text-sm">
-        <div className="flex justify-between"><span className="text-neutral-500">Subtotal</span><span>{formatCurrency(subtotal)}</span></div>
-        <div className="flex justify-between"><span className="text-neutral-500">Delivery</span><span>{formatCurrency(deliveryFee)}</span></div>
-        {discount > 0 && <div className="flex justify-between"><span className="text-neutral-500">Discount</span><span>-{formatCurrency(discount)}</span></div>}
+        <div className="flex justify-between"><span className="text-neutral-600">Subtotal</span><span>{formatCurrency(subtotal)}</span></div>
+        <div className="flex justify-between"><span className="text-neutral-600">Delivery</span><span>{formatCurrency(deliveryFee)}</span></div>
+        {discount > 0 && <div className="flex justify-between"><span className="text-neutral-600">Discount</span><span>-{formatCurrency(discount)}</span></div>}
         <div className="mt-2 flex justify-between border-t border-ink-900/10 pt-2 text-base font-medium text-ink-950"><span>Total</span><span>{formatCurrency(total)}</span></div>
       </div>
 

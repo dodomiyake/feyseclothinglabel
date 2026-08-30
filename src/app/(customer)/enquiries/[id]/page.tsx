@@ -53,7 +53,7 @@ export default async function EnquiryDetailPage({ params }: { params: Promise<{ 
     <div className="max-w-3xl space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Enquiry</p>
+          <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Enquiry</p>
           <h1 className="mt-1 font-serif text-3xl text-ink-950">{enquiry.enquiry_number}</h1>
         </div>
         <StatusBadge status={enquiry.status} className="text-sm" />
@@ -87,14 +87,14 @@ export default async function EnquiryDetailPage({ params }: { params: Promise<{ 
           <dl className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
             {specRows.filter(([, v]) => v).map(([label, value]) => (
               <div key={label}>
-                <dt className="text-xs text-neutral-500">{label}</dt>
+                <dt className="text-xs text-neutral-600">{label}</dt>
                 <dd className="text-sm text-ink-900">{value}</dd>
               </div>
             ))}
           </dl>
           {enquiry.additional_instructions && (
             <div className="mt-4 border-t border-ink-900/8 pt-4">
-              <dt className="text-xs text-neutral-500">Additional instructions</dt>
+              <dt className="text-xs text-neutral-600">Additional instructions</dt>
               <dd className="mt-1 text-sm text-ink-900">{enquiry.additional_instructions}</dd>
             </div>
           )}
@@ -120,7 +120,7 @@ export default async function EnquiryDetailPage({ params }: { params: Promise<{ 
               ))}
             </ol>
           ) : (
-            <p className="text-sm text-neutral-500">No status updates recorded yet.</p>
+            <p className="text-sm text-neutral-600">No status updates recorded yet.</p>
           )}
         </CardBody>
       </Card>

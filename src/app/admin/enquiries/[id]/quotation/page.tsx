@@ -36,7 +36,7 @@ export default async function QuotationBuilderPage({ params }: { params: Promise
       />
 
       <div>
-        <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Quotation builder</p>
+        <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Quotation builder</p>
         <h1 className="mt-1 font-serif text-3xl text-ink-950">{enquiry.enquiry_number}</h1>
         <p className="mt-1 text-sm text-neutral-600">{enquiry.customer?.business_name || enquiry.customer?.full_name} — {describeSpec(enquiry)}</p>
       </div>

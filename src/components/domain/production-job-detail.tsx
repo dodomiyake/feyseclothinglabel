@@ -46,7 +46,7 @@ export function ProductionJobDetail({
 
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Production job</p>
+          <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Production job</p>
           <h1 className="mt-1 font-serif text-3xl text-ink-950">{order.order_number}</h1>
           <p className="mt-1 text-sm text-neutral-600">{enquiry.label_type ? LABEL_TYPE_META[enquiry.label_type as LabelType].label : "Custom label"}</p>
         </div>
@@ -60,14 +60,14 @@ export function ProductionJobDetail({
             <CardBody>
               <p className="text-sm text-ink-900">{describeSpec(enquiry)}</p>
               <dl className="mt-3 grid grid-cols-2 gap-y-2 text-sm">
-                <div><dt className="text-xs text-neutral-500">Quantity</dt><dd>{enquiry.quantity}</dd></div>
-                <div><dt className="text-xs text-neutral-500">Deadline</dt><dd>{formatDate(order.production_deadline)}</dd></div>
+                <div><dt className="text-xs text-neutral-600">Quantity</dt><dd>{enquiry.quantity}</dd></div>
+                <div><dt className="text-xs text-neutral-600">Deadline</dt><dd>{formatDate(order.production_deadline)}</dd></div>
               </dl>
               {enquiry.additional_instructions && (
                 <p className="mt-3 rounded-lg bg-cream-200/50 p-3 text-sm text-ink-800">{enquiry.additional_instructions}</p>
               )}
               {showFinance && (
-                <p className="mt-3 text-xs text-neutral-500">Order number {order.order_number} · Authorised {formatDate(order.authorised_at)}</p>
+                <p className="mt-3 text-xs text-neutral-600">Order number {order.order_number} · Authorised {formatDate(order.authorised_at)}</p>
               )}
             </CardBody>
           </Card>
@@ -90,7 +90,7 @@ export function ProductionJobDetail({
                   ))}
                 </ul>
               ) : (
-                <p className="border-t border-ink-900/8 pt-4 text-sm text-neutral-500">No progress notes yet.</p>
+                <p className="border-t border-ink-900/8 pt-4 text-sm text-neutral-600">No progress notes yet.</p>
               )}
             </CardBody>
           </Card>
@@ -114,7 +114,7 @@ export function ProductionJobDetail({
                   )}
                 </div>
               ) : (
-                <p className="border-t border-ink-900/8 pt-4 text-sm text-neutral-500">No photos uploaded yet.</p>
+                <p className="border-t border-ink-900/8 pt-4 text-sm text-neutral-600">No photos uploaded yet.</p>
               )}
             </CardBody>
           </Card>

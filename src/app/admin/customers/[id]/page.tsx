@@ -30,9 +30,9 @@ export default async function AdminCustomerDetailPage({ params }: { params: Prom
 
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Customer</p>
+          <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Customer</p>
           <h1 className="mt-1 font-serif text-3xl text-ink-950">{customer.business_name || customer.full_name}</h1>
-          {customer.business_name && <p className="text-sm text-neutral-500">{customer.full_name}</p>}
+          {customer.business_name && <p className="text-sm text-neutral-600">{customer.full_name}</p>}
           {!customer.is_active && (
             <span className="mt-2 inline-block rounded-full bg-terracotta-600/10 px-2.5 py-0.5 text-xs font-medium text-terracotta-700">
               Deactivated
@@ -86,13 +86,13 @@ export default async function AdminCustomerDetailPage({ params }: { params: Prom
                     <p className="text-sm font-medium text-ink-900">{e.enquiry_number}</p>
                     <StatusBadge status={e.status} />
                   </div>
-                  <p className="mt-1 text-xs text-neutral-500">{describeSpec(e)}</p>
+                  <p className="mt-1 text-xs text-neutral-600">{describeSpec(e)}</p>
                   <p className="mt-0.5 text-xs text-neutral-400">{formatDate(e.created_at)}</p>
                 </Link>
               ))}
             </div>
           ) : (
-            <p className="text-sm text-neutral-500">No enquiries from this customer yet.</p>
+            <p className="text-sm text-neutral-600">No enquiries from this customer yet.</p>
           )}
         </section>
       </div>

@@ -98,7 +98,7 @@ export default async function EnquiryPage({
   const formContent = (
     <>
       <div className="mb-8">
-        <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">{isChangesRequested ? "Update your enquiry" : "New enquiry"}</p>
+        <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">{isChangesRequested ? "Update your enquiry" : "New enquiry"}</p>
         <h1 className="mt-2 font-serif text-3xl text-ink-950">
           {isChangesRequested ? "Let's fix up the details" : "Tell us about the labels you need"}
         </h1>

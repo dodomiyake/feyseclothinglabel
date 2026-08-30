@@ -49,7 +49,7 @@ export function DashboardShell({
             <span className="text-sm font-semibold tracking-[0.15em] text-ink-950 uppercase">Feyse</span>
             <span className="text-[10px] tracking-[0.2em] text-gold-700 uppercase">Labels</span>
           </Link>
-          <p className="mt-0.5 text-xs text-neutral-500">{roleLabel}</p>
+          <p className="mt-0.5 text-xs text-neutral-600">{roleLabel}</p>
         </div>
         <nav className="flex-1 space-y-1 px-3">
           {navLinks.map((link) => {
@@ -84,7 +84,7 @@ export function DashboardShell({
             <Link href="/" className="text-sm font-semibold tracking-[0.15em] text-ink-950 uppercase">Feyse</Link>
           </div>
           <div className="hidden lg:block">
-            <p className="text-sm text-neutral-500">Welcome back,</p>
+            <p className="text-sm text-neutral-600">Welcome back,</p>
             <p className="font-serif text-lg text-ink-950">{userName}</p>
           </div>
           <div className="flex items-center gap-3">

@@ -17,7 +17,7 @@ export default function NewCustomerPage() {
       <Breadcrumb items={[{ label: "Customers", href: "/admin/customers" }, { label: "Add customer" }]} />
 
       <div>
-        <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Customers</p>
+        <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Customers</p>
         <h1 className="mt-1 font-serif text-3xl text-ink-950">Add a customer</h1>
       </div>
       <Card>

@@ -38,9 +38,9 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
       <OrderRealtimeRefresh orderId={id} />
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Order</p>
+          <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Order</p>
           <h1 className="mt-1 font-serif text-3xl text-ink-950">{order.order_number}</h1>
-          <p className="mt-1 text-sm text-neutral-500">{spec}</p>
+          <p className="mt-1 text-sm text-neutral-600">{spec}</p>
         </div>
         <StatusBadge status={order.status} className="text-sm" />
       </div>
@@ -64,10 +64,10 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
           <Card>
             <CardHeader><CardTitle>Order summary</CardTitle></CardHeader>
             <CardBody className="space-y-2 text-sm">
-              <div className="flex justify-between"><dt className="text-neutral-500">Quantity</dt><dd>{order.enquiry.quantity}</dd></div>
-              <div className="flex justify-between"><dt className="text-neutral-500">Total paid</dt><dd>{formatCurrency(order.invoice.total, order.invoice.currency)}</dd></div>
-              <div className="flex justify-between"><dt className="text-neutral-500">Production deadline</dt><dd>{formatDate(order.production_deadline)}</dd></div>
-              <div className="flex justify-between"><dt className="text-neutral-500">Delivery to</dt><dd className="text-right">{order.enquiry.delivery_city}, {order.enquiry.delivery_state}</dd></div>
+              <div className="flex justify-between"><dt className="text-neutral-600">Quantity</dt><dd>{order.enquiry.quantity}</dd></div>
+              <div className="flex justify-between"><dt className="text-neutral-600">Total paid</dt><dd>{formatCurrency(order.invoice.total, order.invoice.currency)}</dd></div>
+              <div className="flex justify-between"><dt className="text-neutral-600">Production deadline</dt><dd>{formatDate(order.production_deadline)}</dd></div>
+              <div className="flex justify-between"><dt className="text-neutral-600">Delivery to</dt><dd className="text-right">{order.enquiry.delivery_city}, {order.enquiry.delivery_state}</dd></div>
             </CardBody>
           </Card>
 
@@ -75,11 +75,11 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
             <Card>
               <CardHeader><CardTitle>Dispatch</CardTitle></CardHeader>
               <CardBody className="space-y-2 text-sm">
-                {dispatch.rider_name && <div className="flex justify-between"><dt className="text-neutral-500">Rider</dt><dd>{dispatch.rider_name}</dd></div>}
-                {dispatch.rider_phone && <div className="flex justify-between"><dt className="text-neutral-500">Rider phone</dt><dd>{dispatch.rider_phone}</dd></div>}
-                {dispatch.dispatch_company && <div className="flex justify-between"><dt className="text-neutral-500">Courier</dt><dd>{dispatch.dispatch_company}</dd></div>}
-                {dispatch.tracking_reference && <div className="flex justify-between"><dt className="text-neutral-500">Tracking ref</dt><dd>{dispatch.tracking_reference}</dd></div>}
-                {dispatch.collection_at && <div className="flex justify-between"><dt className="text-neutral-500">Collected</dt><dd>{formatDateTime(dispatch.collection_at)}</dd></div>}
+                {dispatch.rider_name && <div className="flex justify-between"><dt className="text-neutral-600">Rider</dt><dd>{dispatch.rider_name}</dd></div>}
+                {dispatch.rider_phone && <div className="flex justify-between"><dt className="text-neutral-600">Rider phone</dt><dd>{dispatch.rider_phone}</dd></div>}
+                {dispatch.dispatch_company && <div className="flex justify-between"><dt className="text-neutral-600">Courier</dt><dd>{dispatch.dispatch_company}</dd></div>}
+                {dispatch.tracking_reference && <div className="flex justify-between"><dt className="text-neutral-600">Tracking ref</dt><dd>{dispatch.tracking_reference}</dd></div>}
+                {dispatch.collection_at && <div className="flex justify-between"><dt className="text-neutral-600">Collected</dt><dd>{formatDateTime(dispatch.collection_at)}</dd></div>}
                 {showConfirmDelivery && (
                   <form action={confirmDeliveryAction} className="pt-2">
                     <input type="hidden" name="order_id" value={order.id} />
@@ -97,7 +97,7 @@ export default async function OrderTrackingPage({ params }: { params: Promise<{ 
         <Card>
           <CardHeader><CardTitle>Production photos</CardTitle></CardHeader>
           <CardBody>
-            <p className="text-sm text-neutral-500">{photos.length} photo(s) shared by our production team. Ask on WhatsApp to have them resent if needed.</p>
+            <p className="text-sm text-neutral-600">{photos.length} photo(s) shared by our production team. Ask on WhatsApp to have them resent if needed.</p>
           </CardBody>
         </Card>
       )}

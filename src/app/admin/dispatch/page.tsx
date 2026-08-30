@@ -20,7 +20,7 @@ export default async function AdminDispatchPage() {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Dispatch</p>
+        <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Dispatch</p>
         <h1 className="mt-1 font-serif text-3xl text-ink-950">Dispatch management</h1>
       </div>
 
@@ -28,7 +28,7 @@ export default async function AdminDispatchPage() {
         <div className="overflow-hidden rounded-2xl border border-ink-900/8 bg-cream-50">
           <div className="overflow-x-auto">
           <table className="w-full min-w-[640px] text-sm">
-            <thead className="border-b border-ink-900/8 bg-cream-200/50 text-left text-xs text-neutral-500">
+            <thead className="border-b border-ink-900/8 bg-cream-200/50 text-left text-xs text-neutral-600">
               <tr>
                 <th className="px-4 py-3 font-medium">Order</th>
                 <th className="px-4 py-3 font-medium">Customer</th>
@@ -42,7 +42,7 @@ export default async function AdminDispatchPage() {
                 <tr key={o.id} className="border-b border-ink-900/6 last:border-0 hover:bg-cream-200/30">
                   <td className="px-4 py-3">
                     <Link href={`/admin/dispatch/${o.id}`} className="font-medium text-ink-900 hover:text-terracotta-600">{o.order_number}</Link>
-                    <p className="text-xs text-neutral-500">{describeSpec(o.enquiry)}</p>
+                    <p className="text-xs text-neutral-600">{describeSpec(o.enquiry)}</p>
                   </td>
                   <td className="px-4 py-3 text-neutral-600">{o.enquiry.customer?.business_name || o.enquiry.customer?.full_name}</td>
                   <td className="px-4 py-3 text-neutral-600">{o.dispatch?.rider_name ?? "—"}</td>

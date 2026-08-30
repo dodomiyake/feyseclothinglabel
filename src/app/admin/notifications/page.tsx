@@ -18,7 +18,7 @@ export default async function AdminNotificationsPage() {
   return (
     <div className="max-w-2xl space-y-6">
       <div>
-        <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Notifications</p>
+        <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Notifications</p>
         <h1 className="mt-1 font-serif text-3xl text-ink-950">Notifications</h1>
       </div>
       <NotificationsList notifications={notifications ?? []} role="admin" redirectPath="/admin/notifications" />

@@ -29,7 +29,7 @@ export function OrderTimeline({ status }: { status: WorkflowStatus }) {
               <p className={`text-sm font-medium ${active ? "text-ink-950" : done ? "text-ink-800" : "text-neutral-400"}`}>
                 {STATUS_META[step].label}
               </p>
-              {active && <p className="mt-0.5 text-xs text-neutral-500">{STATUS_META[step].description}</p>}
+              {active && <p className="mt-0.5 text-xs text-neutral-600">{STATUS_META[step].description}</p>}
             </div>
           </li>
         );

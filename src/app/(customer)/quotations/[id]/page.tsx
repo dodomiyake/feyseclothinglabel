@@ -31,9 +31,9 @@ export default async function QuotationDetailPage({ params }: { params: Promise<
 
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Quotation</p>
+          <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Quotation</p>
           <h1 className="mt-1 font-serif text-3xl text-ink-950">{quotation.quotation_number}</h1>
-          <p className="mt-1 text-sm text-neutral-500">For enquiry {quotation.enquiry.enquiry_number}</p>
+          <p className="mt-1 text-sm text-neutral-600">For enquiry {quotation.enquiry.enquiry_number}</p>
         </div>
         <StatusBadge status={quotation.enquiry.status} className="text-sm" />
       </div>
@@ -48,18 +48,18 @@ export default async function QuotationDetailPage({ params }: { params: Promise<
         <CardBody className="space-y-4">
           <p className="text-sm text-ink-800">{spec}</p>
           <div className="grid grid-cols-2 gap-y-2 border-t border-ink-900/8 pt-4 text-sm sm:grid-cols-4">
-            <div><dt className="text-xs text-neutral-500">Quantity</dt><dd className="text-ink-900">{quotation.quantity}</dd></div>
-            <div><dt className="text-xs text-neutral-500">Unit price</dt><dd className="text-ink-900">{formatCurrency(quotation.unit_price, quotation.currency)}</dd></div>
-            <div><dt className="text-xs text-neutral-500">Issued</dt><dd className="text-ink-900">{formatDate(quotation.created_at)}</dd></div>
-            <div><dt className="text-xs text-neutral-500">Valid until</dt><dd className={isExpired ? "text-terracotta-600" : "text-ink-900"}>{formatDate(quotation.valid_until)}</dd></div>
+            <div><dt className="text-xs text-neutral-600">Quantity</dt><dd className="text-ink-900">{quotation.quantity}</dd></div>
+            <div><dt className="text-xs text-neutral-600">Unit price</dt><dd className="text-ink-900">{formatCurrency(quotation.unit_price, quotation.currency)}</dd></div>
+            <div><dt className="text-xs text-neutral-600">Issued</dt><dd className="text-ink-900">{formatDate(quotation.created_at)}</dd></div>
+            <div><dt className="text-xs text-neutral-600">Valid until</dt><dd className={isExpired ? "text-terracotta-600" : "text-ink-900"}>{formatDate(quotation.valid_until)}</dd></div>
           </div>
           <dl className="space-y-1.5 border-t border-ink-900/8 pt-4 text-sm">
-            <div className="flex justify-between"><dt className="text-neutral-500">Subtotal</dt><dd>{formatCurrency(quotation.subtotal, quotation.currency)}</dd></div>
-            <div className="flex justify-between"><dt className="text-neutral-500">Delivery fee</dt><dd>{formatCurrency(quotation.delivery_fee, quotation.currency)}</dd></div>
-            {quotation.discount > 0 && <div className="flex justify-between"><dt className="text-neutral-500">Discount</dt><dd>-{formatCurrency(quotation.discount, quotation.currency)}</dd></div>}
+            <div className="flex justify-between"><dt className="text-neutral-600">Subtotal</dt><dd>{formatCurrency(quotation.subtotal, quotation.currency)}</dd></div>
+            <div className="flex justify-between"><dt className="text-neutral-600">Delivery fee</dt><dd>{formatCurrency(quotation.delivery_fee, quotation.currency)}</dd></div>
+            {quotation.discount > 0 && <div className="flex justify-between"><dt className="text-neutral-600">Discount</dt><dd>-{formatCurrency(quotation.discount, quotation.currency)}</dd></div>}
             <div className="flex justify-between border-t border-ink-900/8 pt-2 text-base font-medium text-ink-950"><dt>Total</dt><dd>{formatCurrency(quotation.total, quotation.currency)}</dd></div>
           </dl>
-          {quotation.terms && <p className="border-t border-ink-900/8 pt-4 text-xs text-neutral-500">{quotation.terms}</p>}
+          {quotation.terms && <p className="border-t border-ink-900/8 pt-4 text-xs text-neutral-600">{quotation.terms}</p>}
         </CardBody>
       </Card>
 
@@ -80,7 +80,7 @@ export default async function QuotationDetailPage({ params }: { params: Promise<
       )}
 
       {quotation.status === "accepted" && !invoice && (
-        <p className="text-sm text-neutral-500">You accepted this quotation. We&apos;re preparing your invoice.</p>
+        <p className="text-sm text-neutral-600">You accepted this quotation. We&apos;re preparing your invoice.</p>
       )}
 
       {quotation.customer_response_note && (

@@ -32,7 +32,7 @@ export default async function PaymentVerificationPage() {
   return (
     <div className="max-w-4xl space-y-8">
       <div>
-        <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Verification queue</p>
+        <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Verification queue</p>
         <h1 className="mt-1 font-serif text-3xl text-ink-950">Payments awaiting verification</h1>
       </div>
 
@@ -46,16 +46,16 @@ export default async function PaymentVerificationPage() {
                     <p className="font-medium text-ink-900">
                       {p.invoice.enquiry.customer?.business_name || p.invoice.enquiry.customer?.full_name} — {p.invoice.invoice_number}
                     </p>
-                    <p className="text-xs text-neutral-500">Enquiry {p.invoice.enquiry.enquiry_number} · submitted {formatDateTime(p.created_at)}</p>
+                    <p className="text-xs text-neutral-600">Enquiry {p.invoice.enquiry.enquiry_number} · submitted {formatDateTime(p.created_at)}</p>
                   </div>
                   <p className="font-serif text-lg text-ink-950">{formatCurrency(p.amount_paid, p.invoice.currency)}</p>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2">
                   <dl className="space-y-1 text-sm">
-                    <div className="flex justify-between"><dt className="text-neutral-500">Invoice total</dt><dd>{formatCurrency(p.invoice.total, p.invoice.currency)}</dd></div>
-                    <div className="flex justify-between"><dt className="text-neutral-500">Payment date</dt><dd>{formatDate(p.payment_date)}</dd></div>
-                    <div className="flex justify-between"><dt className="text-neutral-500">Sender name</dt><dd>{p.sender_account_name}</dd></div>
-                    {p.sender_bank && <div className="flex justify-between"><dt className="text-neutral-500">Sender bank</dt><dd>{p.sender_bank}</dd></div>}
+                    <div className="flex justify-between"><dt className="text-neutral-600">Invoice total</dt><dd>{formatCurrency(p.invoice.total, p.invoice.currency)}</dd></div>
+                    <div className="flex justify-between"><dt className="text-neutral-600">Payment date</dt><dd>{formatDate(p.payment_date)}</dd></div>
+                    <div className="flex justify-between"><dt className="text-neutral-600">Sender name</dt><dd>{p.sender_account_name}</dd></div>
+                    {p.sender_bank && <div className="flex justify-between"><dt className="text-neutral-600">Sender bank</dt><dd>{p.sender_bank}</dd></div>}
                   </dl>
                   {p.evidenceUrl && (
                     <a href={p.evidenceUrl} target="_blank" rel="noreferrer" className="flex items-center justify-center rounded-xl border border-ink-900/8 bg-cream-200/40 p-3 text-sm font-medium text-terracotta-600 hover:bg-cream-200">
@@ -80,7 +80,7 @@ export default async function PaymentVerificationPage() {
           <div className="overflow-hidden rounded-2xl border border-ink-900/8 bg-cream-50">
             <div className="overflow-x-auto">
             <table className="w-full min-w-[560px] text-sm">
-              <thead className="border-b border-ink-900/8 bg-cream-200/50 text-left text-xs text-neutral-500">
+              <thead className="border-b border-ink-900/8 bg-cream-200/50 text-left text-xs text-neutral-600">
                 <tr><th className="px-4 py-3 font-medium">Invoice</th><th className="px-4 py-3 font-medium">Amount</th><th className="px-4 py-3 font-medium">Decision</th><th className="px-4 py-3 font-medium">Date</th></tr>
               </thead>
               <tbody>
@@ -89,7 +89,7 @@ export default async function PaymentVerificationPage() {
                     <td className="px-4 py-3 text-ink-900">{p.invoice.invoice_number}</td>
                     <td className="px-4 py-3">{formatCurrency(p.amount_paid)}</td>
                     <td className="px-4 py-3 capitalize">{p.status}</td>
-                    <td className="px-4 py-3 text-neutral-500">{formatDate(p.reviewed_at)}</td>
+                    <td className="px-4 py-3 text-neutral-600">{formatDate(p.reviewed_at)}</td>
                   </tr>
                 ))}
               </tbody>

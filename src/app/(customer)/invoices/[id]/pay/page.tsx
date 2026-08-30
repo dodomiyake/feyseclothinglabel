@@ -27,9 +27,9 @@ export default async function SubmitPaymentPage({ params }: { params: Promise<{ 
       />
 
       <div>
-        <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Payment evidence</p>
+        <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Payment evidence</p>
         <h1 className="mt-1 font-serif text-3xl text-ink-950">Submit proof of payment</h1>
-        <p className="mt-1 text-sm text-neutral-500">Invoice {invoice.invoice_number} · Enquiry {invoice.enquiry.enquiry_number}</p>
+        <p className="mt-1 text-sm text-neutral-600">Invoice {invoice.invoice_number} · Enquiry {invoice.enquiry.enquiry_number}</p>
       </div>
       <Card>
         <CardHeader><CardTitle>Payment details</CardTitle></CardHeader>
@@ -37,7 +37,7 @@ export default async function SubmitPaymentPage({ params }: { params: Promise<{ 
           <PaymentEvidenceForm invoiceId={invoice.id} suggestedAmount={invoice.total} />
         </CardBody>
       </Card>
-      <p className="text-xs text-neutral-500">
+      <p className="text-xs text-neutral-600">
         Your order moves to production only after our team confirms this payment against our bank records. This
         usually takes a few hours during business days.
       </p>

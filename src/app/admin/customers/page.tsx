@@ -15,7 +15,7 @@ export default async function AdminCustomersPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Customers</p>
+          <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Customers</p>
           <h1 className="mt-1 font-serif text-3xl text-ink-950">Customer records</h1>
         </div>
         <Button href="/admin/customers/new" variant="gold"><Plus className="h-4 w-4" /> Add customer</Button>
@@ -25,7 +25,7 @@ export default async function AdminCustomersPage() {
         <div className="overflow-hidden rounded-2xl border border-ink-900/8 bg-cream-50">
           <div className="overflow-x-auto">
           <table className="w-full min-w-[640px] text-sm">
-            <thead className="border-b border-ink-900/8 bg-cream-200/50 text-left text-xs text-neutral-500">
+            <thead className="border-b border-ink-900/8 bg-cream-200/50 text-left text-xs text-neutral-600">
               <tr>
                 <th className="px-4 py-3 font-medium">Name</th>
                 <th className="px-4 py-3 font-medium">WhatsApp</th>
@@ -42,7 +42,7 @@ export default async function AdminCustomersPage() {
                     <Link href={`/admin/customers/${c.id}`} className="font-medium text-ink-900 hover:text-terracotta-600">
                       {c.business_name || c.full_name}
                     </Link>
-                    {c.business_name && <p className="text-xs text-neutral-500">{c.full_name}</p>}
+                    {c.business_name && <p className="text-xs text-neutral-600">{c.full_name}</p>}
                   </td>
                   <td className="px-4 py-3 text-neutral-600">{c.whatsapp_number}</td>
                   <td className="px-4 py-3 text-neutral-600 capitalize">{c.source}</td>
@@ -50,7 +50,7 @@ export default async function AdminCustomersPage() {
                   <td className="px-4 py-3 text-neutral-600">{c.user_id ? "Registered" : "Guest"}</td>
                   <td className="px-4 py-3">
                     {c.is_active ? (
-                      <span className="text-neutral-500">Active</span>
+                      <span className="text-neutral-600">Active</span>
                     ) : (
                       <span className="rounded-full bg-terracotta-600/10 px-2 py-0.5 text-xs font-medium text-terracotta-700">Deactivated</span>
                     )}

@@ -120,7 +120,7 @@ export default async function LandingPage() {
         {/* How it works */}
         <section id="how-it-works" className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <div className="max-w-xl">
-            <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">How it works</p>
+            <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">How it works</p>
             <h2 className="mt-2 font-serif text-3xl text-ink-950">From WhatsApp message to delivered labels</h2>
           </div>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -144,7 +144,7 @@ export default async function LandingPage() {
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">What we make</p>
+                <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">What we make</p>
                 <h2 className="mt-2 font-serif text-3xl text-ink-950">Labels &amp; tags for every garment</h2>
               </div>
               <Link href="/products" className="text-sm font-medium text-terracotta-600 hover:text-terracotta-700">

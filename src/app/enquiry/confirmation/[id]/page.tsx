@@ -78,15 +78,15 @@ export default async function EnquiryConfirmationPage({
       <Card className="mt-8 text-left">
         <CardBody className="space-y-3">
           <div className="flex justify-between text-sm">
-            <span className="text-neutral-500">Enquiry number</span>
+            <span className="text-neutral-600">Enquiry number</span>
             <span className="font-medium text-ink-900">{enquiry.enquiry_number}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-neutral-500">Specification</span>
+            <span className="text-neutral-600">Specification</span>
             <span className="max-w-[60%] text-right text-ink-900">{spec}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-neutral-500">Quantity</span>
+            <span className="text-neutral-600">Quantity</span>
             <span className="text-ink-900">{enquiry.quantity ?? "To be discussed"}</span>
           </div>
         </CardBody>
@@ -104,7 +104,7 @@ export default async function EnquiryConfirmationPage({
       </div>
 
       {!hasAccount && (
-        <p className="mt-6 text-xs text-neutral-500">
+        <p className="mt-6 text-xs text-neutral-600">
           This is a one-time confirmation link. Save it or create a free account so you can revisit your
           enquiry, quotation and order status any time.
         </p>

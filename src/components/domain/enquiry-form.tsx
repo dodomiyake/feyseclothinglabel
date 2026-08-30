@@ -94,12 +94,12 @@ export function EnquiryForm({
           <li key={label} className="flex flex-col items-center gap-1.5 text-center">
             <span
               className={`flex h-7 w-7 items-center justify-center rounded-full font-medium ${
-                i < step ? "bg-sage-600 text-cream-50" : i === step ? "bg-gold-500 text-ink-950" : "bg-neutral-200 text-neutral-500"
+                i < step ? "bg-sage-600 text-cream-50" : i === step ? "bg-gold-500 text-ink-950" : "bg-neutral-200 text-neutral-600"
               }`}
             >
               {i < step ? <Check className="h-3.5 w-3.5" /> : i + 1}
             </span>
-            <span className={i === step ? "text-ink-900" : "text-neutral-500"}>{label}</span>
+            <span className={i === step ? "text-ink-900" : "text-neutral-600"}>{label}</span>
           </li>
         ))}
       </ol>
@@ -224,7 +224,7 @@ export function EnquiryForm({
                       ) : (
                         <>
                           <FileText className="h-6 w-6 text-neutral-400" />
-                          <span className="px-1 text-center text-[10px] text-neutral-500">PDF</span>
+                          <span className="px-1 text-center text-[10px] text-neutral-600">PDF</span>
                         </>
                       )}
                     </a>
@@ -236,7 +236,7 @@ export function EnquiryForm({
                     >
                       <X className="h-3 w-3" />
                     </button>
-                    <p className="mt-1 truncate text-[11px] text-neutral-500">{f.name}</p>
+                    <p className="mt-1 truncate text-[11px] text-neutral-600">{f.name}</p>
                   </li>
                 ))}
               </ul>
@@ -278,13 +278,13 @@ export function EnquiryForm({
           <div className="rounded-xl border border-ink-900/8 bg-cream-200/50 p-5 text-sm">
             <p className="font-serif text-lg text-ink-950">Ready to submit</p>
             <dl className="mt-3 space-y-1.5 text-ink-800">
-              <div className="flex justify-between gap-4"><dt className="text-neutral-500">Name</dt><dd>{values.full_name || "—"}</dd></div>
-              <div className="flex justify-between gap-4"><dt className="text-neutral-500">Label type</dt><dd>{needsHelp ? "Need help choosing" : (labelType ? LABEL_TYPE_META[labelType as LabelType]?.label : "—")}</dd></div>
-              <div className="flex justify-between gap-4"><dt className="text-neutral-500">Quantity</dt><dd>{values.quantity || "To be discussed"}</dd></div>
-              <div className="flex justify-between gap-4"><dt className="text-neutral-500">Delivery to</dt><dd className="text-right">{[values.delivery_city, values.delivery_state].filter(Boolean).join(", ") || "—"}</dd></div>
-              <div className="flex justify-between gap-4"><dt className="text-neutral-500">Reference files</dt><dd>{files.length} attached</dd></div>
+              <div className="flex justify-between gap-4"><dt className="text-neutral-600">Name</dt><dd>{values.full_name || "—"}</dd></div>
+              <div className="flex justify-between gap-4"><dt className="text-neutral-600">Label type</dt><dd>{needsHelp ? "Need help choosing" : (labelType ? LABEL_TYPE_META[labelType as LabelType]?.label : "—")}</dd></div>
+              <div className="flex justify-between gap-4"><dt className="text-neutral-600">Quantity</dt><dd>{values.quantity || "To be discussed"}</dd></div>
+              <div className="flex justify-between gap-4"><dt className="text-neutral-600">Delivery to</dt><dd className="text-right">{[values.delivery_city, values.delivery_state].filter(Boolean).join(", ") || "—"}</dd></div>
+              <div className="flex justify-between gap-4"><dt className="text-neutral-600">Reference files</dt><dd>{files.length} attached</dd></div>
             </dl>
-            <p className="mt-4 text-xs text-neutral-500">
+            <p className="mt-4 text-xs text-neutral-600">
               Submitting this enquiry does not place an order or charge you. Our team will review it and send a
               quotation for your approval.
             </p>

@@ -11,7 +11,7 @@ export default function NewWalkInEnquiryPage() {
       <Breadcrumb items={[{ label: "Inbox", href: "/admin/inbox" }, { label: "New enquiry" }]} />
 
       <div>
-        <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">New enquiry</p>
+        <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">New enquiry</p>
         <h1 className="mt-1 font-serif text-3xl text-ink-950">Log a WhatsApp enquiry</h1>
         <p className="mt-1 text-sm text-neutral-600">For a customer who contacted the business directly on WhatsApp.</p>
       </div>

@@ -17,7 +17,7 @@ export default async function AdminProductSettingsPage() {
   return (
     <div className="max-w-3xl space-y-6">
       <div>
-        <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Settings</p>
+        <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Settings</p>
         <h1 className="mt-1 font-serif text-3xl text-ink-950">Product &amp; pricing</h1>
         <p className="mt-1 text-sm text-neutral-600">Starting prices shown to customers. Every enquiry still gets a tailored quotation.</p>
       </div>

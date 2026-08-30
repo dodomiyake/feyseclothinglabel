@@ -25,7 +25,7 @@ export default async function OrderHistoryPage() {
   return (
     <div className="max-w-4xl space-y-6">
       <div>
-        <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">History</p>
+        <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">History</p>
         <h1 className="mt-1 font-serif text-3xl text-ink-950">Order history</h1>
       </div>
 
@@ -36,7 +36,7 @@ export default async function OrderHistoryPage() {
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <Link href={`/orders/${order.id}`} className="font-medium text-ink-900 hover:text-terracotta-600">{order.order_number}</Link>
-                  <p className="mt-0.5 text-sm text-neutral-500">{describeSpec(order.enquiry)}</p>
+                  <p className="mt-0.5 text-sm text-neutral-600">{describeSpec(order.enquiry)}</p>
                   <p className="mt-1 text-xs text-neutral-400">Placed {formatDate(order.created_at)} · {formatCurrency(order.invoice.total, order.invoice.currency)}</p>
                 </div>
                 <div className="flex items-center gap-3">

@@ -22,7 +22,7 @@ export function Field({
           {label}
           {required && <span className="text-terracotta-600"> *</span>}
         </span>
-        {hint && <span className="text-xs font-normal text-neutral-500">{hint}</span>}
+        {hint && <span className="text-xs font-normal text-neutral-600">{hint}</span>}
       </span>
       {children}
       {error && <span className="mt-1 block text-xs text-terracotta-600">{error}</span>}
@@ -54,7 +54,7 @@ export function Checkbox({
     <label className={cn("flex items-start gap-2.5 text-sm text-ink-800", className)}>
       <input
         type="checkbox"
-        className="mt-0.5 h-4 w-4 rounded border-neutral-400 text-gold-600 focus:ring-gold-400"
+        className="mt-0.5 h-4 w-4 rounded border-neutral-400 text-gold-700 focus:ring-gold-400"
         {...props}
       />
       <span>{label}</span>

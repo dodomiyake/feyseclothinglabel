@@ -27,7 +27,7 @@ export function QcChecklistForm({ jobId, qc, canMarkReady }: { jobId: string; qc
       </div>
       <Textarea name="notes" placeholder="QC notes (optional)" defaultValue={qc?.notes ?? ""} disabled={!canMarkReady} />
       {qc && (
-        <p className={`text-xs font-medium ${qc.overall_result === "pass" ? "text-sage-600" : qc.overall_result === "fail" ? "text-terracotta-600" : "text-neutral-500"}`}>
+        <p className={`text-xs font-medium ${qc.overall_result === "pass" ? "text-sage-600" : qc.overall_result === "fail" ? "text-terracotta-600" : "text-neutral-600"}`}>
           Result: {qc.overall_result === "pending" ? "Not yet checked" : qc.overall_result.toUpperCase()}
         </p>
       )}

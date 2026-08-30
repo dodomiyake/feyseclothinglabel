@@ -12,9 +12,9 @@ export default function PrivacyPolicyPage() {
       <SiteHeader />
       <main className="flex-1 bg-cream-200/40">
         <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
-          <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Legal</p>
+          <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Legal</p>
           <h1 className="mt-2 font-serif text-4xl text-ink-950">Privacy policy</h1>
-          <p className="mt-2 text-sm text-neutral-500">Last updated {LAST_UPDATED}</p>
+          <p className="mt-2 text-sm text-neutral-600">Last updated {LAST_UPDATED}</p>
 
           <div className="mt-8 space-y-8 text-sm leading-relaxed text-ink-800">
             <section>

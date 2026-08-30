@@ -72,7 +72,7 @@ export default async function CustomerDashboardPage() {
     <div className="space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Overview</p>
+          <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Overview</p>
           <h1 className="mt-1 font-serif text-3xl text-ink-950">Your dashboard</h1>
         </div>
         <Button href="/enquiry" variant="gold">New enquiry</Button>
@@ -110,7 +110,7 @@ export default async function CustomerDashboardPage() {
                   <CardBody className="flex items-center justify-between py-4">
                     <div>
                       <p className="text-sm font-medium text-ink-900">{order.order_number}</p>
-                      <p className="text-xs text-neutral-500">Deadline {formatDate(order.production_deadline)}</p>
+                      <p className="text-xs text-neutral-600">Deadline {formatDate(order.production_deadline)}</p>
                     </div>
                     <StatusBadge status={order.status} />
                   </CardBody>
@@ -136,7 +136,7 @@ export default async function CustomerDashboardPage() {
           <div className="overflow-hidden rounded-2xl border border-ink-900/8 bg-cream-50">
             <div className="overflow-x-auto">
             <table className="w-full min-w-[520px] text-sm">
-              <thead className="border-b border-ink-900/8 bg-cream-200/50 text-left text-xs text-neutral-500">
+              <thead className="border-b border-ink-900/8 bg-cream-200/50 text-left text-xs text-neutral-600">
                 <tr>
                   <th className="px-4 py-3 font-medium">Reference</th>
                   <th className="px-4 py-3 font-medium">Specification</th>

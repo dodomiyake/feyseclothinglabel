@@ -62,7 +62,7 @@ export default async function AdminDashboardPage() {
   return (
     <div className="space-y-8">
       <div>
-        <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Overview</p>
+        <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Overview</p>
         <h1 className="mt-1 font-serif text-3xl text-ink-950">Operations dashboard</h1>
       </div>
 
@@ -72,7 +72,7 @@ export default async function AdminDashboardPage() {
             <Card className="h-full transition-shadow hover:shadow-md">
               <CardBody className="py-4">
                 <p className="font-serif text-3xl text-ink-950">{s.value}</p>
-                <p className="mt-1 text-xs text-neutral-500">{s.label}</p>
+                <p className="mt-1 text-xs text-neutral-600">{s.label}</p>
               </CardBody>
             </Card>
           </Link>
@@ -82,7 +82,7 @@ export default async function AdminDashboardPage() {
       <Card>
         <CardBody className="flex items-center justify-between py-5">
           <div>
-            <p className="text-xs text-neutral-500">Revenue confirmed this month</p>
+            <p className="text-xs text-neutral-600">Revenue confirmed this month</p>
             <p className="font-serif text-3xl text-ink-950">{formatCurrency(revenueThisMonth)}</p>
           </div>
           <Link href="/admin/payments" className="text-sm font-medium text-terracotta-600 hover:text-terracotta-700">
@@ -105,12 +105,12 @@ export default async function AdminDashboardPage() {
                     <p className="text-sm font-medium text-ink-900">{e.customer?.business_name || e.customer?.full_name} · {e.enquiry_number}</p>
                     <StatusBadge status={e.status} />
                   </div>
-                  <p className="mt-1 text-xs text-neutral-500">{describeSpec(e)}</p>
+                  <p className="mt-1 text-xs text-neutral-600">{describeSpec(e)}</p>
                 </Link>
               ))}
             </div>
           ) : (
-            <p className="text-sm text-neutral-500">No new enquiries right now.</p>
+            <p className="text-sm text-neutral-600">No new enquiries right now.</p>
           )}
         </section>
 
@@ -123,12 +123,12 @@ export default async function AdminDashboardPage() {
               {recentCompleted.map((o) => (
                 <Link key={o.id} href={`/admin/enquiries/${o.enquiry_id}`} className="flex items-center justify-between rounded-xl border border-ink-900/8 bg-cream-50 p-4 hover:shadow-sm">
                   <p className="text-sm font-medium text-ink-900">{o.order_number}</p>
-                  <p className="text-xs text-neutral-500">{formatDate(o.updated_at)}</p>
+                  <p className="text-xs text-neutral-600">{formatDate(o.updated_at)}</p>
                 </Link>
               ))}
             </div>
           ) : (
-            <p className="text-sm text-neutral-500">No completed orders yet.</p>
+            <p className="text-sm text-neutral-600">No completed orders yet.</p>
           )}
         </section>
       </div>

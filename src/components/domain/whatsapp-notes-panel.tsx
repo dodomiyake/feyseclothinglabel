@@ -47,7 +47,7 @@ export function WhatsappNotesPanel({ enquiryId, notes }: { enquiryId: string; no
             ))}
           </ul>
         ) : (
-          <p className="border-t border-ink-900/8 pt-4 text-sm text-neutral-500">No conversation notes yet.</p>
+          <p className="border-t border-ink-900/8 pt-4 text-sm text-neutral-600">No conversation notes yet.</p>
         )}
       </CardBody>
     </Card>

@@ -22,7 +22,7 @@ export default async function ProductsPage() {
       <main className="flex-1">
         <section className="border-b border-ink-900/8 bg-cream-200/60">
           <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-            <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Labels &amp; pricing</p>
+            <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Labels &amp; pricing</p>
             <h1 className="mt-2 max-w-2xl font-serif text-4xl text-ink-950">
               Every label type we produce, with a starting price per piece
             </h1>
@@ -49,7 +49,7 @@ export default async function ProductsPage() {
                 <div className="mt-5 flex items-baseline justify-between border-t border-ink-900/8 pt-4">
                   <div>
                     <p className="text-lg font-medium text-ink-900">{formatCurrency(p.base_unit_price, p.currency)}</p>
-                    <p className="text-xs text-neutral-500">per label · min. {p.min_quantity} pcs</p>
+                    <p className="text-xs text-neutral-600">per label · min. {p.min_quantity} pcs</p>
                   </div>
                   <Link
                     href={`/enquiry?label_type=${p.label_type}`}
@@ -63,7 +63,7 @@ export default async function ProductsPage() {
           </div>
 
           {!products.length && (
-            <p className="text-sm text-neutral-500">
+            <p className="text-sm text-neutral-600">
               Pricing is being updated — message us on WhatsApp or start an enquiry and we&apos;ll quote you directly.
             </p>
           )}

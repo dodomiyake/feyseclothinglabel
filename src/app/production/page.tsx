@@ -21,7 +21,7 @@ export default async function ProductionJobListPage() {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Production</p>
+        <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Production</p>
         <h1 className="mt-1 font-serif text-3xl text-ink-950">My jobs</h1>
       </div>
 
@@ -34,7 +34,7 @@ export default async function ProductionJobListPage() {
                 <StatusBadge status={job.order.status} />
               </div>
               <p className="mt-1.5 text-sm text-neutral-600">{describeSpec(job.order.enquiry)}</p>
-              <p className="mt-2 text-xs text-neutral-500">Quantity {job.order.enquiry.quantity} · Deadline {formatDate(job.order.production_deadline)}</p>
+              <p className="mt-2 text-xs text-neutral-600">Quantity {job.order.enquiry.quantity} · Deadline {formatDate(job.order.production_deadline)}</p>
             </Link>
           ))}
         </div>

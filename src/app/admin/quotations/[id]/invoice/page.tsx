@@ -37,7 +37,7 @@ export default async function InvoiceBuilderPage({ params }: { params: Promise<{
       />
 
       <div>
-        <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Invoice builder</p>
+        <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Invoice builder</p>
         <h1 className="mt-1 font-serif text-3xl text-ink-950">{quotation.quotation_number}</h1>
         <p className="mt-1 text-sm text-neutral-600">
           {quotation.enquiry.customer?.business_name || quotation.enquiry.customer?.full_name} — {formatCurrency(quotation.total, quotation.currency)}

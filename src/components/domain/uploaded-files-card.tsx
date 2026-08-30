@@ -41,13 +41,13 @@ export function UploadedFilesCard({ title, files }: { title: string; files: Uplo
                 ) : (
                   <>
                     <FileText className="h-6 w-6 text-neutral-400" />
-                    <span className="px-1 text-center text-[10px] text-neutral-500">
+                    <span className="px-1 text-center text-[10px] text-neutral-600">
                       {f.name.split(".").pop()?.toUpperCase() || "FILE"}
                     </span>
                   </>
                 )}
               </a>
-              <p className="mt-1 truncate text-[11px] text-neutral-500">{f.name}</p>
+              <p className="mt-1 truncate text-[11px] text-neutral-600">{f.name}</p>
               {f.kind && <p className="truncate text-[10px] text-neutral-400">{f.kind}</p>}
             </li>
           ))}

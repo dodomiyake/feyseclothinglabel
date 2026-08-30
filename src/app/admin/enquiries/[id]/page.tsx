@@ -98,7 +98,7 @@ export default async function AdminEnquiryWorkspacePage({ params }: { params: Pr
 
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Enquiry workspace</p>
+          <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Enquiry workspace</p>
           <h1 className="mt-1 font-serif text-3xl text-ink-950">{enquiry.enquiry_number}</h1>
           <p className="mt-1 text-sm text-neutral-600">{enquiry.customer?.business_name || enquiry.customer?.full_name}</p>
         </div>
@@ -112,12 +112,12 @@ export default async function AdminEnquiryWorkspacePage({ params }: { params: Pr
             <CardBody>
               <dl className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
                 {specRows.filter(([, v]) => v).map(([label, value]) => (
-                  <div key={label}><dt className="text-xs text-neutral-500">{label}</dt><dd className="text-sm text-ink-900">{value}</dd></div>
+                  <div key={label}><dt className="text-xs text-neutral-600">{label}</dt><dd className="text-sm text-ink-900">{value}</dd></div>
                 ))}
               </dl>
               {enquiry.additional_instructions && (
                 <div className="mt-4 border-t border-ink-900/8 pt-4">
-                  <dt className="text-xs text-neutral-500">Additional instructions</dt>
+                  <dt className="text-xs text-neutral-600">Additional instructions</dt>
                   <dd className="mt-1 text-sm text-ink-900">{enquiry.additional_instructions}</dd>
                 </div>
               )}
@@ -176,7 +176,7 @@ export default async function AdminEnquiryWorkspacePage({ params }: { params: Pr
                       <FileText className="h-4 w-4 shrink-0 text-neutral-400" />
                       <div>
                         <p className="text-ink-900">{q.quotation_number}</p>
-                        <p className="text-xs text-neutral-500">{formatDateTime(q.created_at)}</p>
+                        <p className="text-xs text-neutral-600">{formatDateTime(q.created_at)}</p>
                       </div>
                     </div>
                     <StatusBadge status={q.status === "accepted" ? "quotation_accepted" : q.status === "declined" ? "quotation_declined" : "quotation_sent"} />
@@ -207,7 +207,7 @@ export default async function AdminEnquiryWorkspacePage({ params }: { params: Pr
                       <FileText className="h-4 w-4 shrink-0 text-neutral-400" />
                       <div>
                         <p className="text-ink-900">{inv.invoice_number}</p>
-                        <p className="text-xs text-neutral-500">{formatDateTime(inv.created_at)}</p>
+                        <p className="text-xs text-neutral-600">{formatDateTime(inv.created_at)}</p>
                       </div>
                     </div>
                     <StatusBadge status={inv.status === "issued" ? "invoice_issued" : (inv.status as WorkflowStatus)} />

@@ -27,7 +27,7 @@ export default async function AdminTeamPage() {
   return (
     <div className="max-w-2xl space-y-6">
       <div>
-        <p className="text-xs tracking-[0.3em] text-gold-600 uppercase">Settings</p>
+        <p className="text-xs tracking-[0.3em] text-gold-700 uppercase">Settings</p>
         <h1 className="mt-1 font-serif text-3xl text-ink-950">Team accounts</h1>
       </div>
 
@@ -43,7 +43,7 @@ export default async function AdminTeamPage() {
                 <div key={s.id} className={`flex items-center justify-between rounded-xl border border-ink-900/8 p-3 text-sm ${banned ? "opacity-50" : ""}`}>
                   <div>
                     <p className="font-medium text-ink-900">{s.full_name}</p>
-                    <p className="text-neutral-500">{s.email}</p>
+                    <p className="text-neutral-600">{s.email}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="rounded-full bg-cream-200 px-2.5 py-0.5 text-xs font-medium text-ink-700 capitalize">{s.role}</span>
@@ -57,7 +57,7 @@ export default async function AdminTeamPage() {
               );
             })
           ) : (
-            <p className="text-sm text-neutral-500">No team accounts yet.</p>
+            <p className="text-sm text-neutral-600">No team accounts yet.</p>
           )}
         </CardBody>
       </Card>
