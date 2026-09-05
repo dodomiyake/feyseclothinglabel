@@ -14,7 +14,7 @@ export async function enqueueCrmSync(params: {
 }) {
   if (!process.env.HUBSPOT_SERVICE_KEY) {
     console.warn("[crm-sync] HUBSPOT_SERVICE_KEY not configured — skipped enqueue");
-    return;
+    return null;
   }
 
   const admin = createAdminClient();
@@ -30,12 +30,14 @@ export async function enqueueCrmSync(params: {
 
   if (error || !job) {
     console.error("[crm-sync] failed to enqueue:", error);
-    return;
+    return null;
   }
 
   after(async () => {
     await processCrmSyncQueue(job.id);
   });
+
+  return job.id;
 }
 
 async function processCrmSyncQueue(priorityJobId: string) {
@@ -108,19 +110,28 @@ export async function processCrmSyncJob(jobId: string) {
       quotationAmount: quotation?.total ?? null,
     });
 
-    await Promise.all([
-      admin.from("customers").update({ hubspot_contact_id: ids.contactId }).eq("id", customer.id),
-      admin.from("enquiries").update({ hubspot_deal_id: ids.dealId }).eq("id", enquiry.id),
-      admin
-        .from("crm_sync_jobs")
-        .update({
-          status: "completed",
-          attempts: claimed.attempts + 1,
-          last_error: null,
-          completed_at: new Date().toISOString(),
-        })
-        .eq("id", jobId),
-    ]);
+    const { error: contactLinkError } = await admin
+      .from("customers")
+      .update({ hubspot_contact_id: ids.contactId })
+      .eq("id", customer.id);
+    if (contactLinkError) throw new Error(`Could not save HubSpot contact ID: ${contactLinkError.message}`);
+
+    const { error: dealLinkError } = await admin
+      .from("enquiries")
+      .update({ hubspot_deal_id: ids.dealId })
+      .eq("id", enquiry.id);
+    if (dealLinkError) throw new Error(`Could not save HubSpot deal ID: ${dealLinkError.message}`);
+
+    const { error: completionError } = await admin
+      .from("crm_sync_jobs")
+      .update({
+        status: "completed",
+        attempts: claimed.attempts + 1,
+        last_error: null,
+        completed_at: new Date().toISOString(),
+      })
+      .eq("id", jobId);
+    if (completionError) throw new Error(`Could not complete CRM sync job: ${completionError.message}`);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown CRM sync error";
     const attempts = claimed.attempts + 1;
