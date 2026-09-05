@@ -34,6 +34,16 @@ interface HubSpotPipeline {
   stages?: HubSpotStage[];
 }
 
+class HubSpotRequestError extends Error {
+  constructor(
+    readonly status: number,
+    message: string
+  ) {
+    super(message);
+    this.name = "HubSpotRequestError";
+  }
+}
+
 const CONTACT_PROPERTY_LABELS = {
   whatsapp: "WhatsApp number",
   deliveryPhone: "Delivery phone number",
@@ -99,7 +109,10 @@ async function hubspotRequest<T>(path: string, init: RequestInit = {}): Promise<
 
   if (!response.ok) {
     const body = (await response.text()).slice(0, 1_000);
-    throw new Error(`HubSpot ${response.status} ${init.method ?? "GET"} ${path}: ${body || response.statusText}`);
+    throw new HubSpotRequestError(
+      response.status,
+      `HubSpot ${response.status} ${init.method ?? "GET"} ${path}: ${body || response.statusText}`
+    );
   }
 
   if (response.status === 204) return undefined as T;
@@ -154,10 +167,16 @@ async function findRecord(objectType: "contacts" | "deals", propertyName: string
 
 async function upsertRecord(objectType: "contacts" | "deals", existingId: string | null, properties: HubSpotProperties) {
   if (existingId) {
-    return hubspotRequest<HubSpotRecord>(`/crm/objects/${API_VERSION}/${objectType}/${existingId}`, {
-      method: "PATCH",
-      body: JSON.stringify({ properties }),
-    });
+    try {
+      return await hubspotRequest<HubSpotRecord>(`/crm/objects/${API_VERSION}/${objectType}/${existingId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ properties }),
+      });
+    } catch (error) {
+      // HubSpot records can be removed independently of the app. Recover from a
+      // stale saved ID by allowing the caller to create a replacement record.
+      if (!(error instanceof HubSpotRequestError) || error.status !== 404) throw error;
+    }
   }
   return hubspotRequest<HubSpotRecord>(`/crm/objects/${API_VERSION}/${objectType}`, {
     method: "POST",
