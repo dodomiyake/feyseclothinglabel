@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import { retryEnquiryCrmSyncAction, updateEnquiryStatusAction } from "@/lib/actions/admin-enquiries";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/form-fields";
@@ -19,6 +19,7 @@ const QUICK_ACTIONS: { status: WorkflowStatus; label: string; variant: "outline"
 
 export function EnquiryStatusControls({ enquiryId, currentStatus }: { enquiryId: string; currentStatus: WorkflowStatus }) {
   const [requestingChanges, setRequestingChanges] = useState(false);
+  const [crmState, crmAction, crmPending] = useActionState(retryEnquiryCrmSyncAction, {});
 
   if (requestingChanges) {
     return (
@@ -36,9 +37,20 @@ export function EnquiryStatusControls({ enquiryId, currentStatus }: { enquiryId:
 
   return (
     <div className="flex flex-col gap-2">
-      <form action={retryEnquiryCrmSyncAction}>
+      <form action={crmAction} className="space-y-2">
         <input type="hidden" name="enquiry_id" value={enquiryId} />
-        <Button type="submit" size="sm" variant="gold" className="w-full">Sync with HubSpot</Button>
+        <Button type="submit" size="sm" variant="gold" className="w-full" disabled={crmPending}>
+          {crmPending ? "Syncing…" : "Sync with HubSpot"}
+        </Button>
+        {crmState.message ? (
+          <p
+            role="status"
+            aria-live="polite"
+            className={crmState.status === "error" ? "text-sm text-red-700" : "text-sm text-green-700"}
+          >
+            {crmState.message}
+          </p>
+        ) : null}
       </form>
       <Button type="button" size="sm" variant="outline" onClick={() => setRequestingChanges(true)}>
         Request changes / more info
