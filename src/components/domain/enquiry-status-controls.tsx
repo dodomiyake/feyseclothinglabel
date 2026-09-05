@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { updateEnquiryStatusAction } from "@/lib/actions/admin-enquiries";
+import { useActionState, useState } from "react";
+import { retryEnquiryCrmSyncAction, updateEnquiryStatusAction } from "@/lib/actions/admin-enquiries";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/form-fields";
 import type { WorkflowStatus } from "@/lib/types";
@@ -16,6 +16,28 @@ const QUICK_ACTIONS: { status: WorkflowStatus; label: string; variant: "outline"
   { status: "under_review", label: "Mark under review", variant: "outline" },
   { status: "cancelled", label: "Cancel enquiry", variant: "danger" },
 ];
+
+export function HubSpotSyncControl({ enquiryId }: { enquiryId: string }) {
+  const [crmState, crmAction, crmPending] = useActionState(retryEnquiryCrmSyncAction, {});
+
+  return (
+    <form action={crmAction} className="space-y-2">
+      <input type="hidden" name="enquiry_id" value={enquiryId} />
+      <Button type="submit" size="sm" variant="gold" className="w-full" disabled={crmPending}>
+        {crmPending ? "Syncing…" : "Sync with HubSpot"}
+      </Button>
+      {crmState.message ? (
+        <p
+          role="status"
+          aria-live="polite"
+          className={crmState.status === "error" ? "text-sm text-red-700" : "text-sm text-green-700"}
+        >
+          {crmState.message}
+        </p>
+      ) : null}
+    </form>
+  );
+}
 
 export function EnquiryStatusControls({ enquiryId, currentStatus }: { enquiryId: string; currentStatus: WorkflowStatus }) {
   const [requestingChanges, setRequestingChanges] = useState(false);

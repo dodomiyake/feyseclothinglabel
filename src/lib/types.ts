@@ -95,6 +95,7 @@ export interface Customer {
   delivery_phone: string | null;
   source: string;
   notes: string | null;
+  hubspot_contact_id: string | null;
   is_active: boolean;
   created_by: string | null;
   created_at: string;
@@ -125,6 +126,7 @@ export interface Enquiry {
   created_by: string | null;
   submitted_at: string | null;
   reviewed_at: string | null;
+  hubspot_deal_id: string | null;
   created_at: string;
   updated_at: string;
   customer?: Customer;

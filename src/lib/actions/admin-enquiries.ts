@@ -6,10 +6,16 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireProfile } from "@/lib/auth";
 import { notifyUser, recordStatusEvent } from "@/lib/actions/system";
+import { enqueueCrmSync } from "@/lib/crm-sync";
 import type { WorkflowStatus } from "@/lib/types";
 
 export interface AdminActionState {
   error?: string;
+}
+
+export interface CrmSyncActionState {
+  status?: "queued" | "error";
+  message?: string;
 }
 
 export async function createWalkInEnquiryAction(_prev: AdminActionState, formData: FormData): Promise<AdminActionState> {
@@ -118,6 +124,37 @@ export async function updateEnquiryStatusAction(formData: FormData) {
   revalidatePath(`/admin/enquiries/${enquiryId}`);
   revalidatePath(`/enquiries/${enquiryId}`);
   revalidatePath("/dashboard");
+}
+
+export async function retryEnquiryCrmSyncAction(
+  _previousState: CrmSyncActionState,
+  formData: FormData
+): Promise<CrmSyncActionState> {
+  await requireProfile("admin");
+  const enquiryId = String(formData.get("enquiry_id") || "");
+  if (!enquiryId) return { status: "error", message: "The enquiry could not be identified." };
+
+  const adminDb = createAdminClient();
+  const { data: enquiry } = await adminDb
+    .from("enquiries")
+    .select("customer_id")
+    .eq("id", enquiryId)
+    .maybeSingle();
+  if (!enquiry?.customer_id) {
+    return { status: "error", message: "The enquiry or customer record could not be found." };
+  }
+
+  const jobId = await enqueueCrmSync({
+    eventType: "enquiry_stage_update",
+    customerId: enquiry.customer_id,
+    enquiryId,
+  });
+  if (!jobId) {
+    return { status: "error", message: "HubSpot sync could not be queued. Please try again." };
+  }
+
+  revalidatePath(`/admin/enquiries/${enquiryId}`);
+  return { status: "queued", message: "HubSpot sync queued. The CRM record will update shortly." };
 }
 
 /**

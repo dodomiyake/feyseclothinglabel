@@ -8,7 +8,7 @@ import { StatusBadge } from "@/components/domain/status-badge";
 import { Button } from "@/components/ui/button";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { WhatsAppButton } from "@/components/domain/whatsapp-button";
-import { EnquiryStatusControls } from "@/components/domain/enquiry-status-controls";
+import { EnquiryStatusControls, HubSpotSyncControl } from "@/components/domain/enquiry-status-controls";
 import { autoMarkUnderReview } from "@/lib/actions/admin-enquiries";
 import { WhatsappNotesPanel } from "@/components/domain/whatsapp-notes-panel";
 import { UploadedFilesCard } from "@/components/domain/uploaded-files-card";
@@ -145,6 +145,14 @@ export default async function AdminEnquiryWorkspacePage({ params }: { params: Pr
                 className="mt-2 w-full"
                 variant="outline"
               />
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader><CardTitle>HubSpot CRM</CardTitle></CardHeader>
+            <CardBody className="space-y-2">
+              <p className="text-sm text-neutral-600">Update this contact and deal in HubSpot using the latest enquiry status and values.</p>
+              <HubSpotSyncControl enquiryId={id} />
             </CardBody>
           </Card>
 

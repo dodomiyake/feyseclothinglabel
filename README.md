@@ -154,6 +154,26 @@ Customer-facing emails (quotation sent, invoice issued, payment
 confirmed/rejected, dispatch/delivery) aren't wired up yet; `sendEmail` in
 `src/lib/email.ts` is ready to extend to `notifyUser` for that.
 
+## HubSpot CRM sync
+
+Submitted enquiries are mirrored to HubSpot without making HubSpot part of
+the customer-facing transaction:
+
+- customers are upserted as HubSpot contacts;
+- enquiries are upserted as associated deals;
+- Feyse workflow states map to the account's enquiry-to-payment deal stages;
+- custom properties created during HubSpot onboarding are discovered by label,
+  so their account-specific internal names are not hard-coded;
+- `crm_sync_jobs` provides a durable outbox, error history, idempotent retries
+  and exponential backoff; and
+- Next.js `after` processes the queue after the enquiry response, so a HubSpot
+  outage cannot prevent the enquiry from being stored in Supabase.
+
+Set the server-only `HUBSPOT_SERVICE_KEY` environment variable to enable the
+integration. The key needs read/write access to contact and deal objects plus
+read-only access to their schemas. When the variable is absent, CRM sync is
+disabled and the core workflow continues normally.
+
 ## What's intentionally out of scope for v1
 
 - Automated WhatsApp messaging (manual "chat" links and copyable templates
