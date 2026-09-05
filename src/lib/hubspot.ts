@@ -99,7 +99,7 @@ async function hubspotRequest<T>(path: string, init: RequestInit = {}): Promise<
 
   if (!response.ok) {
     const body = (await response.text()).slice(0, 1_000);
-    throw new Error(`HubSpot ${response.status}: ${body || response.statusText}`);
+    throw new Error(`HubSpot ${response.status} ${init.method ?? "GET"} ${path}: ${body || response.statusText}`);
   }
 
   if (response.status === 204) return undefined as T;
@@ -181,23 +181,9 @@ async function resolveDealPipeline(status: WorkflowStatus) {
 }
 
 async function associateContactAndDeal(contactId: string, dealId: string) {
-  const labels = await hubspotRequest<HubSpotList<{ typeId: number; category: string; label: string | null }>>(
-    `/crm/associations/${API_VERSION}/contact/deal/labels`
-  );
-  const association = labels.results.find((item) => item.category === "HUBSPOT_DEFINED" && item.label === null) ?? labels.results[0];
-  if (!association) throw new Error("HubSpot contact-to-deal association type not found");
-
   await hubspotRequest<void>(
-    `/crm/objects/${API_VERSION}/contact/${contactId}/associations/deal/${dealId}`,
-    {
-      method: "PUT",
-      body: JSON.stringify([
-        {
-          associationCategory: association.category,
-          associationTypeId: association.typeId,
-        },
-      ]),
-    }
+    `/crm/objects/${API_VERSION}/contact/${contactId}/associations/default/deal/${dealId}`,
+    { method: "PUT" }
   );
 }
 
