@@ -1,0 +1,8 @@
+NERSI explainer (45 s)
+
+Facts and the page images shown as documents: official NERSI page, Federal Ministry of Humanitarian Affairs and Poverty Reduction, https://fmhapr.gov.ng/nersi/ (captured 6 Nov 2026, shown for reporting, unaltered except for highlights).
+Picture, score and sound effects: written and synthesized in code in this folder; no samples or stock footage.
+Style: "Caption News" style guide from Lemo-Opuscar (github.com/lemomo-ai/lemo-opuscar), MIT / CC BY 4.0. No code or assets from its demo were used.
+Font: Inter Tight (SIL Open Font License 1.1), via Google Fonts.
+Voice: Kokoro-82M (hexgrad, Apache-2.0) via kokoro-onnx (MIT), voice "af_heart". Speech check: faster-whisper (MIT) with Whisper base.en (MIT).
+Rendering: Playwright + Chromium, FFmpeg.

@@ -1,0 +1,6 @@
+.venv
+models
+out/
+review/
+stills/
+src/page_full.png
