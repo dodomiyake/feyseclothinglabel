@@ -1,0 +1,13 @@
+Feyse Clothing Labels — "Signature" (48 s)
+
+Picture, score and sound effects: written and synthesized in code in this folder (film.js, mix.py); no samples, stock footage or video generation.
+Style: "Blueprint" style guide from Lemo-Opuscar (github.com/lemomo-ai/lemo-opuscar), MIT / CC BY 4.0. No code or assets from its demo were used.
+
+Fonts (SIL Open Font License 1.1, via Google Fonts):
+  Architects Daughter — Kimberly Geswein
+  B612 — Airbus / Intactile Design / Nicolas Chauveau, Thomas Paillot, Jonathan Favre-Lamarine, Jean-Luc Vinot
+  Allura — Robert Leuschke (TypeSETit)
+
+Voice: Kokoro-82M text-to-speech (hexgrad, Apache-2.0), run offline via kokoro-onnx (thewh1teagle, MIT), voice "af_heart".
+Speech check: faster-whisper (SYSTRAN, MIT) with the Whisper base.en model (OpenAI, MIT).
+Rendering: Playwright + Chromium (Apache-2.0 / BSD), FFmpeg (LGPL/GPL).
