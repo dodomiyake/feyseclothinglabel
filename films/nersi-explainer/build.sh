@@ -10,3 +10,7 @@ node video.cjs --workers 4        # picture → out/video.mp4
 .venv/bin/python mix.py           # score + foley + voice → out/mix.wav
 python3 srt.py && sh mux.sh       # → nersi-explainer.srt, nersi-explainer.mp4 (-14 LUFS)
 node stills.cjs . 39.8 && mv t_39.80.jpg poster.jpg
+# second version with the male Nigerian voice (Abeo); keeps the Ezinne film as nersi-explainer.mp4
+cp nersi-explainer.mp4 out/ezinne.mp4
+.venv/bin/python voice_ng.py en-NG-AbeoNeural +16% && .venv/bin/python mix.py && sh mux.sh
+mv nersi-explainer.mp4 nersi-explainer-abeo.mp4 && mv out/ezinne.mp4 nersi-explainer.mp4
