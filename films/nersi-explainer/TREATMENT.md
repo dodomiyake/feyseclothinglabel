@@ -17,4 +17,4 @@
 
 **Ground:** no footage. The official page is the document. Highlights on the page are placed from the page's own text boxes. Everything else is ledger cards.
 
-**Sound:** a 120 BPM synthesized pulse (kit, bass, marimba, vibraphone, brass stabs). There is silence before the question (12.0–12.4 s) and before the verdict (38.05–38.5 s), timpani and brass on the turn, and glockenspiel on the verdict. Foley comes from the event list. The voice is af_heart (Kokoro) at 1.12×.
+**Sound:** a 120 BPM synthesized pulse (kit, bass, marimba, vibraphone, brass stabs). There is silence before the question (12.0–12.4 s) and before the verdict (38.05–38.5 s), timpani and brass on the turn, and glockenspiel on the verdict. Foley comes from the event list. The voice is Ezinne (en-NG-EzinneNeural, Nigerian English) at +16% speed.

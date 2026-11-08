@@ -31,11 +31,11 @@ const CAPS = [
 ];
 // narration (TTS text spells numbers; start times on the grid)
 const VOICE = [
-  { id: 1, t: 0.45, say: 'Fifty thousand naira. A grant you never pay back.' },
+  { id: 1, t: 0.3, say: 'Fifty thousand naira. A grant you never pay back.' },
   { id: 2, t: 3.6, say: "It's called NERSI: relief for poor and vulnerable households." },
   { id: 3, t: 7.6, say: 'Beneficiaries come from the National Social Register, paid in phases.' },
   { id: 4, t: 12.4, say: 'So how do you apply?' },
-  { id: 5, t: 14.15, say: "You don't. You cannot apply, and no one can sell you a place on the list." },
+  { id: 5, t: 14.02, say: "You don't. You cannot apply, and no one can sell you a place on the list." },
   { id: 6, t: 18.6, say: 'If you are selected, your provider sends you an SMS.' },
   { id: 7, t: 22.1, say: 'Accept, and fifty thousand naira lands in your wallet.' },
   { id: 8, t: 25.7, say: "To check, dial any provider's code, and choose: check eligibility." },
