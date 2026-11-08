@@ -8,8 +8,8 @@ VOICE = sys.argv[1] if len(sys.argv) > 1 else 'en-NG-EzinneNeural'
 RATE = sys.argv[2] if len(sys.argv) > 2 else '+10%'
 CA = os.environ.get('SSL_CERT_FILE') or ('/root/.ccr/ca-bundle.crt' if os.path.exists('/root/.ccr/ca-bundle.crt') else None)
 if CA: ec._SSL_CTX = ssl.create_default_context(cafile=CA)   # trust a TLS-inspecting proxy when there is one
-V = json.load(open(os.path.join(HERE, 'out', 'voice.json')))['voice']
-out = os.path.join(HERE, 'out', 'voice'); os.makedirs(out, exist_ok=True)
+V = json.load(open(os.path.join(HERE, os.environ.get('OUT', 'out'), 'voice.json')))['voice']
+out = os.path.join(HERE, os.environ.get('OUT', 'out'), 'voice'); os.makedirs(out, exist_ok=True)
 SAY = lambda s: s.replace('NERSI', 'Nersi')
 async def synth():
     for L in V:

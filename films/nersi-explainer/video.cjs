@@ -3,7 +3,7 @@
 // Also writes out/events.json (sound cues) and out/cues.json (subtitle notes).
 const { chromium } = require('playwright');
 const fs = require('fs'), path = require('path'), { spawn, execFileSync } = require('child_process');
-const ROOT = __dirname, OUT = path.join(ROOT, 'out');
+const ROOT = __dirname, OUT = path.join(ROOT, process.env.OUT || 'out'), PAGE = process.env.PAGE || 'index.html';
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const FPS = +arg('--fps', 24), WK = +arg('--workers', 4), EVONLY = process.argv.includes('--events-only');
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.woff2': 'font/woff2', '.png': 'image/png', '.json': 'application/json' };
@@ -15,7 +15,7 @@ async function open(browser) {
     if (!f.startsWith(ROOT) || !fs.existsSync(f)) return r.fulfill({ status: 404, body: '' });
     r.fulfill({ status: 200, contentType: TYPES[path.extname(f)] || 'application/octet-stream', body: fs.readFileSync(f) });
   });
-  await page.goto('http://film.local/index.html');
+  await page.goto('http://film.local/' + PAGE);
   await page.waitForFunction('window.READY === true', null, { timeout: 180000 });
   return page;
 }

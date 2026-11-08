@@ -5,5 +5,6 @@ Picture, score and sound effects: written and synthesized in code in this folder
 Style: "Caption News" style guide from Lemo-Opuscar (github.com/lemomo-ai/lemo-opuscar), MIT / CC BY 4.0. No code or assets from its demo were used.
 Font: Inter Tight (SIL Open Font License 1.1), via Google Fonts.
 Voice: Microsoft Azure neural voices "en-NG-EzinneNeural" (nersi-explainer.mp4) and "en-NG-AbeoNeural" (nersi-explainer-abeo.mp4), Nigerian English, generated with edge-tts (MIT). Check Microsoft's terms before commercial or broadcast use.
+Pidgin versions: captions and narration follow the official page's Pidgin text; same two voices.
 Speech check: faster-whisper (MIT) with Whisper small.en (MIT).
 Rendering: Playwright + Chromium, FFmpeg.

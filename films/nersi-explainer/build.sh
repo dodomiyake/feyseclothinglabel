@@ -14,3 +14,11 @@ node stills.cjs . 39.8 && mv t_39.80.jpg poster.jpg
 cp nersi-explainer.mp4 out/ezinne.mp4
 .venv/bin/python voice_ng.py en-NG-AbeoNeural +16% && .venv/bin/python mix.py && sh mux.sh
 mv nersi-explainer.mp4 nersi-explainer-abeo.mp4 && mv out/ezinne.mp4 nersi-explainer.mp4
+# Nigerian Pidgin versions (index-pcm.html sets window.LANG = 'pcm'; wording follows the official page's Pidgin text)
+export OUT=out-pcm PAGE=index-pcm.html
+node video.cjs --events-only && node video.cjs --workers 4
+for V in Ezinne Abeo; do
+  .venv/bin/python voice_ng.py en-NG-${V}Neural +16% || true    # the English speech check under-scores Pidgin; listen instead
+  .venv/bin/python mix.py && NAME=nersi-explainer-pidgin-$(echo $V | tr A-Z a-z) sh mux.sh
+done
+NAME=nersi-explainer-pidgin python3 srt.py

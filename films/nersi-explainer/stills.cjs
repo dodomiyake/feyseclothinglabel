@@ -14,7 +14,7 @@ const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.woff2': 'font/
     if (!f.startsWith(ROOT) || !fs.existsSync(f)) return r.fulfill({ status: 404, body: '' });
     r.fulfill({ status: 200, contentType: TYPES[path.extname(f)] || 'application/octet-stream', body: fs.readFileSync(f) });
   });
-  await page.goto('http://film.local/index.html');
+  await page.goto('http://film.local/' + (process.env.PAGE || 'index.html'));
   await page.waitForFunction('window.READY === true', null, { timeout: 180000 });
   for (const t of ts) {
     await page.evaluate(t => window.render(+t), t);

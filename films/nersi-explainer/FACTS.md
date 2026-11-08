@@ -16,3 +16,7 @@ Every claim in the film, with the official wording it rests on. Source: the offi
 | Help line 0700-022-2222 | Page header: "Need help? Call 0700-022-2222" |
 
 Deliberately left out: whether the payment is one-off or monthly. The page text read does not state a frequency, and press reports disagree.
+
+## Pidgin versions
+
+The Pidgin captions and narration follow the official page's own Pidgin text (language switch "Pidgin" on fmhapr.gov.ng/nersi, read 8 Nov 2026), for example "You no fit apply or pay make dem add you", "nobody fit sell you space for the list", "E no go ever ask for money, your PIN, OTP or make you click link". The document shots use the Pidgin page (src/pcm/).

@@ -11,7 +11,7 @@ mid = lambda m: 440 * 2 ** ((m - 69) / 12)
 T = lambda d: np.arange(int(d * SR)) / SR
 def filt(x, kind, f, o=2): return sosfilt(butter(o, f, kind, fs=SR, output='sos'), x)
 noise = lambda d: rng.standard_normal(int(d * SR))
-V = json.load(open(os.path.join(HERE, 'out', 'voice.json')))
+V = json.load(open(os.path.join(HERE, os.environ.get('OUT', 'out'), 'voice.json')))
 SIL = V['silences']
 
 # ---------------- instruments ----------------
@@ -105,13 +105,13 @@ def buzz(): t = T(0.18); return 0.07 * np.sign(np.sin(2 * np.pi * 110 * t)) * np
 SFX = {'slam': lambda e: slam(), 'counter': lambda e: counter(e['dur']), 'whoosh': lambda e: whoosh(), 'highlighter': lambda e: hl(e['dur']),
        'pop': lambda e: pop(), 'tick': lambda e: tick(), 'stamp': lambda e: stamp(), 'shutter': lambda e: shutter(), 'rise': lambda e: rise(),
        'sms': lambda e: sms(), 'buzz': lambda e: buzz(), 'hit_big': lambda e: stamp() * 0.6, 'turn_hit': lambda e: stamp(), 'verdict': lambda e: stamp() * 0.7}
-for e in json.load(open(os.path.join(HERE, 'out', 'events.json'))):
+for e in json.load(open(os.path.join(HERE, os.environ.get('OUT', 'out'), 'events.json'))):
     f = SFX.get(e['type'])
     if f: put(fx, f(e), e['t'], float(rng.uniform(-0.25, 0.25)))
 
 # ---------------- voice (compressed, ~8 dB over the music) ----------------
 voice = np.zeros(N); duck = np.ones(N)
-for L in json.load(open(os.path.join(HERE, 'out', 'voice', 'lines.json'))):
+for L in json.load(open(os.path.join(HERE, os.environ.get('OUT', 'out'), 'voice', 'lines.json'))):
     a, sr = sf.read(L['file']); a = a if a.ndim == 1 else a.mean(1)
     if sr != SR: a = resample_poly(a, SR, sr)
     i = int(L['t'] * SR); a = a[:N - i]; voice[i:i + len(a)] += a
@@ -122,5 +122,5 @@ duck = filt(duck, 'low', 8, 1)
 mix = music * duck[:, None] * 0.55 + fx * 0.6 + voice[:, None] * 0.9
 mix[-int(0.5 * SR):] *= np.linspace(1, 0, int(0.5 * SR))[:, None]
 mix *= 0.89 / np.abs(mix).max()
-sf.write(os.path.join(HERE, 'out', 'mix.wav'), mix.astype(np.float32), SR, subtype='PCM_24')
+sf.write(os.path.join(HERE, os.environ.get('OUT', 'out'), 'mix.wav'), mix.astype(np.float32), SR, subtype='PCM_24')
 print('mix.wav ok · silence peaks', [round(float(np.abs(music[int(a * SR):int(b * SR)]).max()), 5) for a, b in SIL])

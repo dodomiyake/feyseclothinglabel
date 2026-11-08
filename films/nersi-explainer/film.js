@@ -43,6 +43,54 @@ const VOICE = [
   { id: 10, t: 38.7, say: 'Not sure? Call the help line before you do anything.' },
 ];
 const SILENCES = [[12.0, 12.4], [38.05, 38.5]];
+
+// ---------------- Nigerian Pidgin version (window.LANG = 'pcm'); wording follows the official page's Pidgin text ----------------
+const LANG = window.LANG || 'en';
+const CAPS_PCM = [
+  { t0: 0.9, t1: 3.5, big: 'Government | {grant}', en: '₦50,000. Na grant, no be loan.' },
+  { t0: 3.5, t1: 7.5, big: 'For {poor and vulnerable} | families', en: 'Dem call am NERSI: support for poor and vulnerable families.' },
+  { t0: 7.5, t1: 11.5, big: 'Dem dey pick from | {Social Register}', en: 'Dem dey pick people from the National Social Register.' },
+  { t0: 12.0, t1: 14.0, big: 'So how you go | {apply}?', en: 'So how you go take apply?' },
+  { t0: 14.0, t1: 16.5, big: 'You no fit {apply}.', en: 'You no fit apply…' },
+  { t0: 16.5, t1: 18.5, big: 'Nobody fit | {sell you space}', en: '…and nobody fit sell you space for the list.' },
+  { t0: 18.5, t1: 22.0, big: 'Dem pick you? You go | get {SMS}', en: 'If dem pick you, your provider go send you SMS.' },
+  { t0: 22.0, t1: 25.5, big: 'Accept am, collect | {₦50,000}', en: 'Accept am, and ₦50,000 go land for your wallet.' },
+  { t0: 25.5, t1: 32.5, big: 'To check, | {dial the code}', en: 'To check, dial any provider code, then choose ‘Check eligibility’.' },
+  { t0: 32.5, t1: 35.5, big: 'E dey {free}.', en: 'E dey free. No pay anybody…' },
+  { t0: 35.5, t1: 38.0, big: 'No ever share your | {PIN or OTP}', en: '…and no ever share your PIN or OTP.' },
+  { t0: 38.5, t1: 45.0, big: 'You no sure? | {Call first}.', en: 'You no sure? Call the help line before you do anything.' },
+];
+const VOICE_PCM = [
+  { id: 1, t: 0.18, say: 'Fifty thousand naira. Na grant, no be loan.' },
+  { id: 2, t: 3.65, say: 'Dem call am NERSI: support for poor and vulnerable families.' },
+  { id: 3, t: 7.6, say: 'Dem dey pick people from the National Social Register.' },
+  { id: 4, t: 12.4, say: 'So how you go take apply?' },
+  { id: 5, t: 14.02, say: 'You no fit apply, and nobody fit sell you space for the list.' },
+  { id: 6, t: 18.6, say: 'If dem pick you, your provider go send you SMS.' },
+  { id: 7, t: 22.1, say: 'Accept am, and fifty thousand naira go land for your wallet.' },
+  { id: 8, t: 25.7, say: 'To check, dial any provider code, then choose: check eligibility.' },
+  { id: 9, t: 32.6, say: 'E dey free. No pay anybody, and no ever share your PIN or OTP.' },
+  { id: 10, t: 38.7, say: 'You no sure? Call the help line before you do anything.' },
+];
+const PCM = {
+  'FEDERAL GOVERNMENT RELIEF': 'FEDERAL GOVERNMENT SUPPORT', 'into your mobile wallet · no deductions': 'e go land for your mobile wallet · nobody go cut am',
+  'NOT A LOAN': 'NO BE LOAN', 'HOUSEHOLDS': 'FAMILIES',
+  'Who is selected': 'How dem dey pick people', 'No sign-up. Names come from existing records.': 'No registration. Dem use records wey dey already.',
+  'poor and vulnerable households': 'poor and vulnerable families', 'Verified national identity records': 'National ID records', 'your phone number and NIN': 'wey dem don check · phone number and NIN',
+  'Paid in phases': 'Payment dey go in phases', 'across all six geopolitical zones': 'for all six geopolitical zones',
+  'YOU CAN’T APPLY': 'YOU NO FIT APPLY', 'OR PAY TO BE ADDED': 'OR PAY MAKE DEM ADD YOU',
+  'How it works': 'How e dey work', 'The example SMS is quoted from the official page': 'The SMS example na from the official page',
+  'An SMS': 'SMS go come', 'You accept': 'Reply YES', 'reply YES, or dial the': 'na your yes be say', 'code in the SMS': 'you agree to join',
+  'credited to your wallet,': 'e go land for your wallet,', 'no deductions': 'nobody go cut am',
+  'Check your eligibility': 'Check if dem pick you',
+  'Dial any provider’s code, then choose “Check eligibility”. Works on any phone, no data.': 'Dial any provider code, then choose “Check eligibility”. Any phone fit do am, no data.',
+  'THE PROGRAMME IS': 'THIS PROGRAMME NA', 'NO FEES · NO MIDDLEMEN': 'NO CHARGE · NO MIDDLEMAN', 'NEVER': 'NO EVER',
+  'Pay anyone to “release” it': 'Pay anybody to “release” am', 'Click a link in a message': 'Click link for message',
+  'NOT SURE A MESSAGE IS REAL?': 'YOU NO SURE SAY MESSAGE NA REAL?',
+};
+if (LANG === 'pcm') { CAPS.splice(0, CAPS.length, ...CAPS_PCM); VOICE.splice(0, VOICE.length, ...VOICE_PCM); }
+const tr = s => (LANG === 'pcm' && PCM[s]) || s;
+const SRCDIR = LANG === 'pcm' ? 'src/pcm/' : 'src/';
 const SHOTS = [
   { t0: 0, t1: 3.0, f: shotHook },
   { t0: 3.0, t1: 7.5, f: shotDocHero },
@@ -61,11 +109,11 @@ const PROVIDERS = [
 
 // ---------------- assets ----------------
 const IMG = {}, BOX = {}; let NOOVL = false;
-function load(name) { return new Promise(r => { const i = new Image(); i.onload = () => { IMG[name] = i; r(); }; i.onerror = () => r(); i.src = 'src/' + name + '.png'; }); }
+function load(name) { return new Promise(r => { const i = new Image(); i.onload = () => { IMG[name] = i; r(); }; i.onerror = () => r(); i.src = SRCDIR + name + '.png'; }); }
 
 // ---------------- drawing helpers ----------------
-function txt(s, x, y, font, color, align = 'left', ls = 0) { ctx.font = font; ctx.letterSpacing = ls + 'px'; ctx.fillStyle = color; ctx.textAlign = align; ctx.fillText(s, x, y); ctx.letterSpacing = '0px'; ctx.textAlign = 'left'; }
-function tw(s, font, ls = 0) { ctx.font = font; ctx.letterSpacing = ls + 'px'; const w = ctx.measureText(s).width; ctx.letterSpacing = '0px'; return w; }
+function txt(s, x, y, font, color, align = 'left', ls = 0) { s = tr(s); ctx.font = font; ctx.letterSpacing = ls + 'px'; ctx.fillStyle = color; ctx.textAlign = align; ctx.fillText(s, x, y); ctx.letterSpacing = '0px'; ctx.textAlign = 'left'; }
+function tw(s, font, ls = 0) { s = tr(s); ctx.font = font; ctx.letterSpacing = ls + 'px'; const w = ctx.measureText(s).width; ctx.letterSpacing = '0px'; return w; }
 function ledger(t, t0, push = 0.028) {
   const k = clamp((t - t0) / 6);
   ctx.save(); ctx.fillStyle = CARD; ctx.fillRect(0, 0, W, H);
@@ -311,6 +359,6 @@ EV.sort((a, b) => a.t - b.t);
 
 window.DUR = DUR; window.EV = EV; window.NOTES = CAPS.map(c => ({ t0: c.t0, t1: c.t1, s: c.en })); window.VOICE = VOICE; window.SILENCES = SILENCES;
 window.render = render;
-Promise.all([load('hero'), load('know'), fetch('src/bbox.json').then(r => r.json()).then(j => Object.assign(BOX, j)).catch(() => {}),
+Promise.all([load('hero'), load('know'), fetch(SRCDIR + 'bbox.json').then(r => r.json()).then(j => Object.assign(BOX, j)).catch(() => {}),
   document.fonts.load(F(900, 80)), document.fonts.load(F(500, 30)), document.fonts.load(F(900, 80) , '₦')]).then(() => { render(0); window.READY = true; });
 })();
