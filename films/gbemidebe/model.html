@@ -1,0 +1,21 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="fonts/fonts.css">
+<style>html,body{margin:0;background:#F4F0E6}canvas{display:block}</style></head>
+<body><canvas id="c" width="1920" height="1080"></canvas>
+<script src="character.js"></script>
+<script>
+const c = document.getElementById('c').getContext('2d'); CH.tones(c);
+function draw() {
+c.fillStyle = '#F4F0E6'; c.fillRect(0, 0, 1920, 1080);
+const lab = (s, x, y) => { c.font = "30px Bangers"; c.fillStyle = '#111'; c.textAlign = 'center'; c.fillText(s, x, y); };
+// bust, front, cool
+c.save(); c.translate(330, 420); c.scale(0.95, 0.95); CH.bust(c, { expr: 'cool' }); c.restore(); lab('BUST · COOL', 330, 1010);
+// heads: expressions and turns
+const H = [['smile', 0], ['shout', 0], ['wink', 0], ['grin', -0.6], ['cool', 0.7]];
+H.forEach(([e, tn], i) => { const x = 780 + (i % 3) * 270, y = 250 + Math.floor(i / 3) * 420; c.save(); c.translate(x, y); c.scale(0.62, 0.62); CH.head(c, { expr: e, turn: tn, look: tn }); c.restore(); lab(e.toUpperCase() + (tn ? ' · TURN' : ''), x, y + 210); });
+// dance pose
+c.save(); c.translate(1700, 330); c.scale(0.5, 0.5); CH.body(c, { lsh: 2.6, lel: 0.5, rsh: -1.2, rel: -0.8, lhip: 0.35, lkn: -0.5, rhip: -0.2, rkn: 0.2, lean: -0.05 }, { expr: 'grin' }); c.restore(); lab('DANCE', 1700, 1010);
+}
+window.render = draw;
+document.fonts.load('30px Bangers').then(() => document.fonts.ready).then(() => { draw(); window.READY = true; });
+</script></body></html>
