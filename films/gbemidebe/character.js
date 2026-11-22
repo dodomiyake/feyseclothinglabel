@@ -40,19 +40,22 @@ const CH = (() => {
     for (const s of [-1, 1]) { const ex = s * (126 - s * turn * 10); skin(c, () => { c.beginPath(); c.ellipse(ex, -12, 22, 36, s * 0.15, 0, 7); }, 4.5);
       c.strokeStyle = INK; c.lineWidth = 3; c.beginPath(); c.arc(ex - s * 3, -12, 12, s > 0 ? -1.2 : 1.9, s > 0 ? 1.2 : 4.4); c.stroke(); }
     // face: broad and full, rounded cheeks
-    const face = () => P(c, [[-108 + fx * .3, -104], [-126 + fx * .4, -40, -128, 20], [-126, 96, -88, 140], [-46, 172, 0 + fx, 176], [46, 172, 88, 140], [126, 96, 128, 20], [126 + fx * .4, -40, 108 + fx * .3, -104], [0, -122, -108 + fx * .3, -104]]);
+    const face = () => P(c, [[-100 + fx * .3, -108], [-122 + fx * .4, -70, -126, -10], [-132, 50, -112, 104], [-80, 158, 0 + fx, 178], [80, 158, 112, 104], [132, 50, 126, -10], [122 + fx * .4, -70, 100 + fx * .3, -108], [0, -126, -100 + fx * .3, -108]]);
     skin(c, face, 5.5);
     c.save(); face(); c.clip(); c.fillStyle = TONE.mid; P(c, [[78 + fx, -130], [150, -130], [150, 200], [40 + fx, 200], [100 + fx, 40]]); c.fill();
     c.fillStyle = TONE.light; c.globalAlpha = 0.9; c.beginPath(); c.ellipse(-60 + fx, -84, 40, 16, -0.1, 0, 7); c.fillStyle = PAPER; c.globalAlpha = 0.35; c.fill(); c.globalAlpha = 1; c.restore();
     // hair: short twists, flat-ish top, faded grey sides
-    const hair = () => P(c, [[-112, -86], [-130, -150, -82, -192], [-30, -212, 0, -210], [30, -212, 82, -192], [130, -150, 112, -86], [96, -112, 60, -114], [0, -120, -60, -114], [-96, -112, -112, -86]]);
+    const bumps = [];
+    for (let i = 0; i <= 22; i++) { const k = i / 22, ang = Math.PI * (1.04 + 0.92 * k), r = 1 + 0.035 * Math.sin(i * 2.7);
+      bumps.push([Math.cos(ang) * 124 * r, -100 + Math.sin(ang) * 104 * r + (i % 2 ? 4 : -4)]); }
+    const hair = () => { c.beginPath(); c.moveTo(-114, -86); for (const [x, y] of bumps) c.lineTo(x, y); c.lineTo(114, -86); c.quadraticCurveTo(60, -116, 0, -120); c.quadraticCurveTo(-60, -116, -114, -86); c.closePath(); };
     hair(); c.fillStyle = INK; c.fill();
-    c.save(); hair(); c.clip(); c.strokeStyle = 'rgba(255,255,255,0.6)'; c.lineWidth = 1.8;
-    for (let i = 0; i < 90; i++) { // twists: short upright coils
-      const x = lerp(-108, 108, R()), y0 = -118 - R() * 80 + Math.abs(x) * 0.25, h = 14 + R() * 12;
-      c.beginPath(); c.moveTo(x, y0); for (let k = 1; k <= 4; k++) c.quadraticCurveTo(x + (k % 2 ? 5 : -5), y0 - h * (k - .5) / 4, x, y0 - h * k / 4); c.stroke(); }
+    c.save(); hair(); c.clip(); c.strokeStyle = 'rgba(255,255,255,0.62)'; c.lineWidth = 1.7;
+    for (let row = 0; row < 7; row++) for (let col = 0; col < 16; col++) { // tight coiled twists in rows
+      const x = -112 + col * 15 + (row % 2) * 7 + (R() - .5) * 4, y = -124 - row * 12 - (1 - (x / 124) ** 2) * 30 + (R() - .5) * 4;
+      c.beginPath(); c.moveTo(x - 3, y + 5); c.quadraticCurveTo(x + 4, y + 2, x - 1, y - 1); c.quadraticCurveTo(x - 5, y - 4, x + 2, y - 7); c.stroke(); }
     c.restore();
-    curls(c, hair, 260, R, [-130, -150, 130, -86], (x, y) => clamp((Math.abs(x) - 70) / 50, 0, 1) * 0.95, 'rgba(255,255,255,0.9)', [1.8, 3.2]);
+    curls(c, hair, 260, R, [-130, -150, 130, -86], (x, y) => clamp((Math.abs(x) - 72) / 46, 0, 1) * 0.95, 'rgba(255,255,255,0.9)', [1.8, 3.2]);
     // sideburns
     for (const s of [-1, 1]) { P(c, [[s * 110, -92], [s * 128, -30], [s * 126, 20], [s * 106, 10], [s * 104, -80]]); c.fillStyle = INK; c.fill(); }
     curls(c, () => { for (const s of [-1, 1]) P(c, [[s * 110, -92], [s * 128, -30], [s * 126, 20], [s * 106, 10], [s * 104, -80]]); }, 70, R, [-130, -92, 130, 20], () => 0.7, 'rgba(255,255,255,0.85)', [1.6, 3]);
@@ -103,7 +106,7 @@ const CH = (() => {
   function bust(c, o = {}) {
     c.save(); c.lineJoin = 'round'; c.lineCap = 'round';
     // jacket body
-    const jk = () => P(c, [[-60, 210], [-190, 250, -250, 330], [-280, 480], [280, 480], [250, 330, 190, 250], [60, 210]]);
+    const jk = () => P(c, [[-60, 210], [-190, 250, -250, 330], [-290, 820], [290, 820], [250, 330, 190, 250], [60, 210]]);
     jk(); c.fillStyle = INK; c.fill();
     // leather shine: soft white streaks
     c.save(); jk(); c.clip(); c.strokeStyle = 'rgba(255,255,255,0.55)'; c.lineWidth = 5;
@@ -111,12 +114,12 @@ const CH = (() => {
     c.strokeStyle = 'rgba(255,255,255,0.22)'; c.lineWidth = 2; for (let i = 0; i < 10; i++) { c.beginPath(); c.moveTo(-250 + i * 50, 480); c.lineTo(-240 + i * 52, 380); c.stroke(); }
     c.restore();
     // tee (dark screentone so it separates from the jacket)
-    P(c, [[-62, 212], [-90, 300, -70, 480], [70, 480], [90, 300, 62, 212]]); c.fillStyle = '#2a2a28'; c.fill(); c.fillStyle = TONE.white; c.globalAlpha = 0.25; c.fill(); c.globalAlpha = 1;
+    P(c, [[-62, 212], [-90, 300, -76, 820], [76, 820], [90, 300, 62, 212]]); c.fillStyle = '#2a2a28'; c.fill(); c.fillStyle = TONE.white; c.globalAlpha = 0.25; c.fill(); c.globalAlpha = 1;
     // ribbed stand collar
     for (const s of [-1, 1]) { P(c, [[s * 58, 200], [s * 120, 214, s * 138, 260], [s * 96, 300], [s * 70, 250, s * 52, 236]]); c.fillStyle = INK; c.fill(); c.strokeStyle = '#fff'; c.lineWidth = 2;
       c.save(); c.clip(); c.strokeStyle = 'rgba(255,255,255,0.5)'; for (let i = 0; i < 10; i++) { c.beginPath(); c.moveTo(s * 50, 204 + i * 10); c.lineTo(s * 140, 222 + i * 10); c.stroke(); } c.restore(); }
     // zipper lines
-    for (const s of [-1, 1]) { c.strokeStyle = 'rgba(255,255,255,0.85)'; c.lineWidth = 3; c.setLineDash([5, 5]); c.beginPath(); c.moveTo(s * 92, 300); c.quadraticCurveTo(s * 86, 400, s * 80, 480); c.stroke(); c.setLineDash([]); }
+    for (const s of [-1, 1]) { c.strokeStyle = 'rgba(255,255,255,0.85)'; c.lineWidth = 3; c.setLineDash([5, 5]); c.beginPath(); c.moveTo(s * 92, 300); c.quadraticCurveTo(s * 86, 500, s * 80, 820); c.stroke(); c.setLineDash([]); }
     // silver figaro chain: links along a U
     const R = rng(3), N = 26;
     for (let i = 0; i <= N; i++) { const k = i / N, a = Math.PI * (0.08 + 0.84 * k), x = -Math.cos(a) * 66, y = 216 + Math.sin(a) * 62, long = i % 4 === 0;
