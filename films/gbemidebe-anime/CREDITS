@@ -1,0 +1,8 @@
+GBEMIDEBE (Remix Version 2) · Metheues · 80s cel-anime music video
+
+Song: "Gbemidebe (Remix Version 2)" by Metheues (owned by the artist; made with Suno; file supplied by the artist).
+Lyric timing and beat map: Suno lyric alignment and audio analysis for the song.
+Picture: drawn in code in this folder (char80.js, film80.js) from the artist's own reference photo; painted backgrounds, neon, tape/CRT finish all procedural; no stock or generated images. Sign words are generic (no brands).
+Style grammar: "80s Cel Anime" style guide from Lemo-Opuscar (MIT / CC BY 4.0); no code or assets from its demo.
+Fonts (SIL Open Font License 1.1, via Google Fonts): Barlow Condensed, Barlow Semi Condensed (Jeremy Tribby).
+Rendering: Playwright + Chromium, FFmpeg.
