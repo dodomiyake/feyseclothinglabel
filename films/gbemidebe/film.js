@@ -113,12 +113,14 @@ const F = {
   cover: (w, h, k, t) => { // intro cover page
     c.fillStyle = T.light; c.fillRect(0, 0, w, h); speed(w * 0.33, h * 0.45, w, h, 150, 11, 0.32);
     c.fillStyle = PAPER; c.beginPath(); c.arc(w * 0.33, h * 0.45, 360, 0, 7); c.fill();
-    hero(w * 0.33, h * 0.38, 0.95, { expr: k > 6.4 && k < 7.2 || (k > 9.4 && k < 10.7) ? 'shout' : 'cool', blink: k > 4.1 && k < 4.25 ? 1 : 0 });
+    const C = PLAN.cover, shouting = C.shouts.some(a => k > a - 0.2 && k < a + 0.7);
+    hero(w * 0.33, h * 0.38, 0.95, { expr: shouting ? 'shout' : 'cool', blink: (k % 4.1) > 3.95 ? 1 : 0 });
     c.fillStyle = SPOT; c.fillRect(w * 0.62, 70, 640, 16);
     sfx('GBEMIDEBE', w * 0.79, 210, 170, k - 0.15, -0.04, INK);
-    c.font = '800 40px "Noto Sans"'; c.fillStyle = INK; c.textAlign = 'center'; c.globalAlpha = pr(k, 2.0, 0.3); c.fillText('METHEUES', w * 0.79, 330); c.globalAlpha = pr(k, 0.2, 0.3);
-    c.font = '500 30px "Noto Sans"'; c.fillText('Vibes and Blues · Vol. 1', w * 0.79, 380); c.globalAlpha = 1; c.textAlign = 'left';
-    for (const [at, x, y, sz, r] of [[6.62, 0.78, 0.62, 200, -0.12], [9.64, 0.66, 0.8, 150, 0.1], [10.2, 0.9, 0.84, 170, -0.06]]) sfx('GIDDEM!', w * x, h * y, sz, k - at, r, at === 6.62 ? SPOT : INK);
+    c.font = '800 40px "Noto Sans"'; c.fillStyle = INK; c.textAlign = 'center'; c.globalAlpha = pr(k, C.name - 0.1, 0.3); c.fillText('METHEUES', w * 0.79, 330); c.globalAlpha = pr(k, C.vibes - 0.1, 0.3);
+    c.font = '500 30px "Noto Sans"'; c.fillText(TM.title.includes('Remix') ? 'Vibes and Blues · Remix Vol. 2' : 'Vibes and Blues · Vol. 1', w * 0.79, 380); c.globalAlpha = 1; c.textAlign = 'left';
+    const SP = [[0.78, 0.62, 200, -0.12], [0.66, 0.8, 150, 0.1], [0.9, 0.84, 170, -0.06]];
+    C.shouts.forEach((at, i) => sfx(TM.title.includes('Remix') ? 'GBEMIDEBE!' : 'GIDDEM!', w * SP[i % 3][0], h * SP[i % 3][1], SP[i % 3][2], k - at, SP[i % 3][3], i === 0 ? SPOT : INK));
   },
   chain: (w, h, k, t) => { tone('light'); c.fillRect(0, 0, w, h); c.globalAlpha = 1; speed(w / 2, h * 0.65, w, h, 90, 21, 0.4);
     c.save(); c.translate(w / 2, h * 0.05); c.scale(1.9, 1.9); c.translate(0, -230); CH.bust(c, { expr: 'cool' }); c.restore();
@@ -191,7 +193,7 @@ const F = {
     skyline(w, h * 0.75, 151, T.mid); palm(w * 0.1, h * 0.75, 0.9); palm(w * 0.9, h * 0.78, 0.8);
     dancer(w / 2, h * 0.06, 0.62, t, [0, 2, 1, 2]); crowd(w, h, t, 161, 2, true); },
   chapter: (w, h, k, t) => { c.fillStyle = INK; c.fillRect(0, 0, w, h); c.fillStyle = SPOT; c.fillRect(0, h * 0.46, w * eout(clamp(k / 0.4)), 14);
-    sfx('CHAPTER 2', w / 2, h * 0.36, 140, k - 0.1, 0, '#fff', INK); c.font = '800 54px "Noto Sans"'; c.fillStyle = PAPER; c.textAlign = 'center'; c.globalAlpha = pr(k, 0.4, 0.3); c.fillText('Òjò ò lè pa agogo', w / 2, h * 0.62); c.globalAlpha = 1; c.textAlign = 'left'; },
+    sfx('CHAPTER 2', w / 2, h * 0.36, 140, k - 0.1, 0, '#fff', INK); c.font = '800 54px "Noto Sans"'; c.fillStyle = PAPER; c.textAlign = 'center'; c.globalAlpha = pr(k, 0.3, 0.3); c.fillText('Òjò ò lè pa agogo', w / 2, h * 0.62); c.globalAlpha = 1; c.textAlign = 'left'; },
   bend: (w, h, k, t) => { tone('light'); c.fillRect(0, 0, w, h); c.globalAlpha = 1; speed(w / 2, h * 0.7, w, h, 80, 171, 0.42);
     dancer(w / 2, h * 0.2, 0.62, t, [2, 4]); sfx('Ó YÁ!', w * 0.2, h * 0.16, 120, k - 0.05, -0.1, SPOT); sfx('JÓ!', w * 0.82, h * 0.22, 130, k - 1.6, 0.1); },
   plate: (w, h, k, t) => { c.fillStyle = PAPER; c.fillRect(0, 0, w, h); burst(w * 0.7, h * 0.6, 260, 12, 181, T.light);
@@ -230,47 +232,54 @@ const F = {
   back: (w, h, k, t) => { c.fillStyle = '#3a3935'; c.fillRect(0, 0, w, h); speed(w * 0.3, h * 0.5, w, h, 140, 221, 0.35, true);
     c.save(); c.translate(w * 0.3 + k * 6, h * 0.12); c.scale(0.6, 0.6); CH.body(c, POSES[4], { expr: 'cool' }); c.restore();
     c.font = '800 44px "Noto Sans"'; c.fillStyle = PAPER; c.textAlign = 'center'; c.globalAlpha = pr(k, 0.1, 0.4); c.fillText('Vibes and Blues', w * 0.72, h * 0.3); c.globalAlpha = 1;
-    sfx('METHEUES MUSIC', w * 0.72, h * 0.45, 120, k - 7.06, -0.04, SPOT, INK);
-    sfx('GIDDEM!!!', w * 0.72, h * 0.66, 180, k - 9.46, -0.08, '#fff', INK);
-    c.globalAlpha = pr(k, 10.4, 0.6); c.font = '800 40px "Noto Sans"'; c.fillStyle = PAPER; c.fillText('TO BE CONTINUED…', w * 0.72, h * 0.86); c.globalAlpha = 1; c.textAlign = 'left'; },
+    const O = PLAN.outro; sfx('METHEUES MUSIC', w * 0.72, h * 0.45, 120, k - (O.music - O.t0), -0.04, SPOT, INK);
+    sfx('GIDDEM!!!', w * 0.72, h * 0.66, 180, k - (O.giddem - O.t0), -0.08, '#fff', INK);
+    c.globalAlpha = pr(k, O.giddem - O.t0 + 1.0, 0.6); c.font = '800 40px "Noto Sans"'; c.fillStyle = PAPER; c.fillText('TO BE CONTINUED…', w * 0.72, h * 0.86); c.globalAlpha = 1; c.textAlign = 'left'; },
 };
 const P_ = (f, at, o = {}) => ({ f: (w, h, k) => F[f](w, h, k, cur), at, ...o });
 let cur = 0;
 
 // ---------------- the film: pages on the song's sections, panels on the lyric lines ----------------
-const CH1 = [39.40, 48.83, 58.21, 67.64], CH2 = [105.18, 114.53, 123.89, 133.25, 142.60];
+let PLAN;
 const CHORUS_LINES = ['carry', 'chest', 'light', 'steps'];
-function chorusBlock(t, s, n, wave) { // one 4-line chorus block (~9.4 s); each block gets its own layout
-  const at = [s, s + 2.58, s + 4.84, s + 7.21];
-  const style = (n + wave) % 4;
-  if (style === 0) return page(t, 'grid4', CHORUS_LINES.map((f, i) => P_(f, at[i])), { bump: 1 });
-  if (style === 1) { const i = at.filter(a => t >= a).length - 1; return page(t, 'full', [P_(CHORUS_LINES[Math.max(0, i)], at[Math.max(0, i)])], { bump: 1 }); }
-  if (style === 2) { if (t < at[3]) return page(t, 'strips3', [P_('carry', at[0]), P_('chest', at[1]), P_('light', at[2])], { bump: 1 }); return page(t, 'full', [P_('dance', at[3])], { bump: 1 }); }
-  if (t < at[2]) return page(t, 'diag2', [P_('carry', at[0]), P_('chest', at[1])], { bump: 1 });
-  return page(t, 'diag2', [P_('light', at[2]), P_('steps', at[3])], { bump: 1 });
+function chorusBlock(t, at, n, wave) { // one 4-line chorus block, panels on the sung lines; each block gets its own layout
+  const a = at.map(x => x - 0.12), style = (n + wave) % 4;
+  if (style === 0) return page(t, 'grid4', CHORUS_LINES.map((f, i) => P_(f, a[i])), { bump: 1 });
+  if (style === 1) { const i = Math.max(0, a.filter(x => t >= x).length - 1); return page(t, 'full', [P_(CHORUS_LINES[i], a[i])], { bump: 1 }); }
+  if (style === 2) { if (t < a[3]) return page(t, 'strips3', [P_('carry', a[0]), P_('chest', a[1]), P_('light', a[2])], { bump: 1 }); return page(t, 'full', [P_('dance', a[3])], { bump: 1 }); }
+  if (t < a[2]) return page(t, 'diag2', [P_('carry', a[0]), P_('chest', a[1])], { bump: 1 });
+  return page(t, 'diag2', [P_('light', a[2]), P_('steps', a[3])], { bump: 1 });
+}
+function pre(t, p, next) { // pre-chorus: rise, drip, comot body, carry, "you can't deny"
+  const a = p.map(x => x - 0.12), seq = ['rise', 'drip', 'comot', 'carry', 'point'];
+  const i = Math.max(0, a.filter(x => t >= x).length - 1); return page(t, 'full', [P_(seq[i], i === 0 ? Math.min(a[0], t) : a[i], seq[i] === 'comot' ? { bg: INK } : {})]);
+}
+function dancebreak(t, t0, t1, seed) { // instrumental break: a new full page every two bars
+  const bar = 4 * (60 / TM.bpm), i = Math.floor((t - t0) / (2 * bar)), at = t0 + i * 2 * bar, seq = ['dance', 'light', 'steps', 'carry', 'dance', 'chest', 'light', 'dance'];
+  if (t > t1 - 1.15) return page(t, 'full', [P_('chapter', t1 - 1.15, { bg: INK })]);
+  return page(t, 'full', [P_(seq[(i + seed) % seq.length], at)], { bump: 1 });
 }
 function scene(t) {
-  cur = t;
-  if (t < 10.92) return page(t, 'full', [P_('cover', 0)], { push: 1, t0: 0 });
-  if (t < 20.8) return page(t, 'grid4', [P_('chain', 11.15), P_('cake16', 13.6), P_('heroLow', 16.1), P_('gasp', 18.3)], { push: 1, t0: 10.92 });
-  if (t < 30.3) return page(t, 'zig4', [P_('notes', 20.82), P_('mix', 23.0), P_('cube', 25.4), P_('chef', 27.8)], { push: 1, t0: 20.8 });
-  if (t < 32.6) return page(t, 'full', [P_('rise', 30.3)]);
-  if (t < 35.0) return page(t, 'full', [P_('drip', 32.6)]);
-  if (t < 37.25) return page(t, 'full', [P_('comot', 35.0, { bg: INK })]);
-  if (t < 38.42) return page(t, 'full', [P_('carry', 37.25)]);
-  if (t < 39.35) return page(t, 'full', [P_('point', 38.42)]);
-  if (t < 77.5) { const n = CH1.filter(a => t >= a - 0.05).length - 1; return chorusBlock(t, CH1[Math.max(0, n)], Math.max(0, n), 0); }
-  if (t < 78.4) return page(t, 'full', [P_('chapter', 77.4, { bg: INK })]);
-  if (t < 87.5) return page(t, 'grid4', [P_('bend', 78.4), P_('plate', 80.4), P_('real', 83.1), P_('lowlow', 85.2)], { push: 1, t0: 78.4 });
-  if (t < 94.3) return page(t, 'bigLeft', [P_('haters', 87.55), P_('giant', 89.85), P_('rain', 92.2)], { push: 1, t0: 87.5 });
-  if (t < 96.5) return page(t, 'full', [P_('sun', 94.3)]);
-  if (t < 98.4) return page(t, 'full', [P_('rise', 96.5)]);
-  if (t < 100.75) return page(t, 'full', [P_('drip', 98.4)]);
-  if (t < 103.0) return page(t, 'full', [P_('comot', 100.75, { bg: INK })]);
-  if (t < 104.2) return page(t, 'full', [P_('carry', 103.0)]);
-  if (t < 105.1) return page(t, 'full', [P_('point', 104.2)]);
-  if (t < 151.55) { const n = CH2.filter(a => t >= a - 0.05).length - 1; if (n === 4) return page(t, 'full', [P_('dance', 142.6)], { bump: 1 }); return chorusBlock(t, CH2[Math.max(0, n)], Math.max(0, n), 1); }
-  return page(t, 'full', [P_('back', 151.55, { bg: INK })], { gutter: INK });
+  cur = t; const P = PLAN, v1 = P.v1.map(x => x - 0.15), v2 = P.v2.map(x => x - 0.15);
+  if (t < P.cover.t1) return page(t, 'full', [P_('cover', 0)], { push: 1, t0: 0 });
+  if (t < v1[4] - 0.05) return page(t, 'grid4', [P_('chain', v1[0]), P_('cake16', v1[1]), P_('heroLow', v1[2]), P_('gasp', v1[3])], { push: 1, t0: P.cover.t1 });
+  if (t < P.pre1[0] - 0.12) return page(t, 'zig4', [P_('notes', v1[4]), P_('mix', v1[5]), P_('cube', v1[6]), P_('chef', v1[7])], { push: 1, t0: v1[4] });
+  if (t < P.ch1[0][0] - 0.12) return pre(t, P.pre1);
+  const lastCh1 = P.ch1[P.ch1.length - 1], endCh1 = P.tag1 ? P.tag1[0] : v2[0] - 1.15;
+  if (t < endCh1) { const n = Math.max(0, P.ch1.filter(b => t >= b[0] - 0.15).length - 1); return chorusBlock(t, P.ch1[n], n, 0); }
+  if (P.tag1 && t < P.tag1[1]) return page(t, 'full', [P_('steps', P.tag1[0] - 0.1)], { bump: 1 });
+  if (P.break1 && t < v2[0]) return dancebreak(t, P.tag1[1], v2[0], 0);
+  if (t < v2[0]) return page(t, 'full', [P_('chapter', v2[0] - 1.15, { bg: INK })]);
+  if (t < v2[4] - 0.05) return page(t, 'grid4', [P_('bend', v2[0]), P_('plate', v2[1]), P_('real', v2[2]), P_('lowlow', v2[3])], { push: 1, t0: v2[0] });
+  if (t < v2[7]) return page(t, 'bigLeft', [P_('haters', v2[4]), P_('giant', v2[5]), P_('rain', v2[6])], { push: 1, t0: v2[4] });
+  if (t < P.pre2[0] - 0.12) return page(t, 'full', [P_('sun', v2[7])]);
+  if (t < P.ch2[0][0] - 0.12) return pre(t, P.pre2);
+  const endCh2 = P.tag2 ? P.tag2[0] : P.outro.t0;
+  if (t < endCh2) { const n = Math.max(0, P.ch2.filter(b => t >= b[0] - 0.15).length - 1);
+    if (n === 4) return page(t, 'full', [P_('dance', P.ch2[4][0] - 0.12)], { bump: 1 }); return chorusBlock(t, P.ch2[n], n, 1); }
+  if (P.tag2 && t < P.tag2[1]) return page(t, 'full', [P_('steps', P.tag2[0] - 0.1)], { bump: 1 });
+  if (P.break2 && t < P.outro.t0) { const bar = 4 * (60 / TM.bpm), i = Math.floor((t - P.break2[0]) / (2 * bar)); return page(t, 'full', [P_(['dance', 'light', 'dance'][i % 3], P.break2[0] + i * 2 * bar)], { bump: 1 }); }
+  return page(t, 'full', [P_('back', P.outro.t0, { bg: INK })], { gutter: INK });
 }
 
 // ---------------- subtitles (lyrics) ----------------
@@ -299,7 +308,8 @@ function render(t) {
 
 window.render = render;
 window.TEXTS = t => { render(t); return window.__texts; };
-fetch('timing.json').then(r => r.json()).then(j => { TM = j; BEATS = j.beats; window.DUR = j.duration; T = CH.tones(c); })
+const SONG = new URLSearchParams(location.search).get('song');
+fetch(SONG === 'remix' ? 'timing-remix.json' : 'timing.json').then(r => r.json()).then(j => { TM = j; BEATS = j.beats; PLAN = j.plan; window.DUR = j.duration; CH.HAIR = j.hair || 'twists'; CH.GREY = j.grey || 1; T = CH.tones(c); })
   .then(() => Promise.all(['100px Bangers', '800 46px "Noto Sans"'].map(f => document.fonts.load(f, 'GIDDEM ọ́ẹ̀ṣ'))))
   .then(() => document.fonts.ready).then(() => { render(0); window.READY = true; });
 })();

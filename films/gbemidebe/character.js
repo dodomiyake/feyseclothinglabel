@@ -50,12 +50,19 @@ const CH = (() => {
       bumps.push([Math.cos(ang) * 124 * r, -100 + Math.sin(ang) * 104 * r + (i % 2 ? 4 : -4)]); }
     const hair = () => { c.beginPath(); c.moveTo(-114, -86); for (const [x, y] of bumps) c.lineTo(x, y); c.lineTo(114, -86); c.quadraticCurveTo(60, -116, 0, -120); c.quadraticCurveTo(-60, -116, -114, -86); c.closePath(); };
     hair(); c.fillStyle = INK; c.fill();
+    if (API.HAIR === 'curls') { // short natural curls: dense small coils, rounder top, grey through the sides
+      c.save(); hair(); c.clip(); c.lineWidth = 1.6;
+      for (let i = 0; i < 520; i++) { const x = lerp(-128, 128, R()), y = lerp(-212, -84, R()), r = 2.4 + R() * 2.6, a0 = R() * 6.28, side = clamp((Math.abs(x) - 78) / 44, 0, 1);
+        c.strokeStyle = R() < 0.18 + 0.7 * side ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,0.42)'; c.beginPath(); c.arc(x, y, r, a0, a0 + 3.6 + R() * 1.6); c.stroke(); }
+      c.restore();
+    } else {
     c.save(); hair(); c.clip(); c.strokeStyle = 'rgba(255,255,255,0.62)'; c.lineWidth = 1.7;
     for (let row = 0; row < 7; row++) for (let col = 0; col < 16; col++) { // tight coiled twists in rows
       const x = -112 + col * 15 + (row % 2) * 7 + (R() - .5) * 4, y = -124 - row * 12 - (1 - (x / 124) ** 2) * 30 + (R() - .5) * 4;
       c.beginPath(); c.moveTo(x - 3, y + 5); c.quadraticCurveTo(x + 4, y + 2, x - 1, y - 1); c.quadraticCurveTo(x - 5, y - 4, x + 2, y - 7); c.stroke(); }
     c.restore();
     curls(c, hair, 260, R, [-130, -150, 130, -86], (x, y) => clamp((Math.abs(x) - 72) / 46, 0, 1) * 0.95, 'rgba(255,255,255,0.9)', [1.8, 3.2]);
+    }
     // sideburns
     for (const s of [-1, 1]) { P(c, [[s * 110, -92], [s * 128, -30], [s * 126, 20], [s * 106, 10], [s * 104, -80]]); c.fillStyle = INK; c.fill(); }
     curls(c, () => { for (const s of [-1, 1]) P(c, [[s * 110, -92], [s * 128, -30], [s * 126, 20], [s * 106, 10], [s * 104, -80]]); }, 70, R, [-130, -92, 130, 20], () => 0.7, 'rgba(255,255,255,0.85)', [1.6, 3]);
@@ -85,7 +92,7 @@ const CH = (() => {
     // beard: full, from the sideburns round the jaw; moustache joins it
     const beard = () => P(c, [[-128, 4], [-134, 100, -98, 168], [-56, 224, 0 + fx, 232], [56, 224, 98, 168], [134, 100, 128, 4], [114, 50, 98, 78], [72, 96, fx + 54, 74], [fx + 30, 62, fx, 66], [fx - 30, 62, fx - 54, 74], [-72, 96, -98, 78], [-114, 50, -128, 4]]);
     beard(); c.fillStyle = INK; c.fill();
-    curls(c, beard, 1100, R, [-136, 0, 136, 234], (x, y) => 0.22 + 0.75 * Math.exp(-((x - fx) ** 2) / 5200 - ((y - 175) ** 2) / 3200) + 0.25 * clamp((y - 100) / 120, 0, 1) * clamp((Math.abs(x) - 50) / 70, 0, 1), 'rgba(255,255,255,0.82)', [2, 4.2]);
+    curls(c, beard, 1100 * (API.GREY || 1), R, [-136, 0, 136, 234], (x, y) => (API.GREY || 1) * 0.22 + 0.75 * Math.exp(-((x - fx) ** 2) / 5200 - ((y - 175) ** 2) / 3200) + 0.25 * clamp((y - 100) / 120, 0, 1) * clamp((Math.abs(x) - 50) / 70, 0, 1), 'rgba(255,255,255,0.82)', [2, 4.2]);
     // mouth
     const my = 108;
     if (expr === 'shout' || expr === 'grin' || expr === 'smile') {
@@ -162,5 +169,6 @@ const CH = (() => {
     c.restore();
   }
   const lerp = (a, b, k) => a + (b - a) * k, clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-  return { tones, head, bust, body, rng, P, INK, PAPER, get TONE() { return TONE; } };
+  const API = { tones, head, bust, body, rng, P, INK, PAPER, HAIR: 'twists', GREY: 1, get TONE() { return TONE; } };
+  return API;
 })();
